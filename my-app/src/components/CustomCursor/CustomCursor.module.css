@@ -1,0 +1,55 @@
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+}
+
+/* Tiny precise tracker — the actual "click point". Sits on top of the
+ * flower and uses difference blending so it stays visible against any
+ * background, including the flower itself. */
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text);
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+/* The flower (waling-waling orchid) is the expressive layer — drifts
+ * with a soft spring and rotates slowly. We deliberately do NOT use
+ * mix-blend-mode here so the PNG keeps its natural colors. A
+ * drop-shadow gives it lift on light sections without needing a bg. */
+.flower {
+  width: 36px;
+  height: 36px;
+  /* The translate centers the image on the pointer; rotate is animated
+   * via Framer Motion's `animate`. Both compose with the spring x/y. */
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  user-select: none;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+  transition:
+    width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.3s ease;
+}
+
+.flowerHover {
+  width: 56px;
+  height: 56px;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 14px color-mix(in oklab, var(--accent), transparent 60%));
+}
+
+/* Hide the custom cursor and restore the system cursor on touch devices
+ * (no hover, no fine pointer = phone/tablet). Saves us from a stuck
+ * flower floating in the corner of the screen. */
+@media (hover: none) {
+  .cursor {
+    display: none;
+  }
+}

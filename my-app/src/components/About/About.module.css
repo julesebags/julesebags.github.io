@@ -1,0 +1,225 @@
+.section {
+  padding: clamp(96px, 14vh, 160px) clamp(24px, 6vw, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(40px, 6vw, 80px);
+  align-items: start;
+}
+
+/* ----- Photo column ----------------------------------------------- */
+
+.photoCol {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.photo {
+  aspect-ratio: 4 / 5;
+  border-radius: 16px;
+  overflow: hidden;
+  background-image: var(
+    --portrait-image,
+    linear-gradient(160deg, #ff8aa8 0%, #c44569 45%, #2f3e3d 100%)
+  );
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+/* Subtle warmth/sheen on the gradient placeholder so it doesn't look
+ * like a flat fill while a real portrait isn't there yet. */
+.photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 25% 18%,
+    rgba(255, 255, 255, 0.18),
+    transparent 55%
+  );
+  pointer-events: none;
+}
+
+.photoCaption {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--text), transparent 45%);
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ----- Body column ------------------------------------------------ */
+
+.bodyCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--text), transparent 40%);
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.title {
+  font-family: var(--heading);
+  font-weight: 300;
+  font-size: clamp(40px, 6vw, 80px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+  margin: 0;
+}
+
+.titleAccent {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.body {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: color-mix(in oklab, var(--text), transparent 18%);
+  max-width: 58ch;
+}
+
+.bodyStrong {
+  color: var(--text-h);
+  font-weight: 500;
+}
+
+/* ----- Featured research callout ---------------------------------- */
+
+.feature {
+  position: relative;
+  margin-top: 40px;
+  padding: 24px 28px 24px 30px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--bg), white 2%);
+  max-width: 64ch;
+  transition: border-color 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.feature:hover {
+  border-color: color-mix(in oklab, var(--accent), transparent 60%);
+  transform: translateY(-2px);
+}
+
+.feature::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+.featureEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+
+.featureEyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.featureTitle {
+  font-family: var(--heading);
+  font-weight: 400;
+  font-size: clamp(19px, 1.8vw, 24px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--text-h);
+  margin: 0 0 10px;
+}
+
+.featureDescription {
+  font-size: 14px;
+  line-height: 1.55;
+  color: color-mix(in oklab, var(--text), transparent 22%);
+  margin: 0 0 14px;
+}
+
+.featureMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: color-mix(in oklab, var(--text), transparent 35%);
+  margin: 0 0 14px;
+}
+
+.featureLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  text-decoration: none;
+  transition: gap 0.2s ease, opacity 0.2s ease;
+}
+
+.featureLink:hover {
+  gap: 10px;
+  opacity: 0.85;
+}
+
+/* ----- Mobile ------------------------------------------------------ */
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .photoCol {
+    max-width: 360px;
+  }
+}

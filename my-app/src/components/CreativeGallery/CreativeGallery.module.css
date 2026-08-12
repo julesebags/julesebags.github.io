@@ -1,0 +1,269 @@
+.section {
+  padding: clamp(96px, 14vh, 160px) clamp(24px, 6vw, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: clamp(48px, 8vh, 80px);
+  max-width: 880px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--text), transparent 40%);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.title {
+  font-family: var(--heading);
+  font-weight: 300;
+  font-size: clamp(48px, 8vw, 104px);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  color: var(--text-h);
+  margin: 0;
+}
+
+.titleAccent {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.lede {
+  font-size: 16px;
+  line-height: 1.6;
+  color: color-mix(in oklab, var(--text), transparent 28%);
+  max-width: 56ch;
+  margin: 8px 0 0;
+}
+
+/* Filter row -------------------------------------------------------- */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.filter {
+  font: inherit;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.filter:hover {
+  border-color: color-mix(in oklab, var(--text), transparent 50%);
+  color: var(--text-h);
+}
+
+.filterActive,
+.filterActive:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1c1c1c;
+}
+
+/* Masonry — true Pinterest-style column flow ------------------------
+ *
+ * Items pack into N columns top-to-bottom, with `break-inside: avoid`
+ * keeping each tile intact. Mixed aspect ratios per item create the
+ * uneven-height rhythm that defines the look.
+ */
+
+.grid {
+  column-count: 4;
+  column-gap: 16px;
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 720px) {
+  .grid {
+    column-count: 2;
+    column-gap: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .grid {
+    column-count: 1;
+  }
+}
+
+.tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0 0 16px;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--tile-image, linear-gradient(135deg, #ff8aa8, #2f3e3d));
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--border);
+  /* Keep each tile in a single column (no awkward mid-tile splits). */
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  transition:
+    opacity 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.45s ease,
+    box-shadow 0.4s ease;
+  will-change: transform, opacity;
+}
+
+/* Aspect ratios — drive the natural height variation when no real
+ * image is present (gradient placeholders). When a real photo is
+ * dropped into the gallery folder, the tile renders an <img> instead
+ * and takes the photo's natural ratio (see `.tileImage` below).
+ */
+.aspectPortrait    { aspect-ratio: 4 / 5; }
+.aspectTall        { aspect-ratio: 3 / 4; }
+.aspectExtraTall   { aspect-ratio: 3 / 5; }
+.aspectSquare      { aspect-ratio: 1 / 1; }
+.aspectLandscape   { aspect-ratio: 5 / 4; }
+
+/* Real photo. Width is locked to the column; height adapts to the
+ * photo's intrinsic ratio. The vignette + caption overlays absolutely
+ * position over this, so they still sit at the bottom of whatever
+ * height the image ends up at. */
+.tileImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Hover behavior:
+ *  - When any tile is hovered, all others dim & desaturate
+ *  - The hovered tile lifts and brightens
+ */
+.grid.gridHovering .tile:not(.tileHovered) {
+  opacity: 0.4;
+  filter: saturate(0.65);
+}
+
+.tileHovered {
+  transform: scale(1.025);
+  box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+/* Subtle vignette behind the always-visible caption. */
+.tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 50%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+
+.tileHovered::after {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.78) 100%
+  );
+}
+
+.meta {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 14px 16px;
+  z-index: 1;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.metaCategory {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.metaTitle {
+  font-family: var(--heading);
+  font-weight: 400;
+  font-size: clamp(16px, 1.4vw, 20px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.metaSub {
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.description {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+  margin: 8px 0 0;
+  opacity: 0;
+  max-height: 0;
+  transition:
+    opacity 0.4s ease 0.05s,
+    max-height 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+}
+
+.tileHovered .description {
+  opacity: 1;
+  max-height: 200px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .tileHovered,
+  .description {
+    transition: opacity 0.2s ease;
+  }
+
+  .tileHovered {
+    transform: none;
+  }
+}

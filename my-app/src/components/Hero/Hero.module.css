@@ -1,0 +1,175 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Side padding slimmed so the ASCII art has more horizontal room
+   * to render at a larger size without clipping. */
+  padding: 120px clamp(8px, 1.5vw, 24px) 80px;
+  text-align: center;
+  position: relative;
+}
+
+.greeting {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--text), transparent 35%);
+  margin: 0 0 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.greeting::before,
+.greeting::after {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: color-mix(in oklab, var(--text), transparent 70%);
+  display: inline-block;
+}
+
+.asciiName {
+  margin: 0;
+  color: var(--text-h);
+  line-height: 1;
+  /* Size to whatever the ASCII actually needs, then back off if the
+   * viewport is narrower than that. Combined with the font-size
+   * scaling below, this guarantees the full name renders without
+   * clipping the trailing characters. */
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.asciiName pre {
+  margin: 0;
+  font: inherit;
+  font-family: var(--mono);
+  /* Longest visible line in `fullname.txt` is ~299 characters wide.
+   * At roughly 0.6× character-to-em ratio for monospace, an 8px cap
+   * keeps the rendered art inside ~1435px on desktop and scales
+   * linearly down on narrower viewports. The h1 below clips any
+   * overflow so very narrow phones never push the page horizontally. */
+  font-size: clamp(4px, 0.6vw, 8px);
+  line-height: 1.05;
+  white-space: pre;
+  /* Force lines to align to the left edge of the <pre> block —
+   * otherwise the inherited `text-align: center` from `.hero`
+   * centers EACH line individually, which destroys the silhouette
+   * when lines have different (e.g. trimmed) trailing widths.
+   * The pre itself is still centered as a whole because the parent
+   * <h1> uses `width: fit-content` inside a centered flex column. */
+  text-align: left;
+  user-select: none;
+  -webkit-user-select: none;
+  letter-spacing: 0;
+}
+
+.tagline {
+  margin: 36px auto 0;
+  font-family: var(--heading);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(20px, 2.4vw, 32px);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  color: var(--text-h);
+  max-width: 720px;
+}
+
+.subtitle {
+  margin: 16px auto 0;
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: color-mix(in oklab, var(--text), transparent 30%);
+  max-width: 640px;
+}
+
+.subtitle .dot {
+  display: inline-block;
+  margin: 0 8px;
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.ctas {
+  display: flex;
+  gap: 14px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+
+  &:hover {
+    background: color-mix(in oklab, var(--text), transparent 92%);
+    border-color: color-mix(in oklab, var(--text), transparent 60%);
+    color: var(--text-h);
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+.ctaPrimary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1c1c1c;
+
+  &:hover {
+    background: color-mix(in oklab, var(--accent), white 8%);
+    border-color: color-mix(in oklab, var(--accent), white 8%);
+    color: #1c1c1c;
+  }
+}
+
+.scrollCue {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--text), transparent 50%);
+}
+
+@media (max-width: 640px) {
+  .ctas {
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .cta {
+    justify-content: center;
+  }
+}

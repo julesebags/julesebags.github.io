@@ -1,0 +1,289 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 48px);
+  background: rgba(20, 28, 28, 0.6);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+}
+
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  /* Fixed height (not max-height) — the popup is a stable size.
+   * Sized so the 16:10 image roughly fills its column with only
+   * minimal padding-gap above and below; the text panel scrolls
+   * internally to reveal everything below the fold. */
+  height: min(90vh, 620px);
+  border-radius: 22px;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--bg), white 5%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  /* `minmax(0, 1fr)` is the canonical recipe for "let a child with
+   * overflow: auto actually scroll inside a grid". Without it the
+   * row sizes to content (clipping inside the panel without scroll). */
+  grid-template-rows: minmax(0, 1fr);
+}
+
+@media (max-width: 880px) {
+  .panel {
+    height: auto;
+    max-height: 92vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    overflow-y: auto;
+  }
+}
+
+/* ---- Left / main: carousel ---- */
+
+.media {
+  padding: 24px;
+  background: color-mix(in oklab, var(--bg), black 10%);
+  display: flex;
+  flex-direction: column;
+  /* Carousel has a fixed aspect ratio and isn't stretched, so center
+   * it in the available column height instead of leaving it pinned
+   * to the top with empty space below. */
+  justify-content: center;
+  align-items: stretch;
+  min-height: 0;
+}
+
+/* ---- Right / detail: content ---- */
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(24px, 3vw, 36px) clamp(24px, 3vw, 36px) clamp(24px, 3vw, 36px);
+  /* `min-height: 0` + the grid's `minmax(0, 1fr)` row are what allow
+   * this child's overflow-y to actually trigger scroll inside the
+   * panel rather than letting the row balloon to content height. */
+  min-height: 0;
+  overflow-y: auto;
+  /* Reserve scrollbar gutter so content doesn't reflow when the bar
+   * appears, and the scroll affordance is always discoverable. */
+  scrollbar-gutter: stable;
+}
+
+
+.detailTop {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Eyebrow + GitHub link share a row at the very top of the right
+ * panel, so the repo is reachable in one glance instead of buried
+ * at the bottom. The close button on the panel sits at the same
+ * vertical level on the far right (outside this column). */
+.detailHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  /* Leave room for the absolute-positioned close button so the
+   * GitHub link doesn't collide with it. */
+  padding-right: 44px;
+}
+
+/* Icon-only GitHub button — small round target sitting at the top
+ * of the right panel. Hover lifts and tints toward the accent. */
+.repoLinkTop {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: color-mix(in oklab, var(--text), transparent 15%);
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.repoLinkTop:hover {
+  color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent), transparent 50%);
+  background: color-mix(in oklab, var(--accent), transparent 92%);
+  transform: translateY(-1px) rotate(-4deg);
+}
+
+.repoLinkTop:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Discrete logical sections inside the right panel — all rendered at
+ * once (no carousel / no next-prev). The natural rhythm comes from
+ * spacing, not navigation. */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.detailEyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--text), transparent 50%);
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detailEyebrowDot {
+  color: var(--accent);
+}
+
+.detailName {
+  font-family: var(--heading);
+  font-weight: 500;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--text-h);
+  margin: 0;
+}
+
+.detailDescription {
+  font-size: 15px;
+  line-height: 1.65;
+  color: color-mix(in oklab, var(--text), transparent 15%);
+  margin: 0;
+}
+
+.detailDescription + .detailDescription {
+  margin-top: 12px;
+}
+
+/* ---- Tech stack — simple row of name pills under the title ----- */
+
+.techPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.techPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--text), transparent 90%);
+  color: var(--text-h);
+  border: 1px solid var(--border);
+}
+
+/* ---- Key features list ----------------------------------------- */
+
+.featureList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.featureList li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: color-mix(in oklab, var(--text), transparent 15%);
+}
+
+.featureList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 1px;
+  background: var(--accent);
+}
+
+
+.detailMetaLabel {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--text), transparent 50%);
+  margin: 0 0 10px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--text), transparent 92%);
+  color: color-mix(in oklab, var(--text), transparent 15%);
+  border: 1px solid var(--border);
+}
+
+/* ---- Close button ---- */
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(20, 28, 28, 0.55);
+  color: var(--text-h);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.close:hover {
+  background: rgba(20, 28, 28, 0.8);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}

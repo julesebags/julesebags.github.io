@@ -1,0 +1,106 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px clamp(20px, 4vw, 48px);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition:
+    background 0.25s ease,
+    backdrop-filter 0.25s ease,
+    border-color 0.25s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.scrolled {
+  background: color-mix(in oklab, var(--bg), transparent 25%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-color: var(--border);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-h);
+  text-decoration: none;
+  /* Soft scale so the logo gets a tiny "lift" on hover without
+   * disturbing the surrounding navbar layout. */
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.brand:hover {
+  transform: translateY(-1px);
+  opacity: 0.85;
+}
+
+.brand:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 6px;
+}
+
+.brandLogo {
+  display: block;
+  height: 36px;
+  width: auto;
+  /* Keep the PNG sharp on retina displays. */
+  image-rendering: -webkit-optimize-contrast;
+}
+
+@media (max-width: 640px) {
+  .brandLogo {
+    height: 30px;
+  }
+}
+
+.links {
+  display: flex;
+  gap: clamp(16px, 2.5vw, 32px);
+  align-items: center;
+}
+
+.link {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--text-h);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+}
+
+@media (max-width: 640px) {
+  .links {
+    gap: 14px;
+  }
+
+  .link {
+    font-size: 12px;
+  }
+
+  /* Drop a less-essential link on very small screens. */
+  .links .secondary {
+    display: none;
+  }
+}

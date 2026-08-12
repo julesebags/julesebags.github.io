@@ -1,0 +1,170 @@
+.carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* Image frame is locked to the same 16:10 ratio as the project card
+ * preview so the modal preview reads as a *bigger version* of the
+ * card image, not a different shape. Without this, `flex: 1` would
+ * stretch the stage to fill the right panel's height and turn it
+ * into a near-square that cropped the actual photos. */
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.25);
+  isolation: isolate;
+}
+
+.slideWrap {
+  position: absolute;
+  inset: 0;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slideGradient {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Drag affordance — pointer when interactable. */
+.dragLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  cursor: grab;
+}
+
+.dragLayer:active {
+  cursor: grabbing;
+}
+
+/* Counter pill, top-right of the stage. */
+.counter {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(20, 28, 28, 0.6);
+  color: var(--text-h);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+
+/* Arrow buttons */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(20, 28, 28, 0.55);
+  color: var(--text-h);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.arrow:hover {
+  background: rgba(20, 28, 28, 0.85);
+  border-color: rgba(255, 255, 255, 0.32);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.arrowPrev {
+  left: 14px;
+}
+
+.arrowNext {
+  right: 14px;
+}
+
+/* Thumbnail strip */
+.thumbs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.thumb {
+  position: relative;
+  flex: 0 0 auto;
+  width: 64px;
+  height: 44px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1.5px solid transparent;
+  background: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  padding: 0;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+  opacity: 0.55;
+}
+
+.thumb:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.thumbActive {
+  border-color: var(--accent);
+  opacity: 1;
+}
+
+.thumbImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 760px) {
+  .arrow {
+    width: 36px;
+    height: 36px;
+  }
+  .thumb {
+    width: 54px;
+    height: 38px;
+  }
+}
