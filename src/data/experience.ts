@@ -58,24 +58,55 @@ export const experiences: Experience[] = [
   // PROFESSIONAL
   // ============================================================
   {
+    id: 'proximity',
+    category: 'professional',
+    role: 'Contract Software Engineer',
+    organization: 'Proximity',
+    dateRange: 'Jun 2026 – Present',
+    duration: 'Ongoing',
+    pitch:
+      'Full-stack engineer on a WashU off-campus housing marketplace serving 300+ users.',
+    description:
+      'One of four engineers on Proximity — a marketplace for the WashU off-campus housing market. Shipping full-stack features from database up to UI, and building the internal tooling that keeps a small team moving fast.',
+    bullets: [
+      'Ship full-stack features supporting 300+ active users and $500K+ in facilitated lease value across 42+ signed leases',
+      'Own the end-to-end messaging system: live delivery via Supabase Realtime, hover-based prefetch for near-instant conversation loads, and email notifications with deep links',
+    ],
+    tags: ['Full Stack', 'Supabase', 'Realtime', 'MCP'],
+    metrics: [
+      { val: '300+', label: 'active users' },
+      { val: '$500K+', label: 'lease value' },
+      { val: '42+', label: 'signed leases' },
+    ],
+    images: getExperienceImages('proximity', [
+      'linear-gradient(135deg, #b362ff 0%, #ff8aa8 50%, #2f3e3d 100%)',
+      'linear-gradient(45deg, #ff8aa8 0%, #b362ff 100%)',
+      'radial-gradient(circle at 30% 30%, #b362ff 0%, #ff8aa8 60%, #2f3e3d 100%)',
+    ]),
+    color: '#b362ff',
+  },
+  {
     id: 'mastercard',
     category: 'professional',
-    role: 'Full Stack Developer Intern',
+    role: 'Software Engineering Intern',
     organization: 'Mastercard',
     dateRange: 'Jun 2026 – Aug 2026',
     duration: '3 mo',
-    pitch: 'Production engineering on a global payments platform.',
+    pitch:
+      'Full-stack + platform engineering on Mastercard Transaction Streams.',
     description:
-      'Joining Mastercard as a SWE intern in summer 2026. Owning end-to-end features inside a production engineering org — backend services, frontend interfaces, and the developer tooling that holds them together.',
+      "SWE intern on the Mastercard Transaction Streams team in O'Fallon, MO. Shipped internal developer tooling, production mappings on the payments transaction pipeline, and rotated onto the team's deployment engineering.",
     bullets: [
-      'Building and shipping features inside a production codebase',
-      'Designing scalable backend services that touch real-world payments traffic',
-      'Working alongside a SWE team at one of the largest fintechs in the world',
+      "Built MCP Manager — an internal FastAPI + React app that automates MCP/Skill setup to 1 step; engineered a plugin system driven by a single config file; served as Scrum Master for 8 devs and led the live demo for Mastercard's CTO",
+      'Implemented and shipped 4 new mappings to a production system for translating payment transaction data; wrote a POC that generates QE test inputs from Jira story requirements',
+      'Eliminated a transaction-classification dependency that rippled to downstream teams by shipping a Java + Spring Boot local-override system — cut a 5-step, multi-repo process to 2 steps in a single repo',
+      'Deployed 12 services as one of 5 rotating engineers on the Transaction Streams deploy team',
     ],
-    tags: ['Full Stack', 'Enterprise'],
+    tags: ['FastAPI', 'React', 'Spring Boot', 'Java', 'Payments'],
     metrics: [
-      { val: 'Summer', label: '2026 SWE intern' },
-      { val: 'Prod', label: 'codebase' },
+      { val: '12', label: 'services deployed' },
+      { val: '4', label: 'prod mappings' },
+      { val: 'CTO', label: 'demo led' },
     ],
     images: getExperienceImages('mastercard', [
       'linear-gradient(135deg, #ffb88c 0%, #ff8aa8 50%, #2f3e3d 100%)',
@@ -92,19 +123,21 @@ export const experiences: Experience[] = [
     dateRange: 'May 2025 – Jun 2026',
     duration: '1y 1mo',
     pitch:
-      'Shipping internal tools that accelerate research and innovation at WashU.',
+      "Built the People's Voice Survey Dashboard — an interactive public health tool used by 300+ researchers.",
     description:
-      'Built full-stack applications used daily by faculty, researchers, and program staff at the WashU DIAA. Took features from Figma to production with minimal handoff and owned UX decisions on tools real people use.',
+      "Full-stack engineer at the WashU DIAA on the People's Voice Survey (PVS) Dashboard — an interactive public health visualization tool used by 300+ researchers and policymakers to explore survey data across 20+ countries. Presented at the 2025 Science for Health Systems Conference.",
     bullets: [
-      'Built and shipped multiple internal tools end-to-end (frontend + backend + deploy)',
-      'Owned UX decisions on tools used daily by faculty and program staff',
-      'Reviewed code and shipped reviews in tight iteration loops with senior engineers',
+      'Built an interactive public health dashboard for 300+ researchers and policymakers, presented at the 2025 Science for Health Systems Conference',
+      'Translated ambiguous requirements into intuitive user flows through weekly client reviews with domain researchers',
+      'Cut filter-load times for visualizing 60.2K+ records across 20+ countries to under 1 second',
+      'Reduced payload size by 95%+ through caching, response compression, scoped queries, and connection pooling',
     ],
-    tags: ['Full Stack', 'Research', 'Applied AI'],
+    tags: ['React', 'Mapbox', 'FastAPI', 'Supabase', 'AWS', 'Figma'],
     metrics: [
-      { val: '4', label: 'tools shipped' },
-      { val: '~50%', label: 'workflow time saved' },
-      { val: '1y+', label: 'in role' },
+      { val: '300+', label: 'researchers served' },
+      { val: '60.2K+', label: 'records visualized' },
+      { val: '20+', label: 'countries' },
+      { val: '<1s', label: 'filter load' },
     ],
     images: getExperienceImages('dii-accelerator', [
       'linear-gradient(135deg, #6dd6c2 0%, #4a8aff 60%, #2f3e3d 100%)',
@@ -117,24 +150,23 @@ export const experiences: Experience[] = [
     id: 'oop-ta',
     category: 'professional',
     role: 'Head Teaching Assistant',
-    organization: 'WashU Object-Oriented Programming (CSE 3302S)',
-    dateRange: 'Aug 2024 – Present',
+    organization:
+      'Washington University in St. Louis · Object-Oriented Programming',
+    dateRange: 'Aug 2024 – May 2026',
     duration: '~2y',
     pitch:
-      "Leading the TA team for one of WashU's largest CS courses.",
+      'Head TA for Object-Oriented Programming — mentored 250+ students and led a team of 30+ TAs.',
     description:
-      'Promoted from TA to Head TA after one semester. Lead a team of TAs through every course iteration — running office hours, mentoring first-time TAs, debugging student code, and building internal tooling that makes the course run smoother for everyone.',
+      "Led the TA team for WashU's Object-Oriented Programming course across four semesters. Owned grading operations for 700+ submissions/semester and shaped how a large TA team taught C++, memory management, and object-oriented design.",
     bullets: [
-      'Promoted from TA to Head TA after one semester (May 2025)',
-      'Run weekly office hours; debug 200+ student submissions per week',
-      'Mentor first-time TAs through their first semester teaching',
-      'Built internal grading tooling that cut TA grading time by ~40%',
+      'Strengthened grading consistency across 30+ TAs and 700+ submissions/semester by restructuring rubrics into a simple flow, automating grading distribution by conflict of interest, and launching a grading-calibration system',
+      'Mentored 250+ students in C++, memory management, and object-oriented design across studios and office hours',
     ],
-    tags: ['Teaching', 'Java', 'Curriculum'],
+    tags: ['Teaching', 'C++', 'OOP', 'Curriculum'],
     metrics: [
-      { val: '200+', label: 'submissions / wk' },
-      { val: '~40%', label: 'grading time saved' },
-      { val: '4', label: 'TAs mentored' },
+      { val: '250+', label: 'students mentored' },
+      { val: '30+', label: 'TAs led' },
+      { val: '700+', label: 'submissions / sem' },
     ],
     images: getExperienceImages('oop-ta', [
       'linear-gradient(135deg, #f8a35c 0%, #ff8aa8 50%, #2f3e3d 100%)',
@@ -150,14 +182,11 @@ export const experiences: Experience[] = [
     organization: 'University of Missouri',
     dateRange: 'May 2024 – Aug 2024',
     duration: '3 mo',
-    pitch:
-      'Computational research and data analysis under a faculty advisor.',
+    pitch: 'Undergraduate research contributor — published on bioRxiv.',
     description:
-      'First exposure to academic research workflows. Cleaned and analyzed datasets, built reproducible analysis scripts, and supported a project mixing computational and experimental work.',
+      'Summer research assistant at Mizzou. Contributed to a project whose work is now available as a preprint on bioRxiv.',
     bullets: [
-      'Computational + experimental work on an active research project',
-      'Cleaned and analyzed datasets; built reproducible analysis scripts',
-      'First exposure to academic research workflows and methods',
+      'Contributed to a research project resulting in a published bioRxiv preprint',
     ],
     tags: ['Research'],
     link: {
@@ -170,30 +199,6 @@ export const experiences: Experience[] = [
       'radial-gradient(circle at 30% 70%, #4a8aff 0%, #b362ff 60%, #2f3e3d 100%)',
     ]),
     color: '#4a8aff',
-  },
-  {
-    id: 'code-ninjas',
-    category: 'professional',
-    role: 'Code Sensei',
-    organization: 'Code Ninjas',
-    dateRange: 'May 2024 – Aug 2024',
-    duration: '3 mo',
-    pitch:
-      'Taught programming fundamentals to elementary and middle-school learners.',
-    description:
-      'Ran code-along sessions for kids ages 7–14, paced lessons across a wide skill range, and helped young learners hit their first "aha" moment with code.',
-    bullets: [
-      'Designed lesson pacing across a wide range of skill levels',
-      'Ran 1:1 and small-group code-along sessions',
-      'Mentored beginner programmers through their first projects',
-    ],
-    tags: ['Teaching', 'K–12'],
-    images: getExperienceImages('code-ninjas', [
-      'linear-gradient(135deg, #6dd6c2 0%, #ffd56b 50%, #2f3e3d 100%)',
-      'linear-gradient(45deg, #ffd56b 0%, #6dd6c2 100%)',
-      'radial-gradient(circle at 70% 30%, #6dd6c2 0%, #ffd56b 60%, #2f3e3d 100%)',
-    ]),
-    color: '#6dd6c2',
   },
 
   // ============================================================
@@ -292,24 +297,25 @@ export const experiences: Experience[] = [
   {
     id: 'taekwondo',
     category: 'creative',
-    role: 'Sparring A-Team · Instructor · Choreographer',
+    role: 'Choreographer · Instructor',
     organization: 'WashU Taekwondo',
-    dateRange: '2023 – Present',
-    duration: '~3y',
+    dateRange: 'Aug 2023 – Feb 2026',
+    duration: '~2.5y',
     pitch:
-      'Sparring instructor, tournament coordinator, and choreographer for cultural showcases.',
+      'Choreographer for cultural showcases; sparring instructor and tournament coordinator on the side.',
     description:
-      'Coach beginner-to-A-team sparring, run tournament coordination, and choreograph performances for cultural events. Equal parts technique, timing, and stagecraft — all the same problem in different forms.',
+      'Led choreography for WashU Taekwondo across two-and-a-half years of cultural showcases. Ran 15+ hrs/wk of planning and practices for a 16-person performance team, and coached sparring on the side. Equal parts technique, timing, and stagecraft — the same design problem in different forms.',
     bullets: [
-      'Sparring A-Team competitor + sparring instructor',
-      'Tournament Coordinator for WashU-hosted events',
-      'Performances + choreography for Lunar New Year Festival (2024, 2025)',
-      'Performances + choreography for Spirit of Korea (2024, 2025)',
+      'Led 15+ hrs/wk of planning and practices for a 16-person performance team',
+      'Performed in 15+ shows for 3000+ total attendees',
+      'Choreographed for Lunar New Year Festival (2024, 2025, 2026) and Spirit of Korea (2024, 2025)',
+      'Sparring instructor and tournament coordinator for WashU-hosted events',
     ],
-    tags: ['Martial Arts', 'Choreography', 'Coaching'],
+    tags: ['Choreography', 'Martial Arts', 'Coaching'],
     metrics: [
-      { val: '3y', label: 'in club' },
-      { val: 'A-Team', label: 'sparring' },
+      { val: '15+', label: 'shows' },
+      { val: '16', label: 'team size' },
+      { val: '3000+', label: 'attendees' },
     ],
     images: getExperienceImages('taekwondo', [
       'linear-gradient(135deg, #ffd56b 0%, #f8a35c 50%, #2f3e3d 100%)',
@@ -327,22 +333,23 @@ export const experiences: Experience[] = [
     category: 'entrepreneurship',
     role: 'Founder · Owner',
     organization: 'Juliery Box',
-    dateRange: '2020 – Present',
+    dateRange: 'Jan 2020 – Present',
     duration: '5+ yrs',
     pitch:
-      'Handmade jewelry, phone charms, and keychains. Brand → product → pricing, in that order.',
+      'Handmade jewelry business — $3,500+ in sales across 25+ states through Depop and local events.',
     description:
-      'Designed, made, and sold handmade pieces since 2020. Pop-ups at conferences and student events. I own brand, design system, sourcing, and craftsmanship end-to-end. Five years of running a small business taught me more about pricing and brand than any class did.',
+      'Designed, made, and sold handmade pieces since 2020. I own brand, design, sourcing, pricing, and fulfillment end-to-end. Five years of running a small business has taught me more about pricing and brand than any class did.',
     bullets: [
+      '$3,500+ in sales across 25+ states through Depop and local events',
       'Designed and produced jewelry, phone charms, and keychains by hand',
       'Pop-ups at MFAS, PUSO, and Midwest student events',
-      'Built a small loyal customer base over 5 years of consistent making',
       'Owns brand, packaging, sourcing, and pricing strategy',
     ],
-    tags: ['Brand', 'Craft', 'Small Business'],
+    tags: ['Brand', 'Craft', 'Depop', 'Small Business'],
     metrics: [
+      { val: '$3.5K+', label: 'in sales' },
+      { val: '25+', label: 'states shipped' },
       { val: '5+', label: 'years running' },
-      { val: 'Solo', label: 'design + make' },
     ],
     images: getExperienceImages('juliery-box', [
       'linear-gradient(135deg, #b362ff 0%, #ff8aa8 50%, #2f3e3d 100%)',
