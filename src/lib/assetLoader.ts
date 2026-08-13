@@ -10,7 +10,7 @@
  * ──────────────────────────────────────────────────────────────────────
  *
  *   src/assets/projects/<project-id>/*.{png,jpg,jpeg,webp,gif}
- *   src/assets/experience/<experience-id>/*.{png,jpg,jpeg,webp,gif}
+ *   src/assets/experience/<experience-id>/*.{png,jpg,jpeg,webp,gif,mp4,webm}
  *   src/assets/gallery/<gallery-id>/*.{png,jpg,jpeg,webp,gif}
  *
  *   Where <id> matches the `id` field in the corresponding data file
@@ -44,8 +44,15 @@ const projectModules = import.meta.glob<{ default: string }>(
   { eager: true },
 )
 
+/*
+ * Experience folders also accept video, which the media carousel mounts
+ * as a `<video>` instead of painting as a background. Only the web-safe
+ * containers are picked up: a `.mov` straight off a phone is usually
+ * HEVC, which Chrome and Firefox can't decode, so it has to be
+ * transcoded to H.264 `.mp4` before it will appear here.
+ */
 const experienceModules = import.meta.glob<{ default: string }>(
-  '../assets/experience/**/*.{png,jpg,jpeg,webp,gif,avif}',
+  '../assets/experience/**/*.{png,jpg,jpeg,webp,gif,avif,mp4,webm}',
   { eager: true },
 )
 
@@ -58,6 +65,16 @@ const aboutModules = import.meta.glob<{ default: string }>(
   '../assets/about/*.{png,jpg,jpeg,webp,gif,avif}',
   { eager: true },
 )
+
+/**
+ * True for assets that need a `<video>` element rather than a
+ * background image. Matches on extension because Vite rewrites these to
+ * hashed URLs (and may append a query), so the tail of the string isn't
+ * predictable.
+ */
+export function isVideoSrc(src: string): boolean {
+  return /\.(mp4|webm)(\?.*)?$/i.test(src)
+}
 
 function pickById(
   modules: Record<string, { default: string }>,

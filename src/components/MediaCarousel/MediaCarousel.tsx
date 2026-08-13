@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { isVideoSrc } from '../../lib/assetLoader'
 import styles from './MediaCarousel.module.css'
 
 interface MediaCarouselProps {
   /**
-   * Array of CSS gradient strings OR image paths/URLs. The component
-   * auto-detects format: anything starting with `/`, `.`, `http`, or
-   * `data:` is treated as an image; everything else is rendered as
-   * a CSS gradient `background-image`.
+   * Array of CSS gradient strings OR image/video paths/URLs. The
+   * component auto-detects format: `.mp4` / `.webm` mount as a video,
+   * anything starting with `/`, `.`, `http`, or `data:` is treated as
+   * an image, and everything else is rendered as a CSS gradient
+   * `background-image`.
    */
   images: string[]
   /** Optional small label rendered top-left of the slide. */
@@ -37,13 +39,16 @@ export function MediaCarousel({ images, label, fallback }: MediaCarouselProps) {
   }
 
   const current = images[index] ?? fallback ?? ''
-  const slideStyle = isImagePath(current)
-    ? {
-        backgroundImage: `url(${current})`,
-        backgroundSize: 'cover' as const,
-        backgroundPosition: 'center' as const,
-      }
-    : { backgroundImage: current }
+  const isVideo = isVideoSrc(current)
+  const slideStyle = isVideo
+    ? undefined
+    : isImagePath(current)
+      ? {
+          backgroundImage: `url(${current})`,
+          backgroundSize: 'cover' as const,
+          backgroundPosition: 'center' as const,
+        }
+      : { backgroundImage: current }
 
   return (
     <div
@@ -59,7 +64,25 @@ export function MediaCarousel({ images, label, fallback }: MediaCarouselProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.35 }}
-        />
+        >
+          {isVideo && (
+            /*
+             * Muted is what makes autoplay allowed at all; `playsInline`
+             * stops iOS taking it fullscreen. Only the active slide is
+             * mounted, so nothing plays or buffers off-screen.
+             */
+            <video
+              className={styles.video}
+              src={current}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label={label}
+            />
+          )}
+        </motion.div>
       </AnimatePresence>
 
       {label && <span className={styles.label}>{label}</span>}
