@@ -1,8 +1,5 @@
 import { motion } from 'framer-motion'
-import {
-  type Experience,
-  categoryLabels,
-} from '../../data/experience'
+import { type Experience } from '../../data/experience'
 import { MediaCarousel } from '../MediaCarousel/MediaCarousel'
 import styles from './Experience.module.css'
 
@@ -11,21 +8,19 @@ interface ExperienceCardProps {
 }
 
 /**
- * Experience row laid out as a 3-column timeline:
+ * Experience row: media on the left, everything written on the right.
  *
- *   [ timeline col ]   [ media col ]   [ body col ]
- *   start date              ●          eyebrow → role
- *   – end date            carousel     organization
- *   duration pill                      pitch / description / bullets
+ *   [ media col ]   [ body col ]
+ *     carousel      dates · duration
+ *                   role / organization
+ *                   pitch / description / bullets / metrics
  *
- * A single continuous vertical line is rendered by `.grid::before`
- * in the parent — the dot on each row sits ON that line so all rows
- * read as a connected timeline. Mobile collapses to a single stacked
- * column with the date inlined above the media.
+ * Mobile stacks the two columns. The per-role accent is exposed as
+ * `--story-color` on the article; the bullets, metrics, and link all
+ * read it.
  */
 export function ExperienceCard({ experience }: ExperienceCardProps) {
   const {
-    category,
     role,
     organization,
     dateRange,
@@ -40,11 +35,6 @@ export function ExperienceCard({ experience }: ExperienceCardProps) {
     color,
   } = experience
 
-  // Split the pre-formatted range so start/end stack on two lines in
-  // the narrow timeline column. Falls back to a single line if the
-  // string isn't a true range (e.g. "5+ yrs").
-  const [startDate, endDate] = dateRange.split(' – ')
-
   return (
     <motion.article
       layout
@@ -55,20 +45,19 @@ export function ExperienceCard({ experience }: ExperienceCardProps) {
       exit={{ opacity: 0, y: -8 }}
       transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
     >
-      <div className={styles.storyTimeline}>
-        <span className={styles.storyTimelineStart}>{startDate}</span>
-        {endDate && (
-          <span className={styles.storyTimelineEnd}>– {endDate}</span>
-        )}
-        <span className={styles.storyTimelineDur}>{duration}</span>
-      </div>
-
       <div className={styles.storyMedia}>
         <MediaCarousel images={images} label={organization} />
       </div>
 
       <div className={styles.storyBody}>
-        <p className={styles.storyEyebrow}>{categoryLabels[category]}</p>
+        <p className={styles.storyMeta}>
+          <span>{dateRange}</span>
+          <span className={styles.storyMetaDot} aria-hidden="true">
+            ·
+          </span>
+          <span>{duration}</span>
+        </p>
+
         <h3 className={styles.storyRole}>{role}</h3>
         <p className={styles.storyOrg}>{organization}</p>
 

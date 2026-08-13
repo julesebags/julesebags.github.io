@@ -14,10 +14,10 @@ import { getAboutPortrait } from '../../lib/assetLoader'
 const portraitImg = getAboutPortrait()
 
 /**
- * Replace once the report is live — Drive link, Notion page, hosted
- * PDF, etc. While `null`, the "Read the report" CTA renders disabled.
+ * Featured research PDF, served from `public/` so the share URL stays
+ * stable across builds.
  */
-const REPORT_URL: string | null = null
+const REPORT_URL = '/washu-workday-usability-report.pdf'
 
 export function About() {
   const photoStyle = portraitImg
@@ -62,15 +62,23 @@ export function About() {
               </span>
               , double-majoring in{' '}
               <span className={styles.bodyStrong}>Computer Science</span> and{' '}
-              <span className={styles.bodyStrong}>Mathematical Sciences</span>.
+              <span className={styles.bodyStrong}>Mathematical Sciences</span>,
+              graduating{' '}
+              <span className={styles.bodyStrong}>May 2027</span>.
             </p>
             <p>
-              I focus on{' '}
-              <span className={styles.bodyStrong}>full-stack development</span>{' '}
-              with a deep emphasis on building products that are actually{' '}
-              <span className={styles.bodyStrong}>usable</span> — clear
-              interfaces, fast feedback, and the small details between “this
-              works” and “this feels right.”
+              I build as a{' '}
+              <span className={styles.bodyStrong}>full-stack developer</span>{' '}
+              with one throughline: software is only as useful as it is{' '}
+              <span className={styles.bodyStrong}>usable</span>. That means
+              clear interfaces and fast feedback for the people on the other
+              side of the screen — and systems that fellow developers can
+              actually understand, extend, and ship against. It’s the same
+              lens I brought to my{' '}
+              <a className={styles.inlineLink} href={REPORT_URL} target="_blank" rel="noopener noreferrer">
+                WashU Workday usability report
+              </a>
+              : if it doesn’t feel right to use, it doesn’t fully work.
             </p>
           </div>
 
@@ -93,24 +101,14 @@ export function About() {
               <span>·</span>
               <span>Independent research</span>
             </p>
-            {REPORT_URL ? (
-              <a
-                className={styles.featureLink}
-                href={REPORT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Read the report →
-              </a>
-            ) : (
-              <span
-                className={styles.featureLink}
-                aria-disabled="true"
-                style={{ opacity: 0.5, cursor: 'default' }}
-              >
-                Read the report → (coming soon)
-              </span>
-            )}
+            <a
+              className={styles.featureLink}
+              href={REPORT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read the report →
+            </a>
           </article>
         </motion.div>
       </div>

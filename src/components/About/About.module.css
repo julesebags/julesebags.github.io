@@ -1,5 +1,5 @@
 .section {
-  padding: clamp(96px, 14vh, 160px) clamp(24px, 6vw, 80px);
+  padding: clamp(56px, 8vh, 96px) clamp(24px, 6vw, 80px);
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -7,7 +7,7 @@
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(40px, 6vw, 80px);
+  gap: clamp(32px, 4vw, 56px);
   align-items: start;
 }
 
@@ -16,11 +16,15 @@
 .photoCol {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .photo {
-  aspect-ratio: 4 / 5;
+  /* The source is a 2:3 portrait, so the frame's ratio decides how much
+   * gets cut: a square shows ~67% of its height (vs ~83% at the original
+   * 4:5, and only ~50% at 4:3). The focal point sits high so what's lost
+   * comes off the bottom. */
+  aspect-ratio: 1 / 1;
   border-radius: 16px;
   overflow: hidden;
   background-image: var(
@@ -28,7 +32,7 @@
     linear-gradient(160deg, #ff8aa8 0%, #c44569 45%, #2f3e3d 100%)
   );
   background-size: cover;
-  background-position: center;
+  background-position: center 25%;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   position: relative;
@@ -72,7 +76,7 @@
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: color-mix(in oklab, var(--text), transparent 40%);
-  margin: 0 0 14px;
+  margin: 0 0 10px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -88,8 +92,8 @@
 .title {
   font-family: var(--heading);
   font-weight: 300;
-  font-size: clamp(40px, 6vw, 80px);
-  line-height: 1;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.05;
   letter-spacing: -0.02em;
   color: var(--text-h);
   margin: 0;
@@ -102,14 +106,15 @@
 }
 
 .body {
-  margin-top: 28px;
+  margin-top: 18px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  font-size: 16px;
-  line-height: 1.65;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 1.55;
   color: color-mix(in oklab, var(--text), transparent 18%);
   max-width: 58ch;
+  text-wrap: pretty;
 }
 
 .bodyStrong {
@@ -117,12 +122,25 @@
   font-weight: 500;
 }
 
+.inlineLink {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.inlineLink:hover {
+  opacity: 0.85;
+}
+
 /* ----- Featured research callout ---------------------------------- */
 
 .feature {
   position: relative;
-  margin-top: 40px;
-  padding: 24px 28px 24px 30px;
+  margin-top: 24px;
+  padding: 18px 22px 18px 24px;
   border-radius: 14px;
   border: 1px solid var(--border);
   background: color-mix(in oklab, var(--bg), white 2%);
@@ -139,8 +157,8 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 24px;
-  bottom: 24px;
+  top: 18px;
+  bottom: 18px;
   width: 2px;
   background: var(--accent);
   border-radius: 999px;
@@ -155,7 +173,7 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 
 .featureEyebrow::before {
@@ -169,18 +187,19 @@
 .featureTitle {
   font-family: var(--heading);
   font-weight: 400;
-  font-size: clamp(19px, 1.8vw, 24px);
-  line-height: 1.2;
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.25;
   letter-spacing: -0.01em;
   color: var(--text-h);
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 
 .featureDescription {
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 13.5px;
+  line-height: 1.5;
   color: color-mix(in oklab, var(--text), transparent 22%);
-  margin: 0 0 14px;
+  margin: 0 0 10px;
+  text-wrap: pretty;
 }
 
 .featureMeta {
@@ -191,7 +210,7 @@
   font-size: 10.5px;
   letter-spacing: 0.06em;
   color: color-mix(in oklab, var(--text), transparent 35%);
-  margin: 0 0 14px;
+  margin: 0 0 10px;
 }
 
 .featureLink {

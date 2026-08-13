@@ -9,29 +9,50 @@ interface SkillGroup {
 const skillGroups: SkillGroup[] = [
   {
     label: 'Languages',
-    items: ['TypeScript', 'JavaScript', 'Python', 'Java', 'C++', 'SQL'],
+    items: [
+      'Python',
+      'C++',
+      'Java',
+      'JavaScript',
+      'TypeScript',
+      'Swift',
+      'SQL',
+      'HTML/CSS',
+    ],
   },
   {
-    label: 'Frontend',
-    items: ['React', 'Next.js', 'Vite', 'Framer Motion', 'CSS Modules', 'Tailwind'],
+    label: 'Frameworks / Technologies',
+    items: [
+      'React',
+      'FastAPI',
+      'Spring Boot',
+      'AWS',
+      'PostgreSQL',
+      'MongoDB',
+      'Git',
+      'Docker',
+      'Kubernetes',
+    ],
   },
   {
-    label: 'Backend',
-    items: ['Node.js', 'Express', 'FastAPI', 'PostgreSQL', 'Firebase', 'WebSockets'],
-  },
-  {
-    label: 'AI / Data',
-    items: ['OpenAI APIs', 'Computer Vision', 'pandas', 'NumPy', 'LangChain'],
-  },
-  {
-    label: 'Tooling',
-    items: ['Git', 'Docker', 'GitHub Actions', 'Vercel', 'Figma', 'Linux'],
+    // Grounded in the Workday usability audit, PVS client reviews /
+    // user flows, Tailor UX decisions, and Figma on the dashboard work.
+    label: 'Product / Design',
+    items: [
+      'UI/UX',
+      'User Research',
+      'Usability Testing',
+      'User Flows',
+      'Prototyping',
+      'Figma',
+      'Requirements Gathering',
+    ],
   },
 ]
 
 /**
- * Skills section — five grouped pill clusters that scan in a single
- * glance. Languages first because that's what recruiters search.
+ * Skills section. Languages and frameworks come from the resume;
+ * Product / Design reflects work already detailed elsewhere on the site.
  */
 export function Skills() {
   return (
@@ -42,8 +63,8 @@ export function Skills() {
           Tools I <span className={styles.titleAccent}>build</span> with.
         </h2>
         <p className={styles.lede}>
-          Languages, frameworks, and platforms I reach for most. Sorted by
-          category, not by years — what matters is what ships.
+          Languages, frameworks, and the product/design skills I use to
+          ship things people can actually use.
         </p>
       </header>
 

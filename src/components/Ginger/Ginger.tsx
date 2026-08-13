@@ -7,13 +7,14 @@ import {
   useReducedMotion,
   useSpring,
 } from 'framer-motion'
+import { Flower2 } from 'lucide-react'
 import happyPet from '../../assets/ginger/happypet.png'
 import wantPet from '../../assets/ginger/wantpet.png'
 import { GingerChat } from './GingerChat'
 import styles from './Ginger.module.css'
 
 /** How long Ginger stays satisfied before she starts angling for more. */
-const HAPPY_MS = 5_000
+const HAPPY_MS = 3_000
 /** How long a line lingers before it fades out. */
 const BUBBLE_MS = 4_000
 /**
@@ -40,15 +41,22 @@ const HAPPY_LINES = [
   'best human',
   'tail is wagging',
   '10/10 would be pet again',
+  'ok now ask me about julie',
 ]
 
+/**
+ * A mix of "pet me" and "talk to me" — the second kind is what gets
+ * anyone to discover the chat panel, so it carries most of the list.
+ */
 const WANT_LINES = [
   ':(',
+  "let's talk!",
   'more pets?',
+  'wanna chat? click me',
+  'ask me about julie',
+  'i know things about julie',
   'psst... down here',
-  'it has been 5 whole seconds',
   'ginger requires attention',
-  'one more pet? please?',
 ]
 
 type Mood = 'wants' | 'happy'
@@ -262,8 +270,15 @@ export function Ginger() {
         </span>
       </button>
 
-      <span className={styles.name}>Ginger</span>
-      {!chatOpen && <span className={styles.hint}>ask me anything</span>}
+      <button
+        type="button"
+        className={styles.askPill}
+        onClick={() => setChatOpen((open) => !open)}
+        aria-expanded={chatOpen}
+      >
+        <Flower2 className={styles.askIcon} size={11} strokeWidth={2} />
+        ask GingerGPT
+      </button>
 
       <AnimatePresence>
         {chatOpen && <GingerChat onClose={() => setChatOpen(false)} />}

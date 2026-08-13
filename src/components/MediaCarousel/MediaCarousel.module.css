@@ -10,7 +10,6 @@
    * hard max-height as well, so this aspect ratio is the visual
    * intent rather than a strict box. */
   aspect-ratio: 16 / 10;
-  border-radius: 14px;
   overflow: hidden;
   background: var(--carousel-grad, linear-gradient(135deg, #ff8aa8, #2f3e3d));
   box-shadow: var(--shadow);
