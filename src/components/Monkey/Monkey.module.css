@@ -1,0 +1,84 @@
+/*
+ * Positioned against `main`, so the percentage coordinates the component
+ * picks land somewhere down the length of the page rather than in the
+ * viewport. It sits above the sections but below the nav rail until it's
+ * picked up, at which point it needs to clear the rail to reach Ginger.
+ */
+.monkey {
+  position: absolute;
+  z-index: 40;
+  width: 56px;
+  padding: 0;
+  border: none;
+  background: none;
+  /* Required for pointer-driven dragging on touch devices. */
+  touch-action: none;
+  /* Faded back so it reads as something you spotted, not a feature. */
+  opacity: 0.72;
+  transition: opacity 0.25s ease;
+}
+
+.monkey:hover,
+.dragging {
+  opacity: 1;
+}
+
+.dragging {
+  z-index: 200;
+}
+
+.monkey:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 8px;
+  opacity: 1;
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: monkeyBob 4.5s ease-in-out infinite;
+  transition: filter 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.monkey:hover .photo {
+  filter: drop-shadow(0 3px 10px rgb(0 0 0 / 0.35));
+}
+
+.dragging .photo {
+  animation-play-state: paused;
+  filter: drop-shadow(0 8px 18px rgb(0 0 0 / 0.45));
+}
+
+/* Confirms the drop will land before the pointer is released. */
+.over .photo {
+  filter: drop-shadow(0 0 14px var(--accent));
+}
+
+@keyframes monkeyBob {
+  0%,
+  100% {
+    transform: rotate(-7deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-3deg) translateY(-5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo {
+    animation: none;
+    transform: rotate(-7deg);
+  }
+}
+
+/* Ginger is hidden once the rail collapses, so there's nowhere to take
+ * the toy. */
+@media (max-width: 1024px) {
+  .monkey {
+    display: none;
+  }
+}

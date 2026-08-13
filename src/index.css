@@ -100,6 +100,8 @@ body {
 
 main {
   flex: 1;
+  /* Anchors Ginger's monkey, which hides at a percentage down the page. */
+  position: relative;
 }
 
 /* Resets for the elements we use site-wide. */

@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react'
 import { CustomCursor } from './components/CustomCursor/CustomCursor'
 import { Navbar } from './components/Navbar/Navbar'
 import { Hero } from './components/Hero/Hero'
@@ -7,8 +8,17 @@ import { Experience } from './components/Experience/Experience'
 import { Skills } from './components/Skills/Skills'
 import { CreativeGallery } from './components/CreativeGallery/CreativeGallery'
 import { Footer } from './components/Footer/Footer'
+import { Monkey } from './components/Monkey/Monkey'
+import { MonkeyContext } from './components/Monkey/monkeyContext'
 
 function App() {
+  // Deliberately not persisted: a reload should take the toy back off her.
+  const [hasMonkey, setHasMonkey] = useState(false)
+  const monkey = useMemo(
+    () => ({ hasMonkey, deliverMonkey: () => setHasMonkey(true) }),
+    [hasMonkey],
+  )
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id)
     if (!el) return
@@ -16,7 +26,7 @@ function App() {
   }
 
   return (
-    <>
+    <MonkeyContext.Provider value={monkey}>
       <CustomCursor />
       <Navbar />
       <main>
@@ -26,9 +36,10 @@ function App() {
         <Experience />
         <Skills />
         <CreativeGallery />
+        <Monkey />
       </main>
       <Footer />
-    </>
+    </MonkeyContext.Provider>
   )
 }
 

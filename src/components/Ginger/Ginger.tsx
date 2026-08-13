@@ -10,6 +10,8 @@ import {
 import { Flower2 } from 'lucide-react'
 import happyPet from '../../assets/ginger/happypet.png'
 import wantPet from '../../assets/ginger/wantpet.png'
+import gingerWithMonkey from '../../assets/ginger/gingerwithmonkey.png'
+import { useMonkey } from '../Monkey/monkeyContext'
 import { GingerChat } from './GingerChat'
 import styles from './Ginger.module.css'
 
@@ -23,6 +25,8 @@ const BUBBLE_MS = 4_000
  */
 const QUIET_MIN_MS = 5_000
 const QUIET_MAX_MS = 11_000
+/** The monkey arriving is worth reacting to almost immediately. */
+const MONKEY_REACT_MS = 300
 
 /** Horizontal pointer travel that counts as deliberate movement, not jitter. */
 const STROKE_MIN_PX = 6
@@ -59,6 +63,17 @@ const WANT_LINES = [
   'ginger requires attention',
 ]
 
+/** Once she has the toy, this is the only thing she wants to discuss. */
+const MONKEY_LINES = [
+  'MONKEY!!!',
+  'this is my monkey now',
+  'best day of my life',
+  'i am never letting go',
+  'thank you thank you thank you',
+  'monkey and i are a package deal',
+  'you may still ask me about julie',
+]
+
 type Mood = 'wants' | 'happy'
 
 interface Bubble {
@@ -71,10 +86,12 @@ interface Bubble {
  * Ginger, at the foot of the nav rail. She starts out wanting attention;
  * clicking squishes her and makes her happy for a while, after which she
  * asks for more. Stroking side to side across her counts as petting too.
- * Both photos stay mounted and crossfade, so the swap never waits on an
- * image load.
+ * Hand her the monkey hidden down the page and she's happy for good.
+ * All three photos stay mounted and crossfade, so a swap never waits on
+ * an image load.
  */
 export function Ginger() {
+  const { hasMonkey } = useMonkey()
   const [mood, setMood] = useState<Mood>('wants')
   const [pets, setPets] = useState(0)
   const [bubble, setBubble] = useState<Bubble | null>(null)
@@ -115,8 +132,8 @@ export function Ginger() {
     setMood('happy')
     // Re-petting an already-happy Ginger restarts her contentment timer.
     setPets((count) => count + 1)
-    say(HAPPY_LINES)
-  }, [say])
+    say(hasMonkey ? MONKEY_LINES : HAPPY_LINES)
+  }, [say, hasMonkey])
 
   const handleClick = () => {
     setChatOpen((open) => !open)
@@ -183,33 +200,62 @@ export function Ginger() {
   useEffect(() => () => window.clearTimeout(stillTimer.current), [])
 
   useEffect(() => {
-    if (mood !== 'happy') return
+    // The monkey is permanent — she never goes back to wanting once she
+    // has it.
+    if (hasMonkey || mood !== 'happy') return
     const timer = window.setTimeout(() => {
       setMood('wants')
       say(WANT_LINES)
     }, HAPPY_MS)
     return () => window.clearTimeout(timer)
-  }, [mood, pets, say])
+  }, [mood, pets, say, hasMonkey])
 
   /*
-   * While she's waiting she keeps piping up: a line shows, fades on the
-   * timer below, then she's quiet for a random beat before trying a
-   * different one. Runs until she's petted.
+   * Which set she cycles through between pets, or null while she's
+   * content and has nothing to angle for. Both sets are module
+   * constants, so this is referentially stable and the loop below only
+   * restarts when she genuinely changes gear.
+   */
+  const idleLines = hasMonkey
+    ? MONKEY_LINES
+    : mood === 'wants'
+      ? WANT_LINES
+      : null
+
+  /*
+   * A line shows, fades on the timer below, then she's quiet for a
+   * random beat before trying a different one.
    */
   useEffect(() => {
-    if (mood !== 'wants') return
+    if (!idleLines) return
     let timer = 0
-    const scheduleNext = () => {
-      const quiet =
-        QUIET_MIN_MS + Math.random() * (QUIET_MAX_MS - QUIET_MIN_MS)
+    const quiet = () =>
+      QUIET_MIN_MS + Math.random() * (QUIET_MAX_MS - QUIET_MIN_MS)
+    const scheduleNext = (delay: number) => {
       timer = window.setTimeout(() => {
-        say(WANT_LINES)
-        scheduleNext()
-      }, BUBBLE_MS + quiet)
+        say(idleLines)
+        scheduleNext(BUBBLE_MS + quiet())
+      }, delay)
     }
-    scheduleNext()
+    scheduleNext(
+      idleLines === MONKEY_LINES ? MONKEY_REACT_MS : BUBBLE_MS + quiet(),
+    )
     return () => window.clearTimeout(timer)
-  }, [mood, say])
+  }, [idleLines, say])
+
+  /* A whole-body wiggle the moment the toy lands. */
+  useEffect(() => {
+    if (!hasMonkey || reduceMotion) return
+    squish.start({
+      scaleX: [1, 1.2, 0.94, 1.06, 1],
+      scaleY: [1, 0.86, 1.08, 0.97, 1],
+      transition: {
+        duration: 0.9,
+        times: [0, 0.22, 0.45, 0.7, 1],
+        ease: 'easeOut',
+      },
+    })
+  }, [hasMonkey, reduceMotion, squish])
 
   useEffect(() => {
     if (!bubble) return
@@ -217,10 +263,15 @@ export function Ginger() {
     return () => window.clearTimeout(timer)
   }, [bubble])
 
-  const isHappy = mood === 'happy'
+  const isHappy = hasMonkey || mood === 'happy'
+  const pose = hasMonkey ? 'monkey' : isHappy ? 'happy' : 'wants'
 
   return (
-    <div className={`${styles.ginger} ${isHappy ? '' : styles.wants}`}>
+    <div
+      className={`${styles.ginger} ${isHappy ? '' : styles.wants} ${
+        hasMonkey ? styles.thrilled : ''
+      }`}
+    >
       <AnimatePresence mode="wait">
         {bubble && (
           <motion.p
@@ -247,6 +298,8 @@ export function Ginger() {
         aria-label={
           chatOpen ? 'Close Ginger’s chat' : 'Pet Ginger and ask her about Julie'
         }
+        /* The hit area the monkey checks itself against on drop. */
+        data-ginger-drop=""
       >
         <span className={styles.frame}>
           <motion.span
@@ -255,14 +308,20 @@ export function Ginger() {
             animate={squish}
           >
             <img
-              className={`${styles.photo} ${isHappy ? '' : styles.shown}`}
+              className={`${styles.photo} ${pose === 'wants' ? styles.shown : ''}`}
               src={wantPet}
               alt=""
               draggable={false}
             />
             <img
-              className={`${styles.photo} ${isHappy ? styles.shown : ''}`}
+              className={`${styles.photo} ${pose === 'happy' ? styles.shown : ''}`}
               src={happyPet}
+              alt=""
+              draggable={false}
+            />
+            <img
+              className={`${styles.photo} ${pose === 'monkey' ? styles.shown : ''}`}
+              src={gingerWithMonkey}
               alt=""
               draggable={false}
             />
