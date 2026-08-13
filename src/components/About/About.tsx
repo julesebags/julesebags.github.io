@@ -14,10 +14,10 @@ import { getAboutPortrait } from '../../lib/assetLoader'
 const portraitImg = getAboutPortrait()
 
 /**
- * Featured research PDF, served from `public/` so the share URL stays
- * stable across builds.
+ * Featured research PDF, hosted on Google Drive.
  */
-const REPORT_URL = '/washu-workday-usability-report.pdf'
+const REPORT_URL =
+  'https://drive.google.com/file/d/1apKzC-JMYunYYcZB5YaZp0U2hE9EQkFq/view?usp=sharing'
 
 export function About() {
   const photoStyle = portraitImg
@@ -73,12 +73,8 @@ export function About() {
               <span className={styles.bodyStrong}>usable</span>. That means
               clear interfaces and fast feedback for the people on the other
               side of the screen — and systems that fellow developers can
-              actually understand, extend, and ship against. It’s the same
-              lens I brought to my{' '}
-              <a className={styles.inlineLink} href={REPORT_URL} target="_blank" rel="noopener noreferrer">
-                WashU Workday usability report
-              </a>
-              : if it doesn’t feel right to use, it doesn’t fully work.
+              actually understand, extend, and ship against. If it doesn’t feel
+              right to use, it doesn’t fully work.
             </p>
           </div>
 
@@ -88,18 +84,9 @@ export function About() {
               Auditing the usability of WashU Workday.
             </h3>
             <p className={styles.featureDescription}>
-              Authored a research report for the{' '}
-              <span className={styles.bodyStrong}>
-                Provost and Vice Provost
-              </span>{' '}
-              of Washington University on the usability of WashU Workday — the
-              university’s student information system — backed by user
-              research and concrete redesign recommendations.
-            </p>
-            <p className={styles.featureMeta}>
-              <span>WashU Provost’s Office</span>
-              <span>·</span>
-              <span>Independent research</span>
+              A usability audit of WashU Workday for the Provost’s Office —
+              user research and redesign recommendations for the university’s
+              student information system.
             </p>
             <a
               className={styles.featureLink}
