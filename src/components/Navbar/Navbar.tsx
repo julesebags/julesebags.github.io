@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import logo from '../../assets/logo-nav.png'
+import { GITHUB, LINKEDIN } from '../../data/socials'
+import { Ginger } from '../Ginger/Ginger'
+import { GithubIcon, LinkedinIcon } from '../icons/BrandIcons'
 import styles from './Navbar.module.css'
 
 interface NavLink {
@@ -19,9 +21,10 @@ const links: NavLink[] = [
 ]
 
 /**
- * Floating top navbar. Stays transparent at the top of the page; once the
- * user scrolls past 24px, it gains a blurred translucent background so
- * content behind it stays legible.
+ * Fixed nav rail down the left edge, with Ginger anchored at the foot of
+ * it. On narrow viewports it collapses to a horizontal top bar, and only
+ * then does the `scrolled` state matter — that layout is the one where
+ * content passes underneath and needs a blurred backdrop for legibility.
  */
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -41,17 +44,39 @@ export function Navbar() {
 
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
-      <a
-        href="#hero"
-        className={styles.brand}
-        aria-label="Julie Baguio — back to top"
-        onClick={(e) => {
-          e.preventDefault()
-          scrollTo('hero')
-        }}
-      >
-        <img src={logo} alt="Julie Baguio" className={styles.brandLogo} />
-      </a>
+      <div className={styles.brandBlock}>
+        <a
+          href="#hero"
+          className={styles.brand}
+          aria-label="Julie Baguio — back to top"
+          onClick={(e) => {
+            e.preventDefault()
+            scrollTo('hero')
+          }}
+        >
+          Julie Baguio
+        </a>
+        <div className={styles.socials}>
+          <a
+            className={styles.social}
+            href={LINKEDIN}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn (opens in new tab)"
+          >
+            <LinkedinIcon size={17} />
+          </a>
+          <a
+            className={styles.social}
+            href={GITHUB}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub (opens in new tab)"
+          >
+            <GithubIcon size={17} />
+          </a>
+        </div>
+      </div>
       <div className={styles.links}>
         {links.map((link) => (
           <button
@@ -64,6 +89,7 @@ export function Navbar() {
           </button>
         ))}
       </div>
+      <Ginger />
     </nav>
   )
 }

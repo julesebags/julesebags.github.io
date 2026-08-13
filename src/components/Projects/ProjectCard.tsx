@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { ArrowUpRight } from 'lucide-react'
 import type { Project } from '../../data/projects'
 import styles from './Projects.module.css'
 
@@ -14,21 +13,14 @@ function isGradient(image: string): boolean {
 }
 
 /**
- * Minimal product tile. Default state shows: representative image, name,
- * pitch, and a single key highlight (or, fallback, a row of tag pills).
- * The whole card is a button — clicking opens the focused modal.
+ * Image-forward product tile: just the hero image, the name, and the
+ * pitch. Everything else — highlights, tags, tech, links — lives in the
+ * modal, which the whole card opens.
  */
 export function ProjectCard({ project, index, onOpen }: ProjectCardProps) {
-  const { name, pitch, highlight, tags, tech, images } = project
+  const { name, pitch, highlight, images } = project
   const hero = images[0] ?? ''
   const heroIsGradient = isGradient(hero)
-  // Pills are only used when no `highlight` is provided. Prefer
-  // semantic tags, fall back to tech names so legacy projects still
-  // render something useful.
-  const cardPills =
-    tags && tags.length > 0
-      ? tags
-      : tech.map((t) => (typeof t === 'string' ? t : t.name))
 
   return (
     <motion.button
@@ -56,25 +48,12 @@ export function ProjectCard({ project, index, onOpen }: ProjectCardProps) {
             loading="lazy"
           />
         )}
-        <span className={styles.viewHint}>
-          View <ArrowUpRight size={12} strokeWidth={2} />
-        </span>
       </div>
 
       <div className={styles.body}>
         <h3 className={styles.name}>{name}</h3>
         <p className={styles.pitch}>{pitch}</p>
-        {highlight ? (
-          <span className={styles.highlight}>{highlight}</span>
-        ) : (
-          <div className={styles.tags}>
-            {cardPills.map((label) => (
-              <span key={label} className={styles.tag}>
-                {label}
-              </span>
-            ))}
-          </div>
-        )}
+        {highlight && <span className={styles.highlight}>{highlight}</span>}
       </div>
     </motion.button>
   )

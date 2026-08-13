@@ -4,6 +4,7 @@ import {
   experiences,
   type ExperienceCategory,
 } from '../../data/experience'
+import { SectionLabel } from '../SectionLabel/SectionLabel'
 import { FilterTabs } from './FilterTabs'
 import { ExperienceCard } from './ExperienceCard'
 import styles from './Experience.module.css'
@@ -18,12 +19,7 @@ export function Experience() {
 
   return (
     <section id="experience" className={styles.section}>
-      <header className={styles.header}>
-        <p className={styles.eyebrow}>Experience</p>
-        <h2 className={styles.title}>
-          A few <span className={styles.titleAccent}>chapters</span>.
-        </h2>
-      </header>
+      <SectionLabel index="002" label="Experience" />
 
       <LayoutGroup>
         <FilterTabs active={active} onChange={setActive} />

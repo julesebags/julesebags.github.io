@@ -18,6 +18,10 @@
     rgba(0, 0, 0, 0.4) 0 10px 25px -5px,
     rgba(0, 0, 0, 0.25) 0 6px 12px -4px;
 
+  /* Width of the fixed left nav rail. `#root` reserves exactly this
+   * much space so no page content ever sits underneath it. */
+  --nav-width: clamp(180px, 15vw, 240px);
+
   --sans: 'Urbanist Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: 'Urbanist Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
@@ -32,6 +36,15 @@
 
   @media (min-width: 1280px) {
     font-size: 17px;
+  }
+}
+
+/* Below this the rail is too costly in horizontal space, so the nav
+ * collapses back to a horizontal bar across the top and content
+ * reclaims the full width. */
+@media (max-width: 1024px) {
+  :root {
+    --nav-width: 0px;
   }
 }
 
@@ -82,6 +95,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-left: var(--nav-width);
 }
 
 main {

@@ -49,14 +49,26 @@
   margin: 0;
   font: inherit;
   font-family: var(--mono);
-  /* Longest visible line in `fullname.txt` is ~299 characters wide.
-   * At roughly 0.6× character-to-em ratio for monospace, an 8px cap
-   * keeps the rendered art inside ~1435px on desktop and scales
-   * linearly down on narrower viewports. The h1 below clips any
-   * overflow so very narrow phones never push the page horizontally. */
-  font-size: clamp(4px, 0.6vw, 8px);
+  /* Longest line in `fullname.txt` is 299 characters, and monospace
+   * advance width is ~0.6em, so the art renders 179.4× the font size.
+   * Sizing off 1/179.4 (0.00557) of the space actually available —
+   * viewport minus the left nav rail minus this section's own padding
+   * — keeps the widest line just inside its container at any width.
+   * The h1 above clips any overflow so very narrow phones never push
+   * the page horizontally. */
+  font-size: clamp(4px, calc((100vw - var(--nav-width) - 48px) * 0.00557), 8px);
   line-height: 1.05;
   white-space: pre;
+  /* At this glyph size the art reads as thin hairlines, so it gets the
+   * heaviest weight available. `font-synthesis` is off globally, which
+   * would leave fallback monos (Consolas) un-thickened, so weight
+   * synthesis is re-enabled here, and the root's `antialiased` smoothing
+   * is dropped because it shaves weight off small glyphs on macOS. */
+  font-weight: 900;
+  font-synthesis: weight;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  -webkit-text-stroke: 0.12px currentColor;
   /* Force lines to align to the left edge of the <pre> block —
    * otherwise the inherited `text-align: center` from `.hero`
    * centers EACH line individually, which destroys the silhouette
