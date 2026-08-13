@@ -1,10 +1,7 @@
 import { Mail } from 'lucide-react'
+import { EMAIL, GITHUB, LINKEDIN } from '../../data/socials'
 import { GithubIcon, LinkedinIcon } from '../icons/BrandIcons'
 import styles from './Footer.module.css'
-
-const EMAIL = 'julie.baguio@example.com' // replace with real email
-const LINKEDIN = 'https://www.linkedin.com/in/julie-baguio/'
-const GITHUB = 'https://github.com/julesebags'
 
 export function Footer() {
   return (

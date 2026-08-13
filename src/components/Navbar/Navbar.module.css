@@ -1,37 +1,47 @@
+/*
+ * Fixed rail down the left edge. `#root` reserves `--nav-width` of
+ * padding, so content sits beside the rail rather than under it —
+ * which is why the rail needs no backdrop of its own here.
+ */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  bottom: 0;
+  width: var(--nav-width);
   z-index: 100;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px clamp(20px, 4vw, 48px);
+  flex-direction: column;
+  padding: 32px clamp(18px, 1.8vw, 28px);
   font-size: 14px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  border-right: 1px solid var(--border);
   transition:
     background 0.25s ease,
     backdrop-filter 0.25s ease,
     border-color 0.25s ease;
-  border-bottom: 1px solid transparent;
 }
 
-.scrolled {
-  background: color-mix(in oklab, var(--bg), transparent 25%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom-color: var(--border);
+.brandBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
+/* The wordmark opts out of the rail's uppercase nav treatment — it's a
+ * name, not a nav item. */
 .brand {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   color: var(--text-h);
   text-decoration: none;
-  /* Soft scale so the logo gets a tiny "lift" on hover without
-   * disturbing the surrounding navbar layout. */
+  font-family: var(--heading);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-transform: none;
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
@@ -46,24 +56,38 @@
   border-radius: 6px;
 }
 
-.brandLogo {
-  display: block;
-  height: 36px;
-  width: auto;
-  /* Keep the PNG sharp on retina displays. */
-  image-rendering: -webkit-optimize-contrast;
-}
-
-@media (max-width: 640px) {
-  .brandLogo {
-    height: 30px;
-  }
-}
-
-.links {
+.socials {
   display: flex;
-  gap: clamp(16px, 2.5vw, 32px);
   align-items: center;
+  gap: 12px;
+}
+
+.social {
+  display: inline-flex;
+  color: color-mix(in oklab, var(--text), transparent 30%);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.social:hover {
+  color: var(--text-h);
+  transform: translateY(-1px);
+}
+
+.social:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Takes the leftover height so the link stack rides the vertical
+ * center of the rail while the logo stays pinned to the top. */
+.links {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
 }
 
 .link {
@@ -77,6 +101,7 @@
   font: inherit;
   letter-spacing: inherit;
   text-transform: inherit;
+  text-align: left;
   transition: color 0.2s ease;
 
   &:hover {
@@ -90,7 +115,56 @@
   }
 }
 
+/*
+ * Narrow viewports: fall back to the original horizontal top bar.
+ * Content flows underneath it again in this layout, so the scrolled
+ * backdrop is re-enabled to keep the links legible.
+ */
+@media (max-width: 1024px) {
+  .navbar {
+    right: 0;
+    bottom: auto;
+    width: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px clamp(20px, 4vw, 48px);
+    border-right: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  /* Name and icons sit side by side so the bar stays a single row tall. */
+  .brandBlock {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .links {
+    flex: 0 1 auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(16px, 2.5vw, 32px);
+  }
+
+  .scrolled {
+    background: color-mix(in oklab, var(--bg), transparent 25%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+}
+
 @media (max-width: 640px) {
+  .brand {
+    font-size: 17px;
+  }
+
+  .socials {
+    gap: 10px;
+  }
+
   .links {
     gap: 14px;
   }
