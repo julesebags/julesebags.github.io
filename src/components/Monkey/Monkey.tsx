@@ -79,8 +79,8 @@ function isOverGinger(event: MouseEvent | TouchEvent | PointerEvent) {
  * else and she's back to having nothing.
  */
 export function Monkey() {
-  const { hasMonkey, deliverMonkey } = useMonkey()
-  const [dragging, setDragging] = useState(false)
+  // Dragging lives in shared state because Ginger reacts to it too.
+  const { hasMonkey, deliverMonkey, dragging, setDragging } = useMonkey()
   const [over, setOver] = useState(false)
 
   if (hasMonkey) return null

@@ -25,8 +25,10 @@ const BUBBLE_MS = 4_000
  */
 const QUIET_MIN_MS = 5_000
 const QUIET_MAX_MS = 11_000
-/** The monkey arriving is worth reacting to almost immediately. */
+/** Anything monkey-related is worth reacting to almost immediately. */
 const MONKEY_REACT_MS = 300
+/** Her cadence while the toy is being carried towards her. */
+const CHASE_GAP_MS = 1_500
 
 /** Horizontal pointer travel that counts as deliberate movement, not jitter. */
 const STROKE_MIN_PX = 6
@@ -61,6 +63,22 @@ const WANT_LINES = [
   'i know things about julie',
   'psst... down here',
   'ginger requires attention',
+  'have you seen my monkey?',
+  'i misplaced my monkey somewhere :(',
+]
+
+/**
+ * While the toy is in hand but not hers yet. She loses composure, so
+ * these come thick and fast rather than on the idle schedule.
+ */
+const CHASE_LINES = [
+  'MY MONKEY!!',
+  'is that my monkey???',
+  'bring it here bring it here',
+  'yes yes yes yes yes',
+  'closer... closer...',
+  'i see it. i see the monkey.',
+  'that is MINE',
 ]
 
 /** Once she has the toy, this is the only thing she wants to discuss. */
@@ -69,7 +87,7 @@ const MONKEY_LINES = [
   'this is my monkey now',
   'best day of my life',
   'i am never letting go',
-  'thank you thank you thank you',
+  'thank u jun for the monkey!',
   'monkey and i are a package deal',
   'you may still ask me about julie',
 ]
@@ -91,7 +109,7 @@ interface Bubble {
  * an image load.
  */
 export function Ginger() {
-  const { hasMonkey } = useMonkey()
+  const { hasMonkey, dragging } = useMonkey()
   const [mood, setMood] = useState<Mood>('wants')
   const [pets, setPets] = useState(0)
   const [bubble, setBubble] = useState<Bubble | null>(null)
@@ -211,35 +229,39 @@ export function Ginger() {
   }, [mood, pets, say, hasMonkey])
 
   /*
-   * Which set she cycles through between pets, or null while she's
-   * content and has nothing to angle for. Both sets are module
-   * constants, so this is referentially stable and the loop below only
-   * restarts when she genuinely changes gear.
+   * Which set she cycles through, or null while she's content and has
+   * nothing to angle for. Seeing the toy in hand overrides her mood
+   * entirely. Every set is a module constant, so this is referentially
+   * stable and the loop below only restarts when she changes gear.
    */
   const idleLines = hasMonkey
     ? MONKEY_LINES
-    : mood === 'wants'
-      ? WANT_LINES
-      : null
+    : dragging
+      ? CHASE_LINES
+      : mood === 'wants'
+        ? WANT_LINES
+        : null
 
   /*
-   * A line shows, fades on the timer below, then she's quiet for a
-   * random beat before trying a different one.
+   * A line shows, fades on the timer below, then she's quiet for a beat
+   * before trying a different one. The gap is random while she's just
+   * loitering, and much shorter when there's a monkey at stake.
    */
   useEffect(() => {
     if (!idleLines) return
     let timer = 0
-    const quiet = () =>
-      QUIET_MIN_MS + Math.random() * (QUIET_MAX_MS - QUIET_MIN_MS)
+    const gap = () => {
+      if (idleLines === CHASE_LINES) return CHASE_GAP_MS
+      const quiet = QUIET_MIN_MS + Math.random() * (QUIET_MAX_MS - QUIET_MIN_MS)
+      return BUBBLE_MS + quiet
+    }
     const scheduleNext = (delay: number) => {
       timer = window.setTimeout(() => {
         say(idleLines)
-        scheduleNext(BUBBLE_MS + quiet())
+        scheduleNext(gap())
       }, delay)
     }
-    scheduleNext(
-      idleLines === MONKEY_LINES ? MONKEY_REACT_MS : BUBBLE_MS + quiet(),
-    )
+    scheduleNext(idleLines === WANT_LINES ? gap() : MONKEY_REACT_MS)
     return () => window.clearTimeout(timer)
   }, [idleLines, say])
 
@@ -263,13 +285,15 @@ export function Ginger() {
     return () => window.clearTimeout(timer)
   }, [bubble])
 
-  const isHappy = hasMonkey || mood === 'happy'
+  // Spotting the toy perks her up the same way being petted does.
+  const excited = hasMonkey || dragging
+  const isHappy = excited || mood === 'happy'
   const pose = hasMonkey ? 'monkey' : isHappy ? 'happy' : 'wants'
 
   return (
     <div
       className={`${styles.ginger} ${isHappy ? '' : styles.wants} ${
-        hasMonkey ? styles.thrilled : ''
+        excited ? styles.thrilled : ''
       }`}
     >
       <AnimatePresence mode="wait">

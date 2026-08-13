@@ -14,9 +14,15 @@ import { MonkeyContext } from './components/Monkey/monkeyContext'
 function App() {
   // Deliberately not persisted: a reload should take the toy back off her.
   const [hasMonkey, setHasMonkey] = useState(false)
+  const [dragging, setDragging] = useState(false)
   const monkey = useMemo(
-    () => ({ hasMonkey, deliverMonkey: () => setHasMonkey(true) }),
-    [hasMonkey],
+    () => ({
+      hasMonkey,
+      deliverMonkey: () => setHasMonkey(true),
+      dragging,
+      setDragging,
+    }),
+    [hasMonkey, dragging],
   )
 
   const scrollTo = (id: string) => {

@@ -4,6 +4,9 @@ export interface MonkeyState {
   /** True once the toy has been dropped on Ginger. Never persisted. */
   hasMonkey: boolean
   deliverMonkey: () => void
+  /** True while the toy is in hand, which is Ginger's cue to lose it. */
+  dragging: boolean
+  setDragging: (dragging: boolean) => void
 }
 
 /**
@@ -13,6 +16,8 @@ export interface MonkeyState {
 export const MonkeyContext = createContext<MonkeyState>({
   hasMonkey: false,
   deliverMonkey: () => {},
+  dragging: false,
+  setDragging: () => {},
 })
 
 export function useMonkey() {
