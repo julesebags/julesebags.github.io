@@ -10,6 +10,7 @@ import { CreativeGallery } from './components/CreativeGallery/CreativeGallery'
 import { Footer } from './components/Footer/Footer'
 import { Monkey } from './components/Monkey/Monkey'
 import { MonkeyContext } from './components/Monkey/monkeyContext'
+import { MobileNotice } from './components/MobileNotice/MobileNotice'
 
 function App() {
   // Deliberately not persisted: a reload should take the toy back off her.
@@ -34,6 +35,7 @@ function App() {
   return (
     <MonkeyContext.Provider value={monkey}>
       <CustomCursor />
+      <MobileNotice />
       <Navbar />
       <main>
         <Hero onScrollTo={scrollTo} />
