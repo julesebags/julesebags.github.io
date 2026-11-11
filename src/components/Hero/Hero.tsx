@@ -23,7 +23,7 @@ const TERMINAL_CHARSET = '/\\{}<>*#$%&|~=+;:[]()'
 
 /** Definition-style line that follows the name. */
 const TAGLINE =
-  'is a product-centered software engineer drawn to futuristic, consumer-facing tech.'
+  'is a full-stack engineer building software that’s as usable as it is useful.'
 
 interface Role {
   verb: string

@@ -15,7 +15,7 @@
    * Sizing off 1/179.4 (0.00557) of the space actually available
    * (viewport minus the left nav rail minus this section's padding)
    * keeps the widest line just inside its container at any width. */
-  --ascii-fs: clamp(4px, calc((100vw - var(--nav-width) - 48px) * 0.00557), 8px);
+  --ascii-fs: clamp(3px, calc((100vw - var(--nav-width) - 48px) * 0.00557), 5px);
 }
 
 .greeting {
@@ -84,16 +84,15 @@
 }
 
 /*
- * Tagline is name-sized: it scales off --ascii-fs so its letters line
- * up with the ASCII name's (~17x the art's font size), and it's capped
- * at the name's own width (179.4x) so the two read as one block.
+ * Tagline scales off --ascii-fs so it keeps its proportion to the name
+ * at every width, and is capped at the name's own width (179.4x) so
+ * the two read as one block.
  */
 .tagline {
-  margin: 40px auto 0;
+  margin: 28px auto 0;
   max-width: calc(var(--ascii-fs) * 179.4);
-  /* On phones --ascii-fs bottoms out at 4px, which would still give a
-   * 68px tagline filling a whole screen, so 11vw caps it there. */
-  font-size: min(calc(var(--ascii-fs) * 17), 11vw);
+  /* 8vw keeps it from filling the screen on phones. */
+  font-size: min(calc(var(--ascii-fs) * 9), 8vw);
   font-weight: 300;
   line-height: 1.15;
   letter-spacing: -0.02em;
