@@ -84,15 +84,16 @@
 }
 
 /*
- * Tagline scales with the ASCII name via --ascii-fs, so the two keep
- * the same proportions at every screen width. Its letters lining up
- * exactly with the name's would need ~17x, which wraps to four lines
- * and pushes the columns below the fold, so it's scaled down to 6x.
+ * Tagline is name-sized: it scales off --ascii-fs so its letters line
+ * up with the ASCII name's (~17x the art's font size), and it's capped
+ * at the name's own width (179.4x) so the two read as one block.
  */
 .tagline {
   margin: 40px auto 0;
-  max-width: min(1100px, 92vw);
-  font-size: calc(var(--ascii-fs) * 6);
+  max-width: calc(var(--ascii-fs) * 179.4);
+  /* On phones --ascii-fs bottoms out at 4px, which would still give a
+   * 68px tagline filling a whole screen, so 11vw caps it there. */
+  font-size: min(calc(var(--ascii-fs) * 17), 11vw);
   font-weight: 300;
   line-height: 1.15;
   letter-spacing: -0.02em;
