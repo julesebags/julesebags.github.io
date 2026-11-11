@@ -21,13 +21,38 @@ interface HeroProps {
  */
 const TERMINAL_CHARSET = '/\\{}<>*#$%&|~=+;:[]()'
 
-/** One line per thing she's doing / has done, rendered as "role @ org". */
-const highlights = [
-  { role: 'Studying AI/ML', org: 'HKUST' },
-  { role: 'Engineered', org: 'Mastercard' },
-  { role: 'Engineering', org: 'WashU' },
-  { role: 'Head CS Teaching Assistant', org: 'WashU' },
+/** Definition-style line that follows the name. */
+const TAGLINE =
+  'is a product-centered software engineer drawn to futuristic, consumer-facing tech.'
+
+interface Role {
+  verb: string
+  org: string
+}
+
+/** Two columns under the tagline: what she's doing now vs. before. */
+const CURRENTLY: Role[] = [{ verb: 'Studying AI/ML', org: 'HKUST' }]
+const PREVIOUSLY: Role[] = [
+  { verb: 'Engineered', org: 'Mastercard' },
+  { verb: 'Engineered', org: 'WashU' },
+  { verb: 'Taught CS', org: 'WashU' },
 ]
+
+function RoleColumn({ label, roles }: { label: string; roles: Role[] }) {
+  return (
+    <div className={styles.column}>
+      <p className={styles.columnLabel}>{label}</p>
+      <ul className={styles.roles}>
+        {roles.map(({ verb, org }) => (
+          <li key={`${verb}-${org}`}>
+            {verb} <span className={styles.at}>@</span>{' '}
+            <span className={styles.org}>{org}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 
 /**
  * Hero / identity anchor. The ASCII name is the centerpiece — slightly
@@ -49,19 +74,25 @@ export function Hero(_props: HeroProps) {
         <pre aria-hidden="true">{animatedFullName}</pre>
       </h1>
 
-      <ul className={styles.highlights}>
-        {highlights.map(({ role, org }, i) => (
-          <motion.li
-            key={`${role}-${org}`}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.4 + i * 0.12 }}
-          >
-            {role} <span className={styles.at}>@</span>{' '}
-            <span className={styles.org}>{org}</span>
-          </motion.li>
-        ))}
-      </ul>
+      <motion.p
+        className={styles.tagline}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 1.3 }}
+      >
+        {TAGLINE}
+      </motion.p>
+
+      <motion.div
+        className={styles.columns}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 1.6 }}
+      >
+        <RoleColumn label="Currently" roles={CURRENTLY} />
+        <div className={styles.divider} aria-hidden="true" />
+        <RoleColumn label="Previously" roles={PREVIOUSLY} />
+      </motion.div>
 
 
     </section>
