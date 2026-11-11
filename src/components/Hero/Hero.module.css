@@ -5,9 +5,13 @@
   /* Left-aligned: content hugs the left edge with generous padding. */
   align-items: flex-start;
   justify-content: center;
-  padding: 120px clamp(20px, 7vw, 120px) 80px;
+  /* Less padding on the right than the left: content is left-aligned,
+   * so the right side only needs a small margin. */
+  padding: 120px clamp(20px, 3vw, 48px) 80px clamp(20px, 7vw, 120px);
   text-align: left;
   position: relative;
+  /* Lets .statement size itself off this section's width (cqw). */
+  container-type: inline-size;
 }
 
 .greeting {
@@ -36,7 +40,12 @@
   /* No max-width: the line break after "engineer" sets the shape. */
   /* The tagline's size drives everything; the ASCII name sizes itself
    * to match it (see .asciiName). */
-  --tagline-size: clamp(30px, 4.2vw, 56px);
+  /* As big as possible (up to 64px) while the second line, "who builds
+   * seamless digital experiences.", still fits on one line. That line
+   * is 15.6-16.1x the font size wide (Playfair's optical sizing makes
+   * it a bit wider at smaller sizes), so 100cqw / 16.3 always fits.
+   * Below 30px (phones) it stops shrinking and wraps instead. */
+  --tagline-size: clamp(30px, calc(100cqw / 16.3), 64px);
   /* Height of the tagline font's tallest letter ("l" in Playfair) as a
    * fraction of its font size. The ASCII name is matched to this, since
    * its top row is the tallest letter in the art too. Update it if the
@@ -79,7 +88,7 @@
    * switched off globally), and trace each glyph with a stroke that
    * scales with the art so the name is as dark as the tagline. */
   font-weight: 900;
-  -webkit-text-stroke: calc(var(--ascii-fs) * 0.2) currentColor;
+  -webkit-text-stroke: calc(var(--ascii-fs) * 0.15) currentColor;
   font-synthesis: weight;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
