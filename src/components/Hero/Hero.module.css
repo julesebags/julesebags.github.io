@@ -51,8 +51,14 @@
   /* Make the name's capitals as tall as the tagline's. Plus Jakarta
    * Sans capitals are 0.66 of its font size; the art's capitals are
    * --cap-rows rows of 1.05 line-height each (worked out from the
-   * ASCII file in Hero.tsx), so solve for the art's font size. */
-  --ascii-fs: calc(var(--tagline-size) * 0.66 / (var(--cap-rows) * 1.05));
+   * ASCII file in Hero.tsx), so solve for the art's font size.
+   * --name-scale nudges it up because the characters in the top and
+   * bottom rows don't fill their whole row, so the visible letters come
+   * out a bit shorter than the row count suggests. */
+  --name-scale: 1.15;
+  --ascii-fs: calc(
+    var(--tagline-size) * 0.66 * var(--name-scale) / (var(--cap-rows) * 1.05)
+  );
   display: inline-block;
   font-family: var(--mono);
   font-size: var(--ascii-fs);
@@ -64,10 +70,12 @@
   vertical-align: calc(var(--descender-rows) * -1.05 * var(--ascii-fs));
   margin-right: 0.12em;
   color: var(--text-h);
-  /* Tiny glyphs read as hairlines, so use the heaviest weight and turn
-   * weight synthesis and default smoothing back on (both are switched
-   * off globally). */
+  /* Tiny glyphs read as grey hairlines, so use the heaviest weight,
+   * turn weight synthesis and default smoothing back on (both are
+   * switched off globally), and trace each glyph with a stroke that
+   * scales with the art so the name is as dark as the tagline. */
   font-weight: 900;
+  -webkit-text-stroke: calc(var(--ascii-fs) * 0.18) currentColor;
   font-synthesis: weight;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
