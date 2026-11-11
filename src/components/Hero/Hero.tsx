@@ -76,18 +76,30 @@ interface Role {
   org: string
 }
 
-/** Two columns under the tagline: what she's doing now vs. before. */
-const CURRENTLY: Role[] = [{ verb: 'Studying AI/ML', org: 'HKUST' }]
-const PREVIOUSLY: Role[] = [
-  { verb: 'Engineered', org: 'Mastercard' },
-  { verb: 'Engineered', org: 'WashU' },
-  { verb: 'Taught CS', org: 'WashU' },
+/** Vertical list under the tagline: what she's doing now, then before. */
+const CURRENT: Role[] = [
+  {
+    verb: 'AI/ML Student abroad',
+    org: 'The Hong Kong University of Science and Technology',
+  },
+  {
+    verb: 'CS & Math May 2027 Grad',
+    org: 'Washington University in St. Louis',
+  },
+]
+const PREVIOUS: Role[] = [
+  { verb: 'SWE', org: 'Mastercard' },
+  { verb: 'SWE', org: 'WashU Di2' },
+  {
+    verb: 'Head Teaching Assistant',
+    org: 'Washington University in St. Louis',
+  },
 ]
 
-function RoleColumn({ label, roles }: { label: string; roles: Role[] }) {
+function RoleGroup({ label, roles }: { label: string; roles: Role[] }) {
   return (
-    <div className={styles.column}>
-      <p className={styles.columnLabel}>{label}</p>
+    <div className={styles.group}>
+      <p className={styles.groupLabel}>{label}</p>
       <ul className={styles.roles}>
         {roles.map(({ verb, org }) => (
           <li key={`${verb}-${org}`}>
@@ -144,14 +156,13 @@ export function Hero(_props: HeroProps) {
       </h1>
 
       <motion.div
-        className={styles.columns}
+        className={styles.roleList}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 1.6 }}
       >
-        <RoleColumn label="Currently" roles={CURRENTLY} />
-        <div className={styles.divider} aria-hidden="true" />
-        <RoleColumn label="Previously" roles={PREVIOUSLY} />
+        <RoleGroup label="Current" roles={CURRENT} />
+        <RoleGroup label="Previous" roles={PREVIOUS} />
       </motion.div>
 
 

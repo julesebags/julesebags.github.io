@@ -107,19 +107,15 @@
   white-space: nowrap;
 }
 
-.columns {
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
-  gap: clamp(20px, 3vw, 40px);
+.roleList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   margin: 44px 0 0;
 }
 
-.divider {
-  background: color-mix(in oklab, var(--text), transparent 82%);
-}
-
-.columnLabel {
-  margin: 0 0 10px;
+.groupLabel {
+  margin: 0 0 8px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -147,17 +143,6 @@
 .org {
   color: var(--text-h);
   font-weight: 650;
-}
-
-/* Narrow screens: stack the columns and drop the vertical divider. */
-@media (max-width: 560px) {
-  .columns {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .divider {
-    display: none;
-  }
 }
 
 .ctas {
