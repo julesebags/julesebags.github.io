@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { motion } from 'framer-motion'
 import fullNameAscii from '../../assets/fullname.txt?raw'
 import { useScrambledAscii } from '../../hooks/useScrambledAscii'
@@ -21,9 +22,43 @@ interface HeroProps {
  */
 const TERMINAL_CHARSET = '/\\{}<>*#$%&|~=+;:[]()'
 
-/** Definition-style line that follows the name. */
-const TAGLINE =
-  'is a full-stack engineer building software that’s as usable as it is useful.'
+/**
+ * The ASCII file carries blank padding rows/columns around the letters.
+ * Strip it so the name can sit inline like a word, and work out how
+ * many rows hang below the letters' baseline (the "g" descender) so the
+ * tagline can line up with that baseline instead of the art's bottom.
+ *
+ * Baseline = the last row whose ink spans more than half the art's
+ * width; rows below that are descenders only.
+ */
+function prepareName(raw: string) {
+  const lines = raw.replace(/\s+$/, '').split('\n')
+  const inked = (l: string) => l.trim().length > 0
+  const first = lines.findIndex(inked)
+  const rows = lines.slice(first).map((l) => l.replace(/\s+$/, ''))
+  const indent = Math.min(
+    ...rows.filter(inked).map((l) => l.length - l.trimStart().length),
+  )
+  const trimmed = rows.map((l) => l.slice(indent))
+  const width = Math.max(...trimmed.map((l) => l.length))
+  const span = (l: string) => l.trimEnd().length - (l.length - l.trimStart().length)
+  let baseline = 0
+  trimmed.forEach((l, i) => {
+    if (inked(l) && span(l) > width / 2) baseline = i
+  })
+  return {
+    art: trimmed.join('\n'),
+    descenderRows: trimmed.length - 1 - baseline,
+  }
+}
+
+const NAME = prepareName(fullNameAscii)
+
+/** Continues the name as one sentence: "Julie Baguio is a …". */
+const TAGLINE = 'is a software engineer building seamless digital experiences.'
+// Alternatives:
+//   'is a software engineer who builds products that feel right to use.'
+//   'is a software engineer who makes complex systems feel simple to use.'
 
 interface Role {
   verb: string
@@ -61,7 +96,7 @@ function RoleColumn({ label, roles }: { label: string; roles: Role[] }) {
  * of terminal characters so the silhouette reads as code.
  */
 export function Hero(_props: HeroProps) {
-  const animatedFullName = useScrambledAscii(fullNameAscii, {
+  const animatedFullName = useScrambledAscii(NAME.art, {
     mode: 'settle',
     settleMs: 2500,
     settleCharset: TERMINAL_CHARSET,
@@ -70,18 +105,25 @@ export function Hero(_props: HeroProps) {
   return (
     <section id="hero" className={styles.hero}>
 
-      <h1 className={styles.asciiName} aria-label="Julie Baguio">
-        <pre aria-hidden="true">{animatedFullName}</pre>
+      {/* One sentence: the ASCII name sits inline as the first "word"
+       * and the tagline flows after it, wrapping like normal text. */}
+      <h1 className={styles.statement}>
+        <span
+          className={styles.asciiName}
+          aria-hidden="true"
+          style={{ '--descender-rows': NAME.descenderRows } as CSSProperties}
+        >
+          {animatedFullName}
+        </span>
+        <span className={styles.srOnly}>Julie Baguio</span>{' '}
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.3 }}
+        >
+          {TAGLINE}
+        </motion.span>
       </h1>
-
-      <motion.p
-        className={styles.tagline}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 1.3 }}
-      >
-        {TAGLINE}
-      </motion.p>
 
       <motion.div
         className={styles.columns}

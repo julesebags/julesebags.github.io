@@ -9,13 +9,9 @@
   padding: 120px clamp(8px, 1.5vw, 24px) 80px;
   text-align: center;
   position: relative;
-  /* Font size of the ASCII name. Shared so the tagline scales with it.
-   * Longest line in `fullname.txt` is 299 characters, and monospace
-   * advance width is ~0.6em, so the art renders 179.4x the font size.
-   * Sizing off 1/179.4 (0.00557) of the space actually available
-   * (viewport minus the left nav rail minus this section's padding)
-   * keeps the widest line just inside its container at any width. */
-  --ascii-fs: clamp(3px, calc((100vw - var(--nav-width) - 48px) * 0.00557), 5px);
+  /* Font size of each ASCII character in the name. The tagline is
+   * sized off it (see .statement) so the two always match. */
+  --ascii-fs: clamp(1.4px, 0.19vw, 2.6px);
 }
 
 .greeting {
@@ -39,65 +35,53 @@
   display: inline-block;
 }
 
-.asciiName {
+.statement {
   margin: 0;
+  max-width: 1100px;
+  /* Tagline letters match the ASCII name's: its capitals span ~15
+   * rows at 1.05 line-height (~15.75x --ascii-fs), and Plus Jakarta
+   * Sans caps are ~0.72em tall, so 22x lines them up. */
+  font-family: var(--sans);
+  font-size: calc(var(--ascii-fs) * 22);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--text-h);
-  line-height: 1;
-  /* Size to whatever the ASCII actually needs, then back off if the
-   * viewport is narrower than that. Combined with the font-size
-   * scaling below, this guarantees the full name renders without
-   * clipping the trailing characters. */
-  width: fit-content;
-  max-width: 100%;
-  overflow: hidden;
+  text-wrap: balance;
 }
 
-.asciiName pre {
-  margin: 0;
-  font: inherit;
+.asciiName {
+  display: inline-block;
   font-family: var(--mono);
-  /* The h1 above clips any overflow so very narrow phones never push
-   * the page horizontally. */
   font-size: var(--ascii-fs);
   line-height: 1.05;
   white-space: pre;
-  /* At this glyph size the art reads as thin hairlines, so it gets the
-   * heaviest weight available. `font-synthesis` is off globally, which
-   * would leave fallback monos (Consolas) un-thickened, so weight
-   * synthesis is re-enabled here, and the root's `antialiased` smoothing
-   * is dropped because it shaves weight off small glyphs on macOS. */
+  /* An inline-block sits on its LAST row, which is the bottom of the
+   * "g" descender. Drop it by the descender rows so the letters'
+   * baseline lines up with the tagline's. */
+  vertical-align: calc(var(--descender-rows) * -1.05 * var(--ascii-fs));
+  margin-right: 0.12em;
+  color: var(--text-h);
+  /* Tiny glyphs read as hairlines, so use the heaviest weight and turn
+   * weight synthesis and default smoothing back on (both are switched
+   * off globally). */
   font-weight: 900;
   font-synthesis: weight;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
-  -webkit-text-stroke: 0.12px currentColor;
-  /* Force lines to align to the left edge of the <pre> block —
-   * otherwise the inherited `text-align: center` from `.hero`
-   * centers EACH line individually, which destroys the silhouette
-   * when lines have different (e.g. trimmed) trailing widths.
-   * The pre itself is still centered as a whole because the parent
-   * <h1> uses `width: fit-content` inside a centered flex column. */
+  letter-spacing: 0;
   text-align: left;
   user-select: none;
   -webkit-user-select: none;
-  letter-spacing: 0;
 }
 
-/*
- * Tagline scales off --ascii-fs so it keeps its proportion to the name
- * at every width, and is capped at the name's own width (179.4x) so
- * the two read as one block.
- */
-.tagline {
-  margin: 28px auto 0;
-  max-width: calc(var(--ascii-fs) * 179.4);
-  /* 8vw keeps it from filling the screen on phones. */
-  font-size: min(calc(var(--ascii-fs) * 9), 8vw);
-  font-weight: 300;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: var(--text-h);
-  text-wrap: balance;
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .columns {
