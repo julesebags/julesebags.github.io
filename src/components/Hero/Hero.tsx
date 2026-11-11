@@ -58,7 +58,7 @@ function prepareName(raw: string) {
 const NAME = prepareName(fullNameAscii)
 
 /** Continues the name as one sentence: "Julie Baguio is a …". */
-const TAGLINE = 'is a software engineer building seamless digital experiences.'
+const TAGLINE = 'is a software engineer who builds seamless digital experiences.'
 // Alternatives:
 //   'is a software engineer who builds products that feel right to use.'
 //   'is a software engineer who makes complex systems feel simple to use.'
