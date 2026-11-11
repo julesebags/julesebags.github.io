@@ -29,7 +29,8 @@ const TERMINAL_CHARSET = '/\\{}<>*#$%&|~=+;:[]()'
  * tagline can line up with that baseline instead of the art's bottom.
  *
  * Baseline = the last row whose ink spans more than half the art's
- * width; rows below that are descenders only.
+ * width; rows below that are descenders only. Everything above it is
+ * cap height, which the CSS uses to size the art to match the text.
  */
 function prepareName(raw: string) {
   const lines = raw.replace(/\s+$/, '').split('\n')
@@ -48,6 +49,8 @@ function prepareName(raw: string) {
   })
   return {
     art: trimmed.join('\n'),
+    /** Rows from the top of the capitals down to the baseline. */
+    capRows: baseline + 1,
     descenderRows: trimmed.length - 1 - baseline,
   }
 }
@@ -111,7 +114,12 @@ export function Hero(_props: HeroProps) {
         <span
           className={styles.asciiName}
           aria-hidden="true"
-          style={{ '--descender-rows': NAME.descenderRows } as CSSProperties}
+          style={
+            {
+              '--cap-rows': NAME.capRows,
+              '--descender-rows': NAME.descenderRows,
+            } as CSSProperties
+          }
         >
           {animatedFullName}
         </span>

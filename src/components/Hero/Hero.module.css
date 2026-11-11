@@ -9,9 +9,6 @@
   padding: 120px clamp(8px, 1.5vw, 24px) 80px;
   text-align: center;
   position: relative;
-  /* Font size of each ASCII character in the name. The tagline is
-   * sized off it (see .statement) so the two always match. */
-  --ascii-fs: clamp(1.4px, 0.19vw, 2.6px);
 }
 
 .greeting {
@@ -38,11 +35,11 @@
 .statement {
   margin: 0;
   max-width: 1100px;
-  /* Tagline letters match the ASCII name's: its capitals span ~15
-   * rows at 1.05 line-height (~15.75x --ascii-fs), and Plus Jakarta
-   * Sans caps are ~0.72em tall, so 22x lines them up. */
+  /* The tagline's size drives everything; the ASCII name sizes itself
+   * to match it (see .asciiName). */
+  --tagline-size: clamp(31px, 4.2vw, 57px);
   font-family: var(--sans);
-  font-size: calc(var(--ascii-fs) * 22);
+  font-size: var(--tagline-size);
   font-weight: 300;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -51,6 +48,11 @@
 }
 
 .asciiName {
+  /* Make the name's capitals as tall as the tagline's. Plus Jakarta
+   * Sans capitals are 0.66 of its font size; the art's capitals are
+   * --cap-rows rows of 1.05 line-height each (worked out from the
+   * ASCII file in Hero.tsx), so solve for the art's font size. */
+  --ascii-fs: calc(var(--tagline-size) * 0.66 / (var(--cap-rows) * 1.05));
   display: inline-block;
   font-family: var(--mono);
   font-size: var(--ascii-fs);
