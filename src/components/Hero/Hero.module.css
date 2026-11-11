@@ -38,10 +38,10 @@
    * to match it (see .asciiName). */
   --tagline-size: clamp(28px, 3.6vw, 48px);
   /* Capital-letter height as a fraction of font size for the site
-   * font (Playfair). Update this if the font changes; measure it in
+   * tagline font (Playfair). Update this if the font changes; measure it in
    * the browser with canvas measureText('H').actualBoundingBoxAscent. */
   --cap-ratio: 0.57;
-  font-family: var(--sans);
+  font-family: var(--serif);
   font-size: var(--tagline-size);
   font-weight: 300;
   line-height: 1.2;

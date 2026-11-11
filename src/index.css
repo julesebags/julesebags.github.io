@@ -3,9 +3,8 @@
  *   - dark teal-green background (warm-undertone neutral)
  *   - cream-off-white text and pure-white headings
  *   - one accent: a soft pink that pops against the dark bg
- *   - Playfair (variable, with optical sizing so big text gets the
- *     high-contrast display cut and small text the sturdier text cut)
- *     for everything. The only exception is
+ *   - Plus Jakarta Sans Variable for everything, except the hero
+ *     tagline, which uses Playfair (--serif). The other exception is
  *     the hero ASCII name, which needs a monospace font to line up.
  */
 :root {
@@ -25,8 +24,11 @@
    * much space so no page content ever sits underneath it. */
   --nav-width: clamp(180px, 15vw, 240px);
 
-  --sans: 'Playfair Variable', Georgia, 'Times New Roman', serif;
-  --heading: 'Playfair Variable', Georgia, 'Times New Roman', serif;
+  --sans: 'Plus Jakarta Sans Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Plus Jakarta Sans Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
+  /* Only for the hero tagline. Optical-size build, so large text gets
+   * Playfair's high-contrast display cut. */
+  --serif: 'Playfair Variable', Georgia, 'Times New Roman', serif;
   /* Only for the hero ASCII-art name, which needs fixed-width glyphs. */
   --mono: ui-monospace, Consolas, monospace;
 
