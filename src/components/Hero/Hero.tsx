@@ -59,8 +59,14 @@ function prepareName(raw: string) {
 
 const NAME = prepareName(fullNameAscii)
 
-/** Continues the name as one sentence: "Julie Baguio is a …". */
-const TAGLINE = 'is a software engineer who builds seamless digital experiences.'
+/**
+ * Continues the name as one sentence: "Julie Baguio is a …". Split in
+ * two so the line always breaks after "engineer".
+ */
+const TAGLINE = [
+  'is a software engineer',
+  'who builds seamless digital experiences.',
+]
 // Alternatives:
 //   'is a software engineer who builds products that feel right to use.'
 //   'is a software engineer who makes complex systems feel simple to use.'
@@ -131,7 +137,9 @@ export function Hero(_props: HeroProps) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.3 }}
         >
-          {TAGLINE}
+          {TAGLINE[0]}
+          <br />
+          {TAGLINE[1]}
         </motion.span>
       </h1>
 

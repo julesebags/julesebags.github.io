@@ -33,10 +33,10 @@
 
 .statement {
   margin: 0;
-  max-width: 960px;
+  /* No max-width: the line break after "engineer" sets the shape. */
   /* The tagline's size drives everything; the ASCII name sizes itself
    * to match it (see .asciiName). */
-  --tagline-size: clamp(28px, 3.6vw, 48px);
+  --tagline-size: clamp(30px, 4.2vw, 56px);
   /* Height of the tagline font's tallest letter ("l" in Playfair) as a
    * fraction of its font size. The ASCII name is matched to this, since
    * its top row is the tallest letter in the art too. Update it if the
@@ -79,7 +79,7 @@
    * switched off globally), and trace each glyph with a stroke that
    * scales with the art so the name is as dark as the tagline. */
   font-weight: 900;
-  -webkit-text-stroke: calc(var(--ascii-fs) * 0.05) currentColor;
+  -webkit-text-stroke: calc(var(--ascii-fs) * 0.2) currentColor;
   font-synthesis: weight;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
