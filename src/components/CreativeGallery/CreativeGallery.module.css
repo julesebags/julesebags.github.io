@@ -216,7 +216,7 @@
 }
 
 .metaCategory {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 9.5px;
   letter-spacing: 0.18em;
   text-transform: uppercase;

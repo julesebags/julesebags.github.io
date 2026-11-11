@@ -53,7 +53,7 @@
 }
 
 .photoCaption {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 10.5px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -155,7 +155,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -193,7 +193,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 12px;
   letter-spacing: 0.06em;
   color: var(--accent);

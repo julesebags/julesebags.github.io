@@ -6,7 +6,7 @@
   margin-bottom: clamp(20px, 3vh, 30px);
   padding-bottom: 14px;
   border-bottom: 1px solid var(--border);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;

@@ -3,7 +3,9 @@
  *   - dark teal-green background (warm-undertone neutral)
  *   - cream-off-white text and pure-white headings
  *   - one accent: a soft pink that pops against the dark bg
- *   - Urbanist Variable for everything (display + body)
+ *   - Ivy Presto for everything: Display for headings, Text for body
+ *     (loaded from Adobe Fonts in index.html). The only exception is
+ *     the hero ASCII name, which needs a monospace font to line up.
  */
 :root {
   --bg: #dcecf6;
@@ -22,8 +24,9 @@
    * much space so no page content ever sits underneath it. */
   --nav-width: clamp(180px, 15vw, 240px);
 
-  --sans: 'Urbanist Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: 'Urbanist Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'ivypresto-text', Georgia, 'Times New Roman', serif;
+  --heading: 'ivypresto-display', 'ivypresto-text', Georgia, serif;
+  /* Only for the hero ASCII-art name, which needs fixed-width glyphs. */
   --mono: ui-monospace, Consolas, monospace;
 
   font: 16px/1.55 var(--sans);
