@@ -2,12 +2,11 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* Left-aligned: content hugs the left edge with generous padding. */
+  align-items: flex-start;
   justify-content: center;
-  /* Side padding slimmed so the ASCII art has more horizontal room
-   * to render at a larger size without clipping. */
-  padding: 120px clamp(8px, 1.5vw, 24px) 80px;
-  text-align: center;
+  padding: 120px clamp(20px, 7vw, 120px) 80px;
+  text-align: left;
   position: relative;
 }
 
@@ -34,17 +33,17 @@
 
 .statement {
   margin: 0;
-  max-width: 1100px;
+  max-width: 960px;
   /* The tagline's size drives everything; the ASCII name sizes itself
    * to match it (see .asciiName). */
-  --tagline-size: clamp(31px, 4.2vw, 57px);
+  --tagline-size: clamp(28px, 3.6vw, 48px);
   font-family: var(--sans);
   font-size: var(--tagline-size);
   font-weight: 300;
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--text-h);
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .asciiName {
@@ -75,7 +74,7 @@
    * switched off globally), and trace each glyph with a stroke that
    * scales with the art so the name is as dark as the tagline. */
   font-weight: 900;
-  -webkit-text-stroke: calc(var(--ascii-fs) * 0.18) currentColor;
+  -webkit-text-stroke: calc(var(--ascii-fs) * 0.05) currentColor;
   font-synthesis: weight;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
@@ -98,8 +97,7 @@
   display: grid;
   grid-template-columns: 1fr 1px 1fr;
   gap: clamp(20px, 3vw, 40px);
-  margin: 48px auto 0;
-  text-align: left;
+  margin: 44px 0 0;
 }
 
 .divider {
