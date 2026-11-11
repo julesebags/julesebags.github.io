@@ -6,9 +6,9 @@
  *   - Urbanist Variable for everything (display + body)
  */
 :root {
-  --bg: #2f3e3d;
-  --text: #fafaf6;
-  --text-h: #ffffff;
+  --bg: #dcecf6;
+  --text: #2C3233;
+  --text-h: #2C3233;
 
   --border: rgba(250, 250, 246, 0.14);
   --accent: #ff8aa8;
