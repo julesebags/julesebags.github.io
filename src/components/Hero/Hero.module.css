@@ -37,10 +37,11 @@
   /* The tagline's size drives everything; the ASCII name sizes itself
    * to match it (see .asciiName). */
   --tagline-size: clamp(28px, 3.6vw, 48px);
-  /* Capital-letter height as a fraction of font size for the site
-   * tagline font (Playfair). Update this if the font changes; measure it in
-   * the browser with canvas measureText('H').actualBoundingBoxAscent. */
-  --cap-ratio: 0.57;
+  /* Height of the tagline font's tallest letter ("l" in Playfair) as a
+   * fraction of its font size. The ASCII name is matched to this, since
+   * its top row is the tallest letter in the art too. Update it if the
+   * font changes: measure canvas measureText('l').actualBoundingBoxAscent. */
+  --top-ratio: 0.633;
   font-family: var(--serif);
   font-size: var(--tagline-size);
   font-weight: 300;
@@ -51,16 +52,16 @@
 }
 
 .asciiName {
-  /* Make the name's capitals as tall as the tagline's. The tagline's
-   * capitals are --cap-ratio of its font size; the art's capitals are
-   * --cap-rows rows of 1.05 line-height each (worked out from the
-   * ASCII file in Hero.tsx), so solve for the art's font size.
-   * --name-scale nudges it up because the characters in the top and
-   * bottom rows don't fill their whole row, so the visible letters come
-   * out a bit shorter than the row count suggests. */
-  --name-scale: 1.15;
+  /* Make the name's letters as tall as the tagline's. The art spans
+   * --cap-rows rows (top of its tallest letter down to the baseline,
+   * worked out from the ASCII file in Hero.tsx) of 1.05 line-height
+   * each; the tagline's tallest letter is --top-ratio of its size; so
+   * solve for the art's font size. --name-scale nudges it slightly
+   * because characters in the top and bottom rows don't fill the whole
+   * row, so the visible letters are a bit shorter than the row count. */
+  --name-scale: 1.05;
   --ascii-fs: calc(
-    var(--tagline-size) * var(--cap-ratio) * var(--name-scale) / (var(--cap-rows) * 1.05)
+    var(--tagline-size) * var(--top-ratio) * var(--name-scale) / (var(--cap-rows) * 1.05)
   );
   display: inline-block;
   font-family: var(--mono);

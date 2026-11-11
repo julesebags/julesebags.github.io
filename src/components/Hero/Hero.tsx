@@ -28,9 +28,11 @@ const TERMINAL_CHARSET = '/\\{}<>*#$%&|~=+;:[]()'
  * many rows hang below the letters' baseline (the "g" descender) so the
  * tagline can line up with that baseline instead of the art's bottom.
  *
- * Baseline = the last row whose ink spans more than half the art's
- * width; rows below that are descenders only. Everything above it is
- * cap height, which the CSS uses to size the art to match the text.
+ * Baseline = the last row with at least 40% as many inked characters
+ * as the busiest row. Rows below it only hold descender tails (J, g),
+ * which are sparse even when they sit far apart. Everything from the top
+ * row down to it is the tallest letter's height, which the CSS uses to
+ * size the art to match the text.
  */
 function prepareName(raw: string) {
   const lines = raw.replace(/\s+$/, '').split('\n')
@@ -41,15 +43,15 @@ function prepareName(raw: string) {
     ...rows.filter(inked).map((l) => l.length - l.trimStart().length),
   )
   const trimmed = rows.map((l) => l.slice(indent))
-  const width = Math.max(...trimmed.map((l) => l.length))
-  const span = (l: string) => l.trimEnd().length - (l.length - l.trimStart().length)
+  const ink = (l: string) => l.replace(/\s/g, '').length
+  const busiest = Math.max(...trimmed.map(ink))
   let baseline = 0
   trimmed.forEach((l, i) => {
-    if (inked(l) && span(l) > width / 2) baseline = i
+    if (ink(l) >= busiest * 0.4) baseline = i
   })
   return {
     art: trimmed.join('\n'),
-    /** Rows from the top of the capitals down to the baseline. */
+    /** Rows from the top of the tallest letter down to the baseline. */
     capRows: baseline + 1,
     descenderRows: trimmed.length - 1 - baseline,
   }
