@@ -21,9 +21,12 @@ interface HeroProps {
  */
 const TERMINAL_CHARSET = '/\\{}<>*#$%&|~=+;:[]()'
 
-const subtitleParts = [
-  'Fullstack Developer',
-  'Student',
+/** One line per thing she's doing / has done, rendered as "role @ org". */
+const highlights = [
+  { role: 'Studying AI/ML', org: 'HKUST' },
+  { role: 'Engineered', org: 'Mastercard' },
+  { role: 'Engineering', org: 'WashU' },
+  { role: 'Head CS Teaching Assistant', org: 'WashU' },
 ]
 
 /**
@@ -46,28 +49,19 @@ export function Hero(_props: HeroProps) {
         <pre aria-hidden="true">{animatedFullName}</pre>
       </h1>
 
-      <motion.p
-        className={styles.tagline}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 1.4 }}
-      >
-        Building products, systems, and experiences.
-      </motion.p>
-
-      <motion.p
-        className={styles.subtitle}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 1.7 }}
-      >
-        {subtitleParts.map((part, i) => (
-          <span key={part}>
-            {i > 0 && <span className={styles.dot}>•</span>}
-            {part}
-          </span>
+      <ul className={styles.highlights}>
+        {highlights.map(({ role, org }, i) => (
+          <motion.li
+            key={`${role}-${org}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.4 + i * 0.12 }}
+          >
+            {role} <span className={styles.at}>@</span>{' '}
+            <span className={styles.org}>{org}</span>
+          </motion.li>
         ))}
-      </motion.p>
+      </ul>
 
 
     </section>

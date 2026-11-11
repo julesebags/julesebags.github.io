@@ -81,32 +81,28 @@
   letter-spacing: 0;
 }
 
-.tagline {
+.highlights {
+  list-style: none;
   margin: 36px auto 0;
-  font-family: var(--heading);
-  font-weight: 300;
-  font-style: italic;
-  font-size: clamp(20px, 2.4vw, 32px);
-  line-height: 1.2;
-  letter-spacing: -0.005em;
-  color: var(--text-h);
-  max-width: 720px;
-}
-
-.subtitle {
-  margin: 16px auto 0;
-  font-size: clamp(13px, 1.2vw, 15px);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: clamp(15px, 1.6vw, 20px);
   font-weight: 400;
-  letter-spacing: 0.06em;
-  color: color-mix(in oklab, var(--text), transparent 30%);
-  max-width: 640px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: color-mix(in oklab, var(--text), transparent 20%);
 }
 
-.subtitle .dot {
-  display: inline-block;
-  margin: 0 8px;
+.highlights .at {
   color: var(--accent);
-  transform: translateY(-1px);
+  font-weight: 500;
+}
+
+.highlights .org {
+  color: var(--text-h);
+  font-weight: 600;
 }
 
 .ctas {
