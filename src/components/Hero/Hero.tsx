@@ -79,20 +79,20 @@ interface Role {
 /** Vertical list under the tagline: what she's doing now, then before. */
 const CURRENT: Role[] = [
   {
-    verb: 'AI/ML Student abroad',
+    verb: 'AI/ML Student Abroad',
     org: 'The Hong Kong University of Science and Technology',
   },
   {
-    verb: 'CS & Math May 2027 Grad',
-    org: 'Washington University in St. Louis',
+    verb: 'CS + Math Student',
+    org: 'WashU (May 2027)',
   },
 ]
 const PREVIOUS: Role[] = [
   { verb: 'SWE', org: 'Mastercard' },
   { verb: 'SWE', org: 'WashU Di2' },
   {
-    verb: 'Head Teaching Assistant',
-    org: 'Washington University in St. Louis',
+    verb: 'Head TA',
+    org: 'WashU',
   },
 ]
 
