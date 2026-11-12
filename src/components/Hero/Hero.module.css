@@ -87,8 +87,8 @@
    * turn weight synthesis and default smoothing back on (both are
    * switched off globally), and trace each glyph with a stroke that
    * scales with the art so the name is as dark as the tagline. */
-  font-weight: 900;
-  -webkit-text-stroke: calc(var(--ascii-fs) * 0.15) currentColor;
+  font-weight: 100;
+  -webkit-text-stroke: calc(var(--ascii-fs) * 0.05) currentColor;
   font-synthesis: weight;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
@@ -130,7 +130,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: clamp(13px, 1.05vw, 15px);
+  font-size: clamp(12px, 1.05vw, 15px);
   line-height: 1.45;
   color: color-mix(in oklab, var(--text), transparent 15%);
 }
