@@ -82,7 +82,12 @@
    * baseline lines up with the tagline's. */
   vertical-align: calc(var(--descender-rows) * -1.05 * var(--ascii-fs));
   margin-right: 0.12em;
-  color: var(--text-h);
+  /* Containing block for .nameText, and its own stacking context so
+   * .nameText's z-index: -1 tucks it behind the art, not the page. */
+  position: relative;
+  isolation: isolate;
+  /* Light grey so the solid name underneath does the defining. */
+  color: color-mix(in oklab, var(--text-h) 22%, var(--bg));
   /* Tiny glyphs read as grey hairlines, so use the heaviest weight,
    * turn weight synthesis and default smoothing back on (both are
    * switched off globally), and trace each glyph with a stroke that
@@ -96,6 +101,31 @@
   text-align: left;
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* Solid Playfair name behind the ASCII. Hero.tsx sets its top (to put
+ * its baseline on the art's baseline row) and a horizontal scale (to
+ * match the art's width) after measuring both. */
+.nameText {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  transform-origin: 0 0;
+  font-family: var(--serif);
+  font-size: var(--tagline-size);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--text-h);
+  -webkit-text-stroke: 0;
+}
+
+.baselineMarker {
+  display: inline-block;
+  width: 0;
+  height: 0;
 }
 
 .srOnly {

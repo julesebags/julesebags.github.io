@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react'
+import { useLayoutEffect, useRef, type CSSProperties } from 'react'
 import { motion } from 'framer-motion'
 import fullNameAscii from '../../assets/fullname.txt?raw'
 import { useScrambledAscii } from '../../hooks/useScrambledAscii'
@@ -124,14 +124,46 @@ export function Hero(_props: HeroProps) {
     settleMs: 2500,
     settleCharset: TERMINAL_CHARSET,
   })
+  const artRef = useRef<HTMLSpanElement>(null)
+  const nameTextRef = useRef<HTMLSpanElement>(null)
+
+  /*
+   * Lay the plain-text name exactly under the ASCII art: put its
+   * baseline on the art's baseline row, and stretch it horizontally so
+   * it spans the same width. Re-runs whenever the hero resizes or the
+   * fonts finish loading, since both change the measurements.
+   */
+  useLayoutEffect(() => {
+    const art = artRef.current
+    const text = nameTextRef.current
+    if (!art || !text) return
+    const fit = () => {
+      const rowHeight = parseFloat(getComputedStyle(art).fontSize) * 1.05
+      text.style.transform = 'none'
+      text.style.top = '0px'
+      const marker = text.lastElementChild as HTMLElement
+      const textBox = text.getBoundingClientRect()
+      const baseline = marker.getBoundingClientRect().bottom - textBox.top
+      const scaleX = art.getBoundingClientRect().width / textBox.width
+      text.style.top = `${NAME.capRows * rowHeight - baseline}px`
+      text.style.transform = `scaleX(${scaleX})`
+    }
+    fit()
+    const observer = new ResizeObserver(fit)
+    observer.observe(art)
+    document.fonts.ready.then(fit)
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <section id="hero" className={styles.hero}>
 
-      {/* One sentence: the ASCII name sits inline as the first "word"
-       * and the tagline flows after it, wrapping like normal text. */}
+      {/* One sentence: the name (solid text with ASCII art over it) sits
+       * inline as the first "word" and the tagline flows after it,
+       * wrapping like normal text. */}
       <h1 className={styles.statement}>
         <span
+          ref={artRef}
           className={styles.asciiName}
           aria-hidden="true"
           style={
@@ -141,6 +173,13 @@ export function Hero(_props: HeroProps) {
             } as CSSProperties
           }
         >
+          {/* Solid name underneath gives the letters definition; the
+           * ASCII sits on top in light grey. The empty inline-block at
+           * the end marks the text's baseline so it can be measured. */}
+          <span ref={nameTextRef} className={styles.nameText}>
+            Julie Baguio
+            <span className={styles.baselineMarker} />
+          </span>
           {animatedFullName}
         </span>
         <span className={styles.srOnly}>Julie Baguio</span>{' '}
