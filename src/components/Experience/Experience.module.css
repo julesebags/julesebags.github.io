@@ -113,7 +113,8 @@
 }
 
 .tileImage,
-.tileImageWrap > svg {
+.tileImageWrap > svg,
+.tileImageWrap > img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -123,7 +124,8 @@
 }
 
 .tile:hover .tileImage,
-.tile:hover .tileImageWrap > svg {
+.tile:hover .tileImageWrap > svg,
+.tile:hover .tileImageWrap > img {
   transform: scale(1.04);
 }
 

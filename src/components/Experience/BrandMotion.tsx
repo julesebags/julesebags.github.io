@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import mastercardGif from '../../assets/motion/mastercard.gif'
 import styles from './BrandMotion.module.css'
 
 /**
@@ -16,84 +17,9 @@ export function BrandMotion({ kind }: { kind: BrandMotionKind }) {
 
 const EASE = [0.2, 0.8, 0.2, 1] as const
 
-/**
- * Mastercard: the two circles slide in from either side and lock
- * together, the orange overlap blooms in, then a soft ring keeps
- * pulsing outward from them.
- */
+/** Mastercard: Julie's own animated GIF of the logo. */
 function MastercardMotion() {
-  const still = useReducedMotion()
-  const R = 22
-  const OVERLAP = 14 // distance of each centre from the middle
-
-  return (
-    <svg
-      className={styles.svg}
-      viewBox="0 0 160 100"
-      preserveAspectRatio="xMidYMid slice"
-      role="img"
-      aria-label="Mastercard"
-      style={{ background: '#141416' }}
-    >
-      <defs>
-        <clipPath id="mc-right">
-          <motion.circle
-            cy={50}
-            r={R}
-            initial={{ cx: 80 + 60 }}
-            animate={{ cx: 80 + OVERLAP }}
-            transition={{ duration: still ? 0 : 1.1, ease: EASE }}
-          />
-        </clipPath>
-      </defs>
-
-      {/* Left (red) */}
-      <motion.circle
-        cy={50}
-        r={R}
-        fill="#EB001B"
-        initial={{ cx: 80 - 60 }}
-        animate={{ cx: 80 - OVERLAP }}
-        transition={{ duration: still ? 0 : 1.1, ease: EASE }}
-      />
-      {/* Right (yellow) */}
-      <motion.circle
-        cy={50}
-        r={R}
-        fill="#F79E1B"
-        initial={{ cx: 80 + 60 }}
-        animate={{ cx: 80 + OVERLAP }}
-        transition={{ duration: still ? 0 : 1.1, ease: EASE }}
-      />
-      {/* Overlap (orange): the red circle clipped to the yellow one. */}
-      <motion.circle
-        cy={50}
-        r={R}
-        fill="#FF5F00"
-        clipPath="url(#mc-right)"
-        initial={{ cx: 80 - 60, opacity: 0 }}
-        animate={{ cx: 80 - OVERLAP, opacity: 1 }}
-        transition={{ duration: still ? 0 : 1.1, ease: EASE, opacity: { delay: still ? 0 : 0.7, duration: 0.5 } }}
-      />
-
-      {/* After the lock-in, a soft ring keeps pulsing outward. */}
-      {!still && (
-        <motion.ellipse
-          cx={80}
-          cy={50}
-          rx={R + OVERLAP}
-          ry={R}
-          fill="none"
-          stroke="#F79E1B"
-          strokeWidth={0.6}
-          initial={{ opacity: 0, scale: 1 }}
-          animate={{ opacity: [0, 0.35, 0], scale: [1, 1.35, 1.6] }}
-          transition={{ duration: 3.2, delay: 1.4, repeat: Infinity, ease: 'easeOut' }}
-          style={{ transformOrigin: '80px 50px' }}
-        />
-      )}
-    </svg>
-  )
+  return <img className={styles.gif} src={mastercardGif} alt="Mastercard" />
 }
 
 /**
