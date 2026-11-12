@@ -76,6 +76,11 @@ export function isVideoSrc(src: string): boolean {
   return /\.(mp4|webm)(\?.*)?$/i.test(src)
 }
 
+/** True for the CSS-gradient placeholders used when a folder is empty. */
+export function isGradient(src: string): boolean {
+  return /^(linear|radial|conic)-gradient\(/.test(src.trim())
+}
+
 function pickById(
   modules: Record<string, { default: string }>,
   folder: string,

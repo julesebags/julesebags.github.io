@@ -1,4 +1,5 @@
 import { getExperienceImages } from '../lib/assetLoader'
+import type { BrandMotionKind } from '../components/Experience/BrandMotion'
 
 export type ExperienceCategory =
   | 'professional'
@@ -51,6 +52,11 @@ export interface Experience {
   images: string[]
   /** Per-role accent color used on tags + bullets + duration pill. */
   color: string
+  /**
+   * Optional looping motion graphic used as the tile picture instead of
+   * the first image (see components/Experience/BrandMotion.tsx).
+   */
+  motion?: BrandMotionKind
 }
 
 export const experiences: Experience[] = [
@@ -114,6 +120,7 @@ export const experiences: Experience[] = [
       'radial-gradient(circle at 30% 30%, #ffb88c 0%, #ff8aa8 60%, #2f3e3d 100%)',
     ]),
     color: '#ffb88c',
+    motion: 'mastercard',
   },
   {
     id: 'dii-accelerator',
@@ -145,6 +152,7 @@ export const experiences: Experience[] = [
       'radial-gradient(circle at 70% 30%, #6dd6c2 0%, #4a8aff 60%, #2f3e3d 100%)',
     ]),
     color: '#6dd6c2',
+    motion: 'washu-di2',
   },
   {
     id: 'oop-ta',
@@ -174,6 +182,7 @@ export const experiences: Experience[] = [
       'radial-gradient(circle at 30% 70%, #f8a35c 0%, #ff8aa8 60%, #2f3e3d 100%)',
     ]),
     color: '#f8a35c',
+    motion: 'washu-ta',
   },
   {
     id: 'mizzou-research',
