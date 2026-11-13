@@ -51,7 +51,12 @@ export function ExperienceCard({
         onClick={() => onOpen(experience)}
         aria-label={`Open ${role} at ${organization} details`}
       >
-        <div className={styles.tileImageWrap}>
+        {/* The Mastercard Lottie is 16:9, so its tile keeps that shape
+         * instead of the usual 16:10 to show the whole animation. */}
+        <div
+          className={styles.tileImageWrap}
+          style={motionKind === 'mastercard' ? { aspectRatio: '16 / 9' } : undefined}
+        >
           {motionKind ? (
             <BrandMotion kind={motionKind} />
           ) : isGradient(hero) ? (

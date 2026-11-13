@@ -8,8 +8,9 @@ import styles from './BrandMotion.module.css'
  * BrandMotion so the player and animation data only download when the
  * Experience section actually renders the tile.
  *
- * The animation is 16:9 and the tile is 16:10, so it's scaled to cover
- * the box (`slice`) rather than letterboxed. With reduced motion it
+ * The animation is 16:9 and its tile is 16:9 too (see ExperienceCard),
+ * so it shows uncropped; `meet` keeps it whole if the box ever differs.
+ * With reduced motion it
  * plays once and holds on the final frame instead of looping.
  */
 export default function MastercardLottie() {
@@ -20,7 +21,7 @@ export default function MastercardLottie() {
       src={animation}
       loop={!still}
       autoplay
-      rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
+      rendererSettings={{ preserveAspectRatio: 'xMidYMid meet' }}
       aria-label="Mastercard"
       role="img"
     />
