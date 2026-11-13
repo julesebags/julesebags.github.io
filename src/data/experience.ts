@@ -64,34 +64,6 @@ export const experiences: Experience[] = [
   // PROFESSIONAL
   // ============================================================
   {
-    id: 'proximity',
-    category: 'professional',
-    role: 'Contract Software Engineer',
-    organization: 'Proximity',
-    dateRange: 'Jun 2026 – Present',
-    duration: 'Ongoing',
-    pitch:
-      'Full-stack engineer on a WashU off-campus housing marketplace serving 300+ users.',
-    description:
-      'One of four engineers on Proximity — a marketplace for the WashU off-campus housing market. Shipping full-stack features from database up to UI, and building the internal tooling that keeps a small team moving fast.',
-    bullets: [
-      'Ship full-stack features supporting 300+ active users and $500K+ in facilitated lease value across 42+ signed leases',
-      'Own the end-to-end messaging system: live delivery via Supabase Realtime, hover-based prefetch for near-instant conversation loads, and email notifications with deep links',
-    ],
-    tags: ['Full Stack', 'Supabase', 'Realtime', 'MCP'],
-    metrics: [
-      { val: '300+', label: 'active users' },
-      { val: '$500K+', label: 'lease value' },
-      { val: '42+', label: 'signed leases' },
-    ],
-    images: getExperienceImages('proximity', [
-      'linear-gradient(135deg, #b362ff 0%, #ff8aa8 50%, #2f3e3d 100%)',
-      'linear-gradient(45deg, #ff8aa8 0%, #b362ff 100%)',
-      'radial-gradient(circle at 30% 30%, #b362ff 0%, #ff8aa8 60%, #2f3e3d 100%)',
-    ]),
-    color: '#b362ff',
-  },
-  {
     id: 'mastercard',
     category: 'professional',
     role: 'Software Engineering Intern',
@@ -153,6 +125,34 @@ export const experiences: Experience[] = [
     ]),
     color: '#6dd6c2',
     motion: 'washu-di2',
+  },
+    {
+    id: 'proximity',
+    category: 'professional',
+    role: 'Contract Software Engineer',
+    organization: 'Proximity',
+    dateRange: 'Jun 2026 – Present',
+    duration: 'Ongoing',
+    pitch:
+      'Full-stack engineer on a WashU off-campus housing marketplace serving 300+ users.',
+    description:
+      'One of four engineers on Proximity — a marketplace for the WashU off-campus housing market. Shipping full-stack features from database up to UI, and building the internal tooling that keeps a small team moving fast.',
+    bullets: [
+      'Ship full-stack features supporting 300+ active users and $500K+ in facilitated lease value across 42+ signed leases',
+      'Own the end-to-end messaging system: live delivery via Supabase Realtime, hover-based prefetch for near-instant conversation loads, and email notifications with deep links',
+    ],
+    tags: ['Full Stack', 'Supabase', 'Realtime', 'MCP'],
+    metrics: [
+      { val: '300+', label: 'active users' },
+      { val: '$500K+', label: 'lease value' },
+      { val: '42+', label: 'signed leases' },
+    ],
+    images: getExperienceImages('proximity', [
+      'linear-gradient(135deg, #b362ff 0%, #ff8aa8 50%, #2f3e3d 100%)',
+      'linear-gradient(45deg, #ff8aa8 0%, #b362ff 100%)',
+      'radial-gradient(circle at 30% 30%, #b362ff 0%, #ff8aa8 60%, #2f3e3d 100%)',
+    ]),
+    color: '#b362ff',
   },
   {
     id: 'oop-ta',

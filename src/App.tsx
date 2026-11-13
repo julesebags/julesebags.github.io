@@ -39,12 +39,24 @@ function App() {
       <Navbar />
       <main>
         <Hero onScrollTo={scrollTo} />
-        <About />
+        <Experience
+          id="experience"
+          index="001"
+          label="Experience"
+          categories={['professional']}
+        />
         <Projects />
-        <Experience />
         <Skills />
+        <Experience
+          id="beyond-work"
+          index="003"
+          label="Leadership & Creative"
+          categories={['leadership', 'creative', 'entrepreneurship']}
+          showCategory
+        />
         <CreativeGallery />
         <Monkey />
+        <About />
       </main>
       <Footer />
     </MonkeyContext.Provider>

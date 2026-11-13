@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { type Experience } from '../../data/experience'
+import { categoryLabels, type Experience } from '../../data/experience'
 import { isGradient, isVideoSrc } from '../../lib/assetLoader'
 import { BrandMotion } from './BrandMotion'
 import styles from './Experience.module.css'
@@ -8,6 +8,8 @@ interface ExperienceCardProps {
   experience: Experience
   index: number
   onOpen: (experience: Experience) => void
+  /** Prefix the dates with the category, e.g. "Leadership · 2024 – Present". */
+  showCategory?: boolean
 }
 
 /**
@@ -19,6 +21,7 @@ export function ExperienceCard({
   experience,
   index,
   onOpen,
+  showCategory = false,
 }: ExperienceCardProps) {
   const {
     role,
@@ -27,18 +30,18 @@ export function ExperienceCard({
     pitch,
     images,
     motion: motionKind,
+    category,
   } = experience
   const hero = images.find((src) => !isVideoSrc(src)) ?? images[0] ?? ''
 
   return (
-    // The animated wrapper owns `transform` for the enter/exit motion, so
+    // The animated wrapper owns `transform` for the entrance motion, so
     // the stagger offset (also a transform) goes on the button inside.
     <motion.div
-      layout
       className={styles.cell}
       initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
       transition={{
         duration: 0.5,
         delay: index * 0.05,
@@ -67,7 +70,10 @@ export function ExperienceCard({
         </div>
 
         <div className={styles.tileBody}>
-          <p className={styles.tileMeta}>{dateRange}</p>
+          <p className={styles.tileMeta}>
+            {showCategory && `${categoryLabels[category]} · `}
+            {dateRange}
+          </p>
           <h3 className={styles.tileRole}>{role}</h3>
           <p className={styles.tileOrg}>{organization}</p>
           <p className={styles.tilePitch}>{pitch}</p>
