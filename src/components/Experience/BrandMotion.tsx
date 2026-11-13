@@ -1,5 +1,5 @@
+import { lazy, Suspense } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import mastercardGif from '../../assets/motion/mastercard.gif'
 import styles from './BrandMotion.module.css'
 
 /**
@@ -17,9 +17,16 @@ export function BrandMotion({ kind }: { kind: BrandMotionKind }) {
 
 const EASE = [0.2, 0.8, 0.2, 1] as const
 
-/** Mastercard: Julie's own animated GIF of the logo. */
+// Lottie player + animation data are split into their own chunk.
+const MastercardLottie = lazy(() => import('./MastercardLottie'))
+
+/** Mastercard: Julie's own Lottie animation of the logo. */
 function MastercardMotion() {
-  return <img className={styles.gif} src={mastercardGif} alt="Mastercard" />
+  return (
+    <Suspense fallback={<div className={styles.lottie} />}>
+      <MastercardLottie />
+    </Suspense>
+  )
 }
 
 /**
