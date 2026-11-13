@@ -11,12 +11,14 @@ interface NavLink {
   secondary?: boolean
 }
 
+// Same order as the sections on the page.
 const links: NavLink[] = [
-  { label: 'About', targetId: 'about' },
-  { label: 'Work', targetId: 'projects' },
   { label: 'Experience', targetId: 'experience' },
+  { label: 'Work', targetId: 'projects' },
   { label: 'Skills', targetId: 'skills', secondary: true },
+  { label: 'Leadership', targetId: 'beyond-work', secondary: true },
   { label: 'Beyond', targetId: 'gallery', secondary: true },
+  { label: 'About', targetId: 'about' },
   { label: 'Contact', targetId: 'footer' },
 ]
 
