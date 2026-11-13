@@ -28,15 +28,6 @@
   fill: rgba(255, 255, 255, 0.7);
 }
 
-.axis {
-  stroke: rgba(255, 255, 255, 0.35);
-  stroke-width: 0.4;
-}
-
-.bar {
-  fill: rgba(255, 255, 255, 0.85);
-}
-
 .code {
   font-family: var(--mono);
   font-size: 4.6px;
