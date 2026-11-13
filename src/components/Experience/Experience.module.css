@@ -115,7 +115,7 @@
 .tileImage,
 .tileImageWrap > svg,
 .tileImageWrap > img,
-.tileImageWrap > div:not(.tileImage) {
+.tileImageWrap > video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -127,7 +127,7 @@
 .tile:hover .tileImage,
 .tile:hover .tileImageWrap > svg,
 .tile:hover .tileImageWrap > img,
-.tile:hover .tileImageWrap > div:not(.tileImage) {
+.tile:hover .tileImageWrap > video {
   transform: scale(1.04);
 }
 

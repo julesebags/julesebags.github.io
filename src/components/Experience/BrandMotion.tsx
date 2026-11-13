@@ -1,5 +1,5 @@
-import { lazy, Suspense } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import mastercardVideo from '../../assets/motion/mastercard.webm'
 import styles from './BrandMotion.module.css'
 
 /**
@@ -17,15 +17,22 @@ export function BrandMotion({ kind }: { kind: BrandMotionKind }) {
 
 const EASE = [0.2, 0.8, 0.2, 1] as const
 
-// Lottie player + animation data are split into their own chunk.
-const MastercardLottie = lazy(() => import('./MastercardLottie'))
-
-/** Mastercard: Julie's own Lottie animation of the logo. */
+/**
+ * Mastercard: Julie's own logo animation, as a muted looping video.
+ * With reduced motion it plays once and holds on the last frame.
+ */
 function MastercardMotion() {
+  const still = useReducedMotion()
   return (
-    <Suspense fallback={<div className={styles.lottie} />}>
-      <MastercardLottie />
-    </Suspense>
+    <video
+      className={styles.video}
+      src={mastercardVideo}
+      autoPlay
+      muted
+      loop={!still}
+      playsInline
+      aria-label="Mastercard"
+    />
   )
 }
 

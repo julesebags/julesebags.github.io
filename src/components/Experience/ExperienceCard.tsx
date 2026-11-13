@@ -51,7 +51,7 @@ export function ExperienceCard({
         onClick={() => onOpen(experience)}
         aria-label={`Open ${role} at ${organization} details`}
       >
-        {/* The Mastercard Lottie is 16:9, so its tile keeps that shape
+        {/* The Mastercard video is 16:9, so its tile keeps that shape
          * instead of the usual 16:10 to show the whole animation. */}
         <div
           className={styles.tileImageWrap}

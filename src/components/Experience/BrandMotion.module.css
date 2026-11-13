@@ -1,8 +1,9 @@
 /* Fills whatever box it's placed in (card image area or modal). */
-.lottie {
+.video {
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .svg {
