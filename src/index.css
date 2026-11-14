@@ -8,7 +8,7 @@
  *     the hero ASCII name, which needs a monospace font to line up.
  */
 :root {
-  --bg: #f8f7f4;
+  --bg: #f4f3ef;
   --text: #2C3233;
   --text-h: #2C3233;
 
@@ -126,7 +126,11 @@ p {
   margin: 0;
 }
 
-button {
+/* Form controls don't inherit fonts by default; keep them on Jakarta. */
+button,
+input,
+textarea,
+select {
   font-family: inherit;
 }
 

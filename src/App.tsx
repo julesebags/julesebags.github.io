@@ -1,14 +1,14 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { CustomCursor } from './components/CustomCursor/CustomCursor'
 import { Navbar } from './components/Navbar/Navbar'
 import { Hero } from './components/Hero/Hero'
 import { Projects } from './components/Projects/Projects'
 import { Experience } from './components/Experience/Experience'
 import { CreativeGallery } from './components/CreativeGallery/CreativeGallery'
-import { Footer } from './components/Footer/Footer'
 import { Monkey } from './components/Monkey/Monkey'
 import { MonkeyContext } from './components/Monkey/monkeyContext'
 import { MobileNotice } from './components/MobileNotice/MobileNotice'
+import { useRoute } from './lib/route'
 
 function App() {
   // Deliberately not persisted: a reload should take the toy back off her.
@@ -24,11 +24,16 @@ function App() {
     [hasMonkey, dragging],
   )
 
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id)
-    if (!el) return
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  // Home (hero + experience), Projects and Beyond are separate pages,
+  // switched by the URL hash (see lib/route.ts).
+  const route = useRoute()
+
+  // After switching pages, start at the top, or at the requested section.
+  useEffect(() => {
+    const el = route.anchor ? document.getElementById(route.anchor) : null
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    else window.scrollTo({ top: 0 })
+  }, [route])
 
   return (
     <MonkeyContext.Provider value={monkey}>
@@ -36,18 +41,21 @@ function App() {
       <MobileNotice />
       <Navbar />
       <main>
-        <Hero onScrollTo={scrollTo} />
-        <Experience
-          id="experience"
-          index="001"
-          label="Experience"
-          categories={['professional']}
-        />
-        <Projects />
-        <CreativeGallery />
+        {route.page === 'home' && (
+          <>
+            <Hero />
+            <Experience
+              id="experience"
+              index="001"
+              label="Experience"
+              categories={['professional']}
+            />
+          </>
+        )}
+        {route.page === 'projects' && <Projects />}
+        {route.page === 'beyond' && <CreativeGallery />}
         <Monkey />
       </main>
-      <Footer />
     </MonkeyContext.Provider>
   )
 }

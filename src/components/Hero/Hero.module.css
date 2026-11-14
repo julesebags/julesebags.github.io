@@ -1,13 +1,15 @@
 .hero {
-  min-height: 100vh;
+  /* Sized to its content (not a full screen) so the Experience tiles
+   * peek in below it on first load. */
   display: flex;
   flex-direction: column;
   /* Left-aligned: content hugs the left edge with generous padding. */
   align-items: flex-start;
-  justify-content: center;
   /* Less padding on the right than the left: content is left-aligned,
-   * so the right side only needs a small margin. */
-  padding: 120px clamp(20px, 3vw, 48px) 80px clamp(20px, 7vw, 120px);
+   * so the right side only needs a small margin. The top clears the
+   * horizontal nav bar used on narrower screens. */
+  padding: clamp(84px, 13vh, 120px) clamp(20px, 3vw, 48px)
+    clamp(28px, 5vh, 48px) clamp(20px, 7vw, 120px);
   text-align: left;
   position: relative;
   /* Lets .statement size itself off this section's width (cqw). */

@@ -1,5 +1,7 @@
 .section {
-  padding: clamp(96px, 14vh, 160px) clamp(24px, 6vw, 80px);
+  /* Small top padding: this sits right under the hero and should be
+   * partly visible on first load. */
+  padding: clamp(28px, 5vh, 56px) clamp(24px, 6vw, 80px) clamp(96px, 14vh, 160px);
   max-width: 1400px;
   margin: 0 auto;
 }
