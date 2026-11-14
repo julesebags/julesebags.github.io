@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import type { Project } from '../../data/projects'
+import { isGradient } from '../../lib/assetLoader'
 import styles from './Projects.module.css'
 
 interface ProjectCardProps {
@@ -8,19 +9,28 @@ interface ProjectCardProps {
   onOpen: (project: Project) => void
 }
 
-function isGradient(image: string): boolean {
-  return /^(linear|radial|conic)-gradient\(/.test(image.trim())
-}
+/*
+ * Frame shapes, cycled by position. Screenshots are all landscape, so
+ * varying the frame (not cropping the screenshot) is what gives the
+ * masonry columns their uneven heights.
+ */
+const FRAMES = [
+  styles.frameTall,
+  styles.frameWide,
+  styles.frameSquare,
+  styles.frameWide,
+  styles.frameTall,
+  styles.frameSquare,
+]
 
 /**
- * Image-forward product tile: just the hero image, the name, and the
- * pitch. Everything else — highlights, tags, tech, links — lives in the
- * modal, which the whole card opens.
+ * Masonry project card: the first screenshot sitting on a soft tinted
+ * frame, then a plain-language headline and a grey context line (name,
+ * award, event). Everything else lives in the modal the card opens.
  */
 export function ProjectCard({ project, index, onOpen }: ProjectCardProps) {
-  const { name, pitch, highlight, images } = project
+  const { headline, context, tint, images } = project
   const hero = images[0] ?? ''
-  const heroIsGradient = isGradient(hero)
 
   return (
     <motion.button
@@ -30,31 +40,20 @@ export function ProjectCard({ project, index, onOpen }: ProjectCardProps) {
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{
-        duration: 0.55,
-        delay: index * 0.06,
-        ease: [0.2, 0.8, 0.2, 1],
-      }}
-      aria-label={`Open ${name} details`}
+      transition={{ duration: 0.55, ease: [0.2, 0.8, 0.2, 1] }}
+      aria-label={`Open ${project.name} details`}
     >
-      <div className={styles.imageWrap}>
-        {heroIsGradient ? (
-          <div className={styles.image} style={{ background: hero }} />
-        ) : (
-          <img
-            className={styles.imageEl}
-            src={hero}
-            alt={`${name} preview`}
-            loading="lazy"
-          />
+      <div
+        className={`${styles.frame} ${FRAMES[index % FRAMES.length]}`}
+        style={{ background: isGradient(hero) ? hero : tint }}
+      >
+        {!isGradient(hero) && (
+          <img className={styles.shot} src={hero} alt="" loading="lazy" />
         )}
       </div>
 
-      <div className={styles.body}>
-        <h3 className={styles.name}>{name}</h3>
-        <p className={styles.pitch}>{pitch}</p>
-        {highlight && <span className={styles.highlight}>{highlight}</span>}
-      </div>
+      <span className={styles.headline}>{headline}</span>
+      <span className={styles.context}>{context}</span>
     </motion.button>
   )
 }
