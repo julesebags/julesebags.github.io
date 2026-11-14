@@ -1,18 +1,23 @@
 .hero {
-  min-height: 100vh;
+  /* Sized to its content (not a full screen) so the Experience tiles
+   * peek in below it on first load. */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* Side padding slimmed so the ASCII art has more horizontal room
-   * to render at a larger size without clipping. */
-  padding: 120px clamp(8px, 1.5vw, 24px) 80px;
-  text-align: center;
+  /* Left-aligned: content hugs the left edge with generous padding. */
+  align-items: flex-start;
+  /* Less padding on the right than the left: content is left-aligned,
+   * so the right side only needs a small margin. The top clears the
+   * horizontal nav bar used on narrower screens. */
+  padding: clamp(84px, 13vh, 120px) clamp(20px, 3vw, 48px)
+    clamp(28px, 5vh, 48px) clamp(20px, 7vw, 120px);
+  text-align: left;
   position: relative;
+  /* Lets .statement size itself off this section's width (cqw). */
+  container-type: inline-size;
 }
 
 .greeting {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 12px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -32,81 +37,114 @@
   display: inline-block;
 }
 
-.asciiName {
+.statement {
   margin: 0;
+  /* No max-width: the line break after "engineer" sets the shape. */
+  /* The tagline's size drives everything; the ASCII name sizes itself
+   * to match it (see .asciiName). */
+  /* As big as possible (up to 64px) while the second line, "who builds
+   * seamless digital experiences.", still fits on one line. That line
+   * is 15.6-16.1x the font size wide (Playfair's optical sizing makes
+   * it a bit wider at smaller sizes), so 100cqw / 16.3 always fits.
+   * Below 30px (phones) it stops shrinking and wraps instead. */
+  --tagline-size: clamp(30px, calc(100cqw / 16.3), 64px);
+  /* Height of the tagline font's tallest letter ("l" in Playfair) as a
+   * fraction of its font size. The ASCII name is matched to this, since
+   * its top row is the tallest letter in the art too. Update it if the
+   * font changes: measure canvas measureText('l').actualBoundingBoxAscent. */
+  --top-ratio: 0.633;
+  font-family: var(--serif);
+  font-size: var(--tagline-size);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--text-h);
-  line-height: 1;
-  /* Size to whatever the ASCII actually needs, then back off if the
-   * viewport is narrower than that. Combined with the font-size
-   * scaling below, this guarantees the full name renders without
-   * clipping the trailing characters. */
-  width: fit-content;
-  max-width: 100%;
-  overflow: hidden;
+  text-wrap: pretty;
 }
 
-.asciiName pre {
-  margin: 0;
-  font: inherit;
+.asciiName {
+  /* Make the name's letters as tall as the tagline's. The art spans
+   * --cap-rows rows (top of its tallest letter down to the baseline,
+   * worked out from the ASCII file in Hero.tsx) of 1.05 line-height
+   * each; the tagline's tallest letter is --top-ratio of its size; so
+   * solve for the art's font size. --name-scale nudges it slightly
+   * because characters in the top and bottom rows don't fill the whole
+   * row, so the visible letters are a bit shorter than the row count. */
+  --name-scale: 1.05;
+  --ascii-fs: calc(
+    var(--tagline-size) * var(--top-ratio) * var(--name-scale) / (var(--cap-rows) * 1.05)
+  );
+  display: inline-block;
   font-family: var(--mono);
-  /* Longest line in `fullname.txt` is 299 characters, and monospace
-   * advance width is ~0.6em, so the art renders 179.4× the font size.
-   * Sizing off 1/179.4 (0.00557) of the space actually available —
-   * viewport minus the left nav rail minus this section's own padding
-   * — keeps the widest line just inside its container at any width.
-   * The h1 above clips any overflow so very narrow phones never push
-   * the page horizontally. */
-  font-size: clamp(4px, calc((100vw - var(--nav-width) - 48px) * 0.00557), 8px);
+  font-size: var(--ascii-fs);
   line-height: 1.05;
   white-space: pre;
-  /* At this glyph size the art reads as thin hairlines, so it gets the
-   * heaviest weight available. `font-synthesis` is off globally, which
-   * would leave fallback monos (Consolas) un-thickened, so weight
-   * synthesis is re-enabled here, and the root's `antialiased` smoothing
-   * is dropped because it shaves weight off small glyphs on macOS. */
-  font-weight: 900;
+  /* An inline-block sits on its LAST row, which is the bottom of the
+   * "g" descender. Drop it by the descender rows so the letters'
+   * baseline lines up with the tagline's. */
+  vertical-align: calc(var(--descender-rows) * -1.05 * var(--ascii-fs));
+  margin-right: 0.12em;
+  color: var(--text-h);
+  /* Tiny glyphs read as grey hairlines, so use the heaviest weight,
+   * turn weight synthesis and default smoothing back on (both are
+   * switched off globally), and trace each glyph with a stroke that
+   * scales with the art so the name is as dark as the tagline. */
+  font-weight: 100;
+  -webkit-text-stroke: calc(var(--ascii-fs) * 0.05) currentColor;
   font-synthesis: weight;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
-  -webkit-text-stroke: 0.12px currentColor;
-  /* Force lines to align to the left edge of the <pre> block —
-   * otherwise the inherited `text-align: center` from `.hero`
-   * centers EACH line individually, which destroys the silhouette
-   * when lines have different (e.g. trimmed) trailing widths.
-   * The pre itself is still centered as a whole because the parent
-   * <h1> uses `width: fit-content` inside a centered flex column. */
+  letter-spacing: 0;
   text-align: left;
   user-select: none;
   -webkit-user-select: none;
-  letter-spacing: 0;
 }
 
-.tagline {
-  margin: 36px auto 0;
-  font-family: var(--heading);
-  font-weight: 300;
-  font-style: italic;
-  font-size: clamp(20px, 2.4vw, 32px);
-  line-height: 1.2;
-  letter-spacing: -0.005em;
-  color: var(--text-h);
-  max-width: 720px;
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
-.subtitle {
-  margin: 16px auto 0;
-  font-size: clamp(13px, 1.2vw, 15px);
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  color: color-mix(in oklab, var(--text), transparent 30%);
-  max-width: 640px;
+.roleList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 44px 0 0;
 }
 
-.subtitle .dot {
-  display: inline-block;
-  margin: 0 8px;
+.groupLabel {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--text), transparent 40%);
+}
+
+.roles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: clamp(12px, 1.05vw, 15px);
+  line-height: 1.45;
+  color: color-mix(in oklab, var(--text), transparent 15%);
+}
+
+.at {
   color: var(--accent);
-  transform: translateY(-1px);
+  font-weight: 500;
+}
+
+.org {
+  color: var(--text-h);
+  font-weight: 650;
 }
 
 .ctas {
@@ -167,7 +205,7 @@
   bottom: 32px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;

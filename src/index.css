@@ -3,12 +3,14 @@
  *   - dark teal-green background (warm-undertone neutral)
  *   - cream-off-white text and pure-white headings
  *   - one accent: a soft pink that pops against the dark bg
- *   - Urbanist Variable for everything (display + body)
+ *   - Plus Jakarta Sans Variable for everything, except the hero
+ *     tagline, which uses Playfair (--serif). The other exception is
+ *     the hero ASCII name, which needs a monospace font to line up.
  */
 :root {
-  --bg: #2f3e3d;
-  --text: #fafaf6;
-  --text-h: #ffffff;
+  --bg: #f4f3ef;
+  --text: #2C3233;
+  --text-h: #2C3233;
 
   --border: rgba(250, 250, 246, 0.14);
   --accent: #ff8aa8;
@@ -22,8 +24,12 @@
    * much space so no page content ever sits underneath it. */
   --nav-width: clamp(180px, 15vw, 240px);
 
-  --sans: 'Urbanist Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: 'Urbanist Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Plus Jakarta Sans Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Plus Jakarta Sans Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
+  /* Only for the hero tagline. Optical-size build, so large text gets
+   * Playfair's high-contrast display cut. */
+  --serif: 'Playfair Variable', Georgia, 'Times New Roman', serif;
+  /* Only for the hero ASCII-art name, which needs fixed-width glyphs. */
   --mono: ui-monospace, Consolas, monospace;
 
   font: 16px/1.55 var(--sans);
@@ -120,8 +126,23 @@ p {
   margin: 0;
 }
 
-button {
+/* Form controls don't inherit fonts by default; keep them on Jakarta. */
+button,
+input,
+textarea,
+select {
   font-family: inherit;
+}
+
+/* Visually hidden but read by screen readers (section headings with
+ * no visible title). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 ::selection {

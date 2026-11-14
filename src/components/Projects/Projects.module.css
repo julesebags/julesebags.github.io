@@ -11,26 +11,26 @@
 }
 
 .grid {
+  /* Three across, reading left to right. Screenshots keep their own
+   * shapes (they're all landscape, so rows stay even). */
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(28px, 3.5vw, 48px) clamp(20px, 2.5vw, 32px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(24px, 3vw, 32px) clamp(16px, 2vw, 24px);
+  align-items: start;
 }
 
 .card {
-  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  width: 100%;
   padding: 0;
   border: none;
   background: none;
-  cursor: pointer;
-  text-align: left;
   font: inherit;
   color: inherit;
   letter-spacing: inherit;
-  outline: none;
-  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
 
 .card:focus-visible {
@@ -38,91 +38,57 @@
   outline-offset: 6px;
 }
 
-.imageWrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  /* Square corners — `overflow` is still needed to clip the hover zoom. */
+.media {
   overflow: hidden;
-  isolation: isolate;
 }
 
-.image,
-.imageEl {
-  position: absolute;
-  inset: 0;
+.shot {
+  display: block;
   width: 100%;
-  height: 100%;
-  z-index: -1;
-  object-fit: cover;
+  height: auto;
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.card:hover .image,
-.card:hover .imageEl {
-  transform: scale(1.05);
+/* Projects with no screenshot yet. */
+.placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 10;
 }
 
-/* ---- Card body ---- */
-
-.body {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
+.card:hover .shot {
+  transform: scale(1.03);
 }
 
-.name {
-  font-family: var(--heading);
+.headline {
+  /* Same sizes as the Experience tiles (role / organization). */
+  margin-top: 14px;
+  font-size: 17px;
   font-weight: 600;
-  font-size: 12px;
-  line-height: 1.2;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  line-height: 1.25;
   color: var(--text-h);
-  margin: 0;
 }
 
-.pitch {
-  font-size: 13px;
-  line-height: 1.5;
-  color: color-mix(in oklab, var(--text), transparent 32%);
-  margin: 0;
-  max-width: 46ch;
-  text-wrap: pretty;
+.context {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: color-mix(in oklab, var(--text), transparent 45%);
 }
 
-/* Awards and similar credentials — the one detail worth keeping on the
- * card face, since the modal doesn't surface it. */
-.highlight {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 2px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
-.highlight::before {
-  content: '';
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
-}
-
-@media (max-width: 800px) {
+@media (max-width: 640px) {
   .grid {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card:hover .image,
-  .card:hover .imageEl {
+  .card:hover .shot {
     transform: none;
   }
 }

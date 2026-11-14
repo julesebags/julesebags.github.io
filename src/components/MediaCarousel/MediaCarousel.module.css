@@ -116,7 +116,7 @@
   position: absolute;
   top: 14px;
   left: 16px;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;

@@ -1,23 +1,26 @@
 import { useEffect, useState } from 'react'
-import { GITHUB, LINKEDIN } from '../../data/socials'
+import { navigate, useRoute, type Page } from '../../lib/route'
+import { Mail } from 'lucide-react'
+import { EMAIL, GITHUB, LINKEDIN } from '../../data/socials'
 import { Ginger } from '../Ginger/Ginger'
 import { GithubIcon, LinkedinIcon } from '../icons/BrandIcons'
 import styles from './Navbar.module.css'
 
 interface NavLink {
   label: string
-  targetId: string
+  /** Hash path it goes to (see lib/route.ts). */
+  path: string
+  /** The page it belongs to, for highlighting the current one. */
+  page: Page
   /** If true, hidden on very narrow screens to keep the bar uncluttered. */
   secondary?: boolean
 }
 
+// Experience lives on the home page; Projects and Beyond are their own pages.
 const links: NavLink[] = [
-  { label: 'About', targetId: 'about' },
-  { label: 'Work', targetId: 'projects' },
-  { label: 'Experience', targetId: 'experience' },
-  { label: 'Skills', targetId: 'skills', secondary: true },
-  { label: 'Beyond', targetId: 'gallery', secondary: true },
-  { label: 'Contact', targetId: 'footer' },
+  { label: 'Experience', path: '/experience', page: 'home' },
+  { label: 'Projects', path: '/projects', page: 'projects' },
+  { label: 'Beyond', path: '/beyond', page: 'beyond' },
 ]
 
 /**
@@ -36,22 +39,18 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id)
-    if (!el) return
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  const route = useRoute()
 
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.brandBlock}>
         <a
-          href="#hero"
+          href="#/"
           className={styles.brand}
-          aria-label="Julie Baguio — back to top"
+          aria-label="Julie Baguio — home"
           onClick={(e) => {
             e.preventDefault()
-            scrollTo('hero')
+            navigate('/')
           }}
         >
           Julie Baguio
@@ -75,19 +74,36 @@ export function Navbar() {
           >
             <GithubIcon size={17} />
           </a>
+          <a
+            className={styles.social}
+            href={`mailto:${EMAIL}`}
+            aria-label={`Email ${EMAIL}`}
+            title={EMAIL}
+          >
+            <Mail size={18} strokeWidth={2} />
+          </a>
         </div>
       </div>
       <div className={styles.links}>
-        {links.map((link) => (
-          <button
-            key={link.targetId}
-            type="button"
-            className={`${styles.link} ${link.secondary ? styles.secondary : ''}`}
-            onClick={() => scrollTo(link.targetId)}
-          >
-            {link.label}
-          </button>
-        ))}
+        {links.map((link) => {
+          const current = route.page === link.page
+          return (
+            <a
+              key={link.path}
+              href={`#${link.path}`}
+              className={`${styles.link} ${current ? styles.linkActive : ''} ${
+                link.secondary ? styles.secondary : ''
+              }`}
+              aria-current={current ? 'page' : undefined}
+              onClick={(e) => {
+                e.preventDefault()
+                navigate(link.path)
+              }}
+            >
+              {link.label}
+            </a>
+          )
+        })}
       </div>
       <Ginger />
     </nav>

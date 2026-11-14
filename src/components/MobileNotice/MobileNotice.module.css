@@ -24,7 +24,7 @@
 
 .copy {
   margin: 0;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: lowercase;

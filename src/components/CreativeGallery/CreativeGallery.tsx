@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   galleryItems,
   type GalleryCategory,
   type GalleryItem,
 } from '../../data/gallery'
+import { PinCloseup } from './PinCloseup'
+import { PinGrid } from './PinGrid'
 import styles from './CreativeGallery.module.css'
 
 const FILTERS: Array<{ id: GalleryCategory | 'All'; label: string }> = [
@@ -14,104 +16,57 @@ const FILTERS: Array<{ id: GalleryCategory | 'All'; label: string }> = [
   { id: 'Jewelry', label: 'Juliery Box' },
 ]
 
-function isImagePath(s: string): boolean {
-  return (
-    s.startsWith('/') ||
-    s.startsWith('.') ||
-    s.startsWith('http') ||
-    s.startsWith('data:')
-  )
-}
-
-function tileBackground(image: string): string {
-  return isImagePath(image) ? `url(${image})` : image
-}
-
-interface TileProps {
-  item: GalleryItem
-  hovered: boolean
-  onHover: (id: string | null) => void
-}
-
-const aspectClass: Record<NonNullable<GalleryItem['aspect']>, string> = {
-  portrait: styles.aspectPortrait,
-  tall: styles.aspectTall,
-  extraTall: styles.aspectExtraTall,
-  square: styles.aspectSquare,
-  landscape: styles.aspectLandscape,
-}
-
-function Tile({ item, hovered, onHover }: TileProps) {
-  // Real images get rendered as <img> so the tile height matches the
-  // photo's natural aspect ratio (only the column width is constrained).
-  // Gradient placeholders fall back to a fixed aspect ratio class so the
-  // tile still has a sensible shape when no photo is dropped in yet.
-  const hasImage = isImagePath(item.image)
-  const aspect = hasImage ? '' : aspectClass[item.aspect ?? 'square']
-
-  return (
-    <div
-      className={`${styles.tile} ${aspect} ${hovered ? styles.tileHovered : ''}`}
-      style={
-        hasImage
-          ? undefined
-          : { ['--tile-image' as string]: tileBackground(item.image) }
-      }
-      onMouseEnter={() => onHover(item.id)}
-      onMouseLeave={() => onHover(null)}
-      onFocus={() => onHover(item.id)}
-      onBlur={() => onHover(null)}
-      tabIndex={0}
-      role="article"
-      aria-label={`${item.title} — ${item.meta}`}
-    >
-      {hasImage && (
-        <img
-          className={styles.tileImage}
-          src={item.image}
-          alt=""
-          loading="lazy"
-        />
-      )}
-      <div className={styles.meta}>
-        <span className={styles.metaCategory}>{item.category}</span>
-        <h3 className={styles.metaTitle}>{item.title}</h3>
-        <span className={styles.metaSub}>{item.meta}</span>
-        <p className={styles.description}>{item.description}</p>
-      </div>
-    </div>
-  )
-}
-
 /**
- * Creative / Community Gallery — masonry-style image wall at the
- * bottom of the site. Cinematic hover: focused tile lifts and
- * brightens, surrounding tiles dim. The hover overlay reveals a one-
- * sentence description so the section humanizes without resume-style
- * bullet density.
+ * "Beyond" — a pin-board of performances, choreography, community work
+ * and jewelry: underlined text tabs over a masonry wall. Clicking a pin
+ * opens its close-up (big photo, details, "More like this").
+ *
+ * Opening a pin adds a browser-history entry, so the browser's Back
+ * button closes it like leaving a page; switching to a related pin
+ * replaces that entry instead of stacking more.
  */
 export function CreativeGallery() {
   const [filter, setFilter] = useState<GalleryCategory | 'All'>('All')
-  const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [openPin, setOpenPin] = useState<GalleryItem | null>(null)
 
-  const visible = useMemo(() => {
-    if (filter === 'All') return galleryItems
-    return galleryItems.filter((item) => item.category === filter)
-  }, [filter])
+  const visible = useMemo(
+    () =>
+      filter === 'All'
+        ? galleryItems
+        : galleryItems.filter((item) => item.category === filter),
+    [filter],
+  )
+
+  const open = useCallback(
+    (item: GalleryItem) => {
+      const state = { pin: item.id }
+      if (openPin) window.history.replaceState(state, '')
+      else window.history.pushState(state, '')
+      setOpenPin(item)
+    },
+    [openPin],
+  )
+
+  // Go back through history so the entry added on open is removed; the
+  // popstate listener below then clears the close-up.
+  const close = useCallback(() => {
+    if (window.history.state?.pin) window.history.back()
+    else setOpenPin(null)
+  }, [])
+
+  useEffect(() => {
+    const onPop = (e: PopStateEvent) => {
+      const id = (e.state as { pin?: string } | null)?.pin
+      setOpenPin(galleryItems.find((item) => item.id === id) ?? null)
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
 
   return (
     <section id="gallery" className={styles.section}>
-      <header className={styles.header}>
-        <p className={styles.eyebrow}>Beyond the code</p>
-        <h2 className={styles.title}>
-          What I make <span className={styles.titleAccent}>off-screen.</span>
-        </h2>
-        <p className={styles.lede}>
-          Performances, choreography, community work, and a small jewelry
-          business I’ve run since 2020. The other half of how I learn to
-          build things.
-        </p>
-      </header>
+      {/* No visible heading; this names the section for screen readers. */}
+      <h2 className={styles.srOnly}>Beyond</h2>
 
       <div className={styles.filters} role="tablist" aria-label="Gallery filter">
         {FILTERS.map((f) => (
@@ -128,18 +83,8 @@ export function CreativeGallery() {
         ))}
       </div>
 
-      <div
-        className={`${styles.grid} ${hoveredId ? styles.gridHovering : ''}`}
-      >
-        {visible.map((item) => (
-          <Tile
-            key={item.id}
-            item={item}
-            hovered={hoveredId === item.id}
-            onHover={setHoveredId}
-          />
-        ))}
-      </div>
+      <PinGrid items={visible} onOpen={open} />
+      <PinCloseup item={openPin} onOpen={open} onClose={close} />
     </section>
   )
 }

@@ -1,4 +1,5 @@
 import { getExperienceImages } from '../lib/assetLoader'
+import type { BrandMotionKind } from '../components/Experience/BrandMotion'
 
 export type ExperienceCategory =
   | 'professional'
@@ -18,6 +19,10 @@ export interface Experience {
   role: string
   /** Subtitle — the organization. */
   organization: string
+  /** Short company name for the tile, e.g. "WashU Di2". Falls back to `organization`. */
+  company?: string
+  /** One short line for the tile (~8 words). Falls back to `pitch`. */
+  summary?: string
   /** Pre-formatted human date range, e.g. "Jun 2026 – Aug 2026". */
   dateRange: string
   /** Pre-formatted duration, e.g. "3 mo", "1y 2mo", "~3y". */
@@ -51,6 +56,11 @@ export interface Experience {
   images: string[]
   /** Per-role accent color used on tags + bullets + duration pill. */
   color: string
+  /**
+   * Optional looping motion graphic used as the tile picture instead of
+   * the first image (see components/Experience/BrandMotion.tsx).
+   */
+  motion?: BrandMotionKind
 }
 
 export const experiences: Experience[] = [
@@ -58,38 +68,12 @@ export const experiences: Experience[] = [
   // PROFESSIONAL
   // ============================================================
   {
-    id: 'proximity',
-    category: 'professional',
-    role: 'Contract Software Engineer',
-    organization: 'Proximity',
-    dateRange: 'Jun 2026 – Present',
-    duration: 'Ongoing',
-    pitch:
-      'Full-stack engineer on a WashU off-campus housing marketplace serving 300+ users.',
-    description:
-      'One of four engineers on Proximity — a marketplace for the WashU off-campus housing market. Shipping full-stack features from database up to UI, and building the internal tooling that keeps a small team moving fast.',
-    bullets: [
-      'Ship full-stack features supporting 300+ active users and $500K+ in facilitated lease value across 42+ signed leases',
-      'Own the end-to-end messaging system: live delivery via Supabase Realtime, hover-based prefetch for near-instant conversation loads, and email notifications with deep links',
-    ],
-    tags: ['Full Stack', 'Supabase', 'Realtime', 'MCP'],
-    metrics: [
-      { val: '300+', label: 'active users' },
-      { val: '$500K+', label: 'lease value' },
-      { val: '42+', label: 'signed leases' },
-    ],
-    images: getExperienceImages('proximity', [
-      'linear-gradient(135deg, #b362ff 0%, #ff8aa8 50%, #2f3e3d 100%)',
-      'linear-gradient(45deg, #ff8aa8 0%, #b362ff 100%)',
-      'radial-gradient(circle at 30% 30%, #b362ff 0%, #ff8aa8 60%, #2f3e3d 100%)',
-    ]),
-    color: '#b362ff',
-  },
-  {
     id: 'mastercard',
     category: 'professional',
     role: 'Software Engineering Intern',
     organization: 'Mastercard',
+    company: 'Mastercard',
+    summary: 'Shipped payments tooling and production mappings.',
     dateRange: 'Jun 2026 – Aug 2026',
     duration: '3 mo',
     pitch:
@@ -114,12 +98,15 @@ export const experiences: Experience[] = [
       'radial-gradient(circle at 30% 30%, #ffb88c 0%, #ff8aa8 60%, #2f3e3d 100%)',
     ]),
     color: '#ffb88c',
+    motion: 'mastercard',
   },
   {
     id: 'dii-accelerator',
     category: 'professional',
     role: 'Full Stack Developer',
     organization: 'WashU Digital Intelligence & Innovation Accelerator',
+    company: 'WashU Di2',
+    summary: 'Built a public health dashboard for 300+ researchers.',
     dateRange: 'May 2025 – Jun 2026',
     duration: '1y 1mo',
     pitch:
@@ -145,6 +132,37 @@ export const experiences: Experience[] = [
       'radial-gradient(circle at 70% 30%, #6dd6c2 0%, #4a8aff 60%, #2f3e3d 100%)',
     ]),
     color: '#6dd6c2',
+    motion: 'washu-di2',
+  },
+    {
+    id: 'proximity',
+    category: 'professional',
+    role: 'Contract Software Engineer',
+    organization: 'Proximity',
+    company: 'Proximity',
+    summary: 'Full-stack features for a 300+ user housing marketplace.',
+    dateRange: 'Jun 2026 – Present',
+    duration: 'Ongoing',
+    pitch:
+      'Full-stack engineer on a WashU off-campus housing marketplace serving 300+ users.',
+    description:
+      'One of four engineers on Proximity — a marketplace for the WashU off-campus housing market. Shipping full-stack features from database up to UI, and building the internal tooling that keeps a small team moving fast.',
+    bullets: [
+      'Ship full-stack features supporting 300+ active users and $500K+ in facilitated lease value across 42+ signed leases',
+      'Own the end-to-end messaging system: live delivery via Supabase Realtime, hover-based prefetch for near-instant conversation loads, and email notifications with deep links',
+    ],
+    tags: ['Full Stack', 'Supabase', 'Realtime', 'MCP'],
+    metrics: [
+      { val: '300+', label: 'active users' },
+      { val: '$500K+', label: 'lease value' },
+      { val: '42+', label: 'signed leases' },
+    ],
+    images: getExperienceImages('proximity', [
+      'linear-gradient(135deg, #b362ff 0%, #ff8aa8 50%, #2f3e3d 100%)',
+      'linear-gradient(45deg, #ff8aa8 0%, #b362ff 100%)',
+      'radial-gradient(circle at 30% 30%, #b362ff 0%, #ff8aa8 60%, #2f3e3d 100%)',
+    ]),
+    color: '#b362ff',
   },
   {
     id: 'oop-ta',
@@ -152,6 +170,8 @@ export const experiences: Experience[] = [
     role: 'Head Teaching Assistant',
     organization:
       'Washington University in St. Louis · Object-Oriented Programming',
+    company: 'WashU',
+    summary: 'Led 30+ TAs and mentored 250+ students in C++.',
     dateRange: 'Aug 2024 – May 2026',
     duration: '~2y',
     pitch:
@@ -174,12 +194,15 @@ export const experiences: Experience[] = [
       'radial-gradient(circle at 30% 70%, #f8a35c 0%, #ff8aa8 60%, #2f3e3d 100%)',
     ]),
     color: '#f8a35c',
+    motion: 'washu-ta',
   },
   {
     id: 'mizzou-research',
     category: 'professional',
     role: 'Research Assistant',
     organization: 'University of Missouri',
+    company: 'University of Missouri',
+    summary: 'Contributed to a research preprint on bioRxiv.',
     dateRange: 'May 2024 – Aug 2024',
     duration: '3 mo',
     pitch: 'Undergraduate research contributor — published on bioRxiv.',

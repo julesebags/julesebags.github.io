@@ -1,4 +1,8 @@
 .ginger {
+  /* Anchor for the speech bubble, which floats above her (absolutely
+   * positioned) so changing bubble text never changes her height, and
+   * so never shifts the nav links above. */
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,15 +15,19 @@
 }
 
 .bubble {
-  position: relative;
-  margin: 0;
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin: 0 auto;
   max-width: 100%;
   padding: 7px 10px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: color-mix(in oklab, var(--bg), transparent 10%);
   color: color-mix(in oklab, var(--text), transparent 15%);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 10px;
   line-height: 1.4;
   text-align: center;
@@ -115,7 +123,7 @@
   border-radius: 999px;
   background: color-mix(in oklab, var(--text), transparent 94%);
   color: color-mix(in oklab, var(--text), transparent 25%);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 10px;
   letter-spacing: 0.04em;
   text-transform: none;
