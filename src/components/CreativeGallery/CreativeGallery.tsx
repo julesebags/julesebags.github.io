@@ -27,10 +27,9 @@ function tileBackground(image: string): string {
   return isImagePath(image) ? `url(${image})` : image
 }
 
-interface TileProps {
+interface PinProps {
   item: GalleryItem
-  hovered: boolean
-  onHover: (id: string | null) => void
+  index: number
 }
 
 const aspectClass: Record<NonNullable<GalleryItem['aspect']>, string> = {
@@ -41,58 +40,70 @@ const aspectClass: Record<NonNullable<GalleryItem['aspect']>, string> = {
   landscape: styles.aspectLandscape,
 }
 
-function Tile({ item, hovered, onHover }: TileProps) {
-  // Real images get rendered as <img> so the tile height matches the
-  // photo's natural aspect ratio (only the column width is constrained).
-  // Gradient placeholders fall back to a fixed aspect ratio class so the
-  // tile still has a sensible shape when no photo is dropped in yet.
+/*
+ * Most photos are landscape, which makes the wall look like a uniform
+ * grid. Items without their own `aspect` cycle through this mix so the
+ * columns get Pinterest's uneven, staggered heights; photos are cropped
+ * to fit (object-fit: cover).
+ */
+const ASPECT_CYCLE: NonNullable<GalleryItem['aspect']>[] = [
+  'tall',
+  'square',
+  'extraTall',
+  'portrait',
+  'landscape',
+]
+
+/**
+ * One "pin": a rounded photo with the title and meta underneath, like
+ * a Pinterest card. Hovering darkens the photo and reveals the
+ * one-sentence description on top of it.
+ */
+function Pin({ item, index }: PinProps) {
   const hasImage = isImagePath(item.image)
-  const aspect = hasImage ? '' : aspectClass[item.aspect ?? 'square']
+  const aspect = aspectClass[item.aspect ?? ASPECT_CYCLE[index % ASPECT_CYCLE.length]]
 
   return (
-    <div
-      className={`${styles.tile} ${aspect} ${hovered ? styles.tileHovered : ''}`}
-      style={
-        hasImage
-          ? undefined
-          : { ['--tile-image' as string]: tileBackground(item.image) }
-      }
-      onMouseEnter={() => onHover(item.id)}
-      onMouseLeave={() => onHover(null)}
-      onFocus={() => onHover(item.id)}
-      onBlur={() => onHover(null)}
+    <article
+      className={styles.pin}
       tabIndex={0}
-      role="article"
       aria-label={`${item.title} — ${item.meta}`}
     >
-      {hasImage && (
-        <img
-          className={styles.tileImage}
-          src={item.image}
-          alt=""
-          loading="lazy"
-        />
-      )}
-      <div className={styles.meta}>
-        <span className={styles.metaCategory}>{item.category}</span>
-        <h3 className={styles.metaTitle}>{item.title}</h3>
-        <span className={styles.metaSub}>{item.meta}</span>
-        <p className={styles.description}>{item.description}</p>
+      <div
+        className={`${styles.pinMedia} ${aspect}`}
+        style={
+          hasImage
+            ? undefined
+            : { ['--tile-image' as string]: tileBackground(item.image) }
+        }
+      >
+        {hasImage && (
+          <img
+            className={styles.pinImage}
+            src={item.image}
+            alt=""
+            loading="lazy"
+          />
+        )}
+        <div className={styles.pinOverlay}>
+          <span className={styles.pinCategory}>{item.category}</span>
+          <p className={styles.pinDescription}>{item.description}</p>
+        </div>
       </div>
-    </div>
+      <div className={styles.pinCaption}>
+        <h3 className={styles.pinTitle}>{item.title}</h3>
+        <p className={styles.pinMeta}>{item.meta}</p>
+      </div>
+    </article>
   )
 }
 
 /**
- * Creative / Community Gallery — masonry-style image wall at the
- * bottom of the site. Cinematic hover: focused tile lifts and
- * brightens, surrounding tiles dim. The hover overlay reveals a one-
- * sentence description so the section humanizes without resume-style
- * bullet density.
+ * Creative / Community Gallery — a Pinterest-style masonry wall of
+ * pins (rounded photo + caption underneath) at the bottom of the site.
  */
 export function CreativeGallery() {
   const [filter, setFilter] = useState<GalleryCategory | 'All'>('All')
-  const [hoveredId, setHoveredId] = useState<string | null>(null)
 
   const visible = useMemo(() => {
     if (filter === 'All') return galleryItems
@@ -128,16 +139,9 @@ export function CreativeGallery() {
         ))}
       </div>
 
-      <div
-        className={`${styles.grid} ${hoveredId ? styles.gridHovering : ''}`}
-      >
-        {visible.map((item) => (
-          <Tile
-            key={item.id}
-            item={item}
-            hovered={hoveredId === item.id}
-            onHover={setHoveredId}
-          />
+      <div className={styles.grid}>
+        {visible.map((item, i) => (
+          <Pin key={item.id} item={item} index={i} />
         ))}
       </div>
     </section>

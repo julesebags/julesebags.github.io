@@ -6,7 +6,7 @@ import styles from './Projects.module.css'
 export function Projects() {
   return (
     <section id="projects" className={styles.section}>
-      <SectionLabel index="002" label="Selected Work" />
+      <SectionLabel index="002" label="Projects" />
       <ProjectsGrid projects={projects} />
     </section>
   )

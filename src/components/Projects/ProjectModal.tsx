@@ -93,16 +93,18 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                       </>
                     )}
                   </p>
-                  <a
-                    className={styles.repoLinkTop}
-                    href={project.repo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${project.name} on GitHub (opens in new tab)`}
-                    title="View on GitHub"
-                  >
-                    <GithubIcon size={16} />
-                  </a>
+                  {project.repo && (
+                    <a
+                      className={styles.repoLinkTop}
+                      href={project.repo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${project.name} on GitHub (opens in new tab)`}
+                      title="View on GitHub"
+                    >
+                      <GithubIcon size={16} />
+                    </a>
+                  )}
                 </div>
                 <h2 id="project-modal-title" className={styles.detailName}>
                   {project.name}
@@ -151,6 +153,16 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </section>
               )}
 
+              {project.link && (
+                <a
+                  className={styles.externalLink}
+                  href={project.link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {project.link.label} <span aria-hidden="true">→</span>
+                </a>
+              )}
             </div>
           </motion.div>
         </motion.div>

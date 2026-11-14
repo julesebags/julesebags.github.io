@@ -59,7 +59,13 @@ export interface Project {
    * No imports needed. See `src/assets/README.md`.
    */
   images: string[]
-  repo: string
+  /** GitHub repo. Optional: research or design work may not have one. */
+  repo?: string
+  /** Any other link to show in the modal, e.g. a report. */
+  link?: {
+    href: string
+    label: string
+  }
 }
 
 export const projects: Project[] = [
@@ -160,5 +166,21 @@ export const projects: Project[] = [
       'linear-gradient(45deg, #4a8aff 0%, #6dd6c2 100%)',
     ]),
     repo: 'https://github.com/junjpark/cory',
+  },
+  {
+    id: 'workday-audit',
+    name: 'WashU Workday UX Audit',
+    pitch: 'Auditing the usability of WashU Workday.',
+    description:
+      'A usability audit of WashU Workday for the Provost’s Office — user research and redesign recommendations for the university’s student information system.',
+    highlight: 'Featured research · Provost’s Office',
+    tech: ['User Research', 'Usability Audit', 'Redesign'],
+    images: getProjectImages('workday-audit', [
+      'linear-gradient(135deg, #a51417 0%, #ff8aa8 60%, #f8f7f4 100%)',
+    ]),
+    link: {
+      href: 'https://drive.google.com/file/d/1apKzC-JMYunYYcZB5YaZp0U2hE9EQkFq/view?usp=sharing',
+      label: 'Read the report',
+    },
   },
 ]

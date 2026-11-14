@@ -14,11 +14,8 @@ interface NavLink {
 // Same order as the sections on the page.
 const links: NavLink[] = [
   { label: 'Experience', targetId: 'experience' },
-  { label: 'Work', targetId: 'projects' },
-  { label: 'Skills', targetId: 'skills', secondary: true },
-  { label: 'Leadership', targetId: 'beyond-work', secondary: true },
-  { label: 'Beyond', targetId: 'gallery', secondary: true },
-  { label: 'About', targetId: 'about' },
+  { label: 'Projects', targetId: 'projects' },
+  { label: 'Beyond', targetId: 'gallery' },
   { label: 'Contact', targetId: 'footer' },
 ]
 

@@ -287,3 +287,18 @@
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+
+/* Non-GitHub link (e.g. a report), shown at the end of the details. */
+.externalLink {
+  align-self: flex-start;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-h);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+.externalLink:hover {
+  color: var(--accent);
+}
