@@ -1,6 +1,5 @@
 /**
- * Contact and profile links, shared by the nav rail and the footer so
- * the two can't drift apart.
+ * Contact and profile links, shown as icons in the nav rail.
  */
 
 export const EMAIL = 'julieebaguio@gmail.com'

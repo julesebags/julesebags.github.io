@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { navigate, useRoute, type Page } from '../../lib/route'
-import { GITHUB, LINKEDIN } from '../../data/socials'
+import { Mail } from 'lucide-react'
+import { EMAIL, GITHUB, LINKEDIN } from '../../data/socials'
 import { Ginger } from '../Ginger/Ginger'
 import { GithubIcon, LinkedinIcon } from '../icons/BrandIcons'
 import styles from './Navbar.module.css'
@@ -72,6 +73,14 @@ export function Navbar() {
             aria-label="GitHub (opens in new tab)"
           >
             <GithubIcon size={17} />
+          </a>
+          <a
+            className={styles.social}
+            href={`mailto:${EMAIL}`}
+            aria-label={`Email ${EMAIL}`}
+            title={EMAIL}
+          >
+            <Mail size={18} strokeWidth={2} />
           </a>
         </div>
       </div>
