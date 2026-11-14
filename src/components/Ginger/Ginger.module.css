@@ -1,4 +1,8 @@
 .ginger {
+  /* Anchor for the speech bubble, which floats above her (absolutely
+   * positioned) so changing bubble text never changes her height, and
+   * so never shifts the nav links above. */
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,8 +15,12 @@
 }
 
 .bubble {
-  position: relative;
-  margin: 0;
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin: 0 auto;
   max-width: 100%;
   padding: 7px 10px;
   border: 1px solid var(--border);

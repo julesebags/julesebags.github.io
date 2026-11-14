@@ -7,18 +7,20 @@
 }
 
 .grid {
-  /* Staggered: two columns with the right one dropped down, so tiles
-   * read as an offset grid rather than tidy rows. */
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(28px, 3.5vw, 48px) clamp(20px, 2.5vw, 32px);
-  align-items: start;
-  padding-bottom: var(--stagger);
-  --stagger: clamp(48px, 8vw, 120px);
+  /* Two independent columns (masonry): the first two tiles start level
+   * at the top, and each column packs its tiles tightly regardless of
+   * their heights. */
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(16px, 2vw, 24px);
 }
 
-.grid > :nth-child(even) > .tile {
-  transform: translateY(var(--stagger));
+.column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.4vw, 28px);
 }
 
 /* ---- Tile (whole thing is a button that opens the modal) ---- */
@@ -26,7 +28,7 @@
 .tile {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   width: 100%;
   padding: 0;
   border: none;
@@ -43,68 +45,69 @@
   outline-offset: 6px;
 }
 
-.tileImageWrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
+/* Media keeps its own shape (photo, poster, video), so tile heights
+ * vary; only placeholders without a picture get a fixed shape. */
+.tileMedia {
   overflow: hidden;
 }
 
-.tileImage,
-.tileImageWrap > svg,
-.tileImageWrap > img,
-.tileImageWrap > video {
-  position: absolute;
-  inset: 0;
+.tileMedia > img,
+.tileMedia > video {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.tile:hover .tileImage,
-.tile:hover .tileImageWrap > svg,
-.tile:hover .tileImageWrap > img,
-.tile:hover .tileImageWrap > video {
-  transform: scale(1.04);
+.tile:hover .tileMedia > img,
+.tile:hover .tileMedia > video {
+  transform: scale(1.03);
+}
+
+.tilePlaceholder {
+  aspect-ratio: 16 / 10;
 }
 
 .tileBody {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
-.tileMeta {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+/* Company on the left, dates on the right, same line. */
+.tileHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+  font-size: 13px;
+  color: color-mix(in oklab, var(--text), transparent 25%);
+}
+
+.tileCompany {
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.tileDates {
+  flex-shrink: 0;
   color: color-mix(in oklab, var(--text), transparent 45%);
 }
 
 .tileRole {
-  font-size: 17px;
+  margin: 0;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.3;
   color: var(--text-h);
 }
 
-.tileOrg {
-  font-size: 14px;
-  color: color-mix(in oklab, var(--text), transparent 25%);
-}
-
-.tilePitch {
-  margin-top: 4px;
+.tileSummary {
+  margin: 0;
   font-size: 13px;
-  line-height: 1.5;
-  max-width: 48ch;
+  line-height: 1.45;
   color: color-mix(in oklab, var(--text), transparent 35%);
-  /* Keep tiles short: two lines max, the rest is in the modal. */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 /* ---- Modal extras (the panel itself reuses ProjectModal styles) ---- */
@@ -157,19 +160,22 @@
   padding-bottom: 2px;
 }
 
+/* Phones: one list. The column wrappers dissolve and each cell's
+ * inline `order` puts the tiles back in their original sequence. */
 @media (max-width: 800px) {
   .grid {
-    grid-template-columns: minmax(0, 1fr);
-    padding-bottom: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 28px;
   }
-  .grid > :nth-child(even) > .tile {
-    transform: none;
+  .column {
+    display: contents;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tile:hover .tileImage,
-  .tile:hover .tileImageWrap > svg {
+  .tile:hover .tileMedia > img,
+  .tile:hover .tileMedia > video {
     transform: none;
   }
 }

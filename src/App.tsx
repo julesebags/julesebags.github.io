@@ -46,7 +46,6 @@ function App() {
             <Hero />
             <Experience
               id="experience"
-              index="001"
               label="Experience"
               categories={['professional']}
             />

@@ -15,7 +15,7 @@
    * shapes (they're all landscape, so rows stay even). */
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(32px, 4vw, 48px) clamp(20px, 2.5vw, 32px);
+  gap: clamp(24px, 3vw, 32px) clamp(16px, 2vw, 24px);
   align-items: start;
 }
 

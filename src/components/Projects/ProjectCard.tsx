@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import type { Project } from '../../data/projects'
 import { isGradient } from '../../lib/assetLoader'
 import styles from './Projects.module.css'
@@ -18,14 +17,10 @@ export function ProjectCard({ project, onOpen }: ProjectCardProps) {
   const hero = images[0] ?? ''
 
   return (
-    <motion.button
+    <button
       type="button"
       className={styles.card}
       onClick={() => onOpen(project)}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.55, ease: [0.2, 0.8, 0.2, 1] }}
       aria-label={`Open ${project.name} details`}
     >
       <div className={styles.media}>
@@ -38,6 +33,6 @@ export function ProjectCard({ project, onOpen }: ProjectCardProps) {
 
       <span className={styles.headline}>{headline}</span>
       <span className={styles.context}>{context}</span>
-    </motion.button>
+    </button>
   )
 }

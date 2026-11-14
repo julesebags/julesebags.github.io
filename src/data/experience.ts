@@ -19,6 +19,10 @@ export interface Experience {
   role: string
   /** Subtitle — the organization. */
   organization: string
+  /** Short company name for the tile, e.g. "WashU Di2". Falls back to `organization`. */
+  company?: string
+  /** One short line for the tile (~8 words). Falls back to `pitch`. */
+  summary?: string
   /** Pre-formatted human date range, e.g. "Jun 2026 – Aug 2026". */
   dateRange: string
   /** Pre-formatted duration, e.g. "3 mo", "1y 2mo", "~3y". */
@@ -68,6 +72,8 @@ export const experiences: Experience[] = [
     category: 'professional',
     role: 'Software Engineering Intern',
     organization: 'Mastercard',
+    company: 'Mastercard',
+    summary: 'Shipped payments tooling and production mappings.',
     dateRange: 'Jun 2026 – Aug 2026',
     duration: '3 mo',
     pitch:
@@ -99,6 +105,8 @@ export const experiences: Experience[] = [
     category: 'professional',
     role: 'Full Stack Developer',
     organization: 'WashU Digital Intelligence & Innovation Accelerator',
+    company: 'WashU Di2',
+    summary: 'Built a public health dashboard for 300+ researchers.',
     dateRange: 'May 2025 – Jun 2026',
     duration: '1y 1mo',
     pitch:
@@ -131,6 +139,8 @@ export const experiences: Experience[] = [
     category: 'professional',
     role: 'Contract Software Engineer',
     organization: 'Proximity',
+    company: 'Proximity',
+    summary: 'Full-stack features for a 300+ user housing marketplace.',
     dateRange: 'Jun 2026 – Present',
     duration: 'Ongoing',
     pitch:
@@ -160,6 +170,8 @@ export const experiences: Experience[] = [
     role: 'Head Teaching Assistant',
     organization:
       'Washington University in St. Louis · Object-Oriented Programming',
+    company: 'WashU',
+    summary: 'Led 30+ TAs and mentored 250+ students in C++.',
     dateRange: 'Aug 2024 – May 2026',
     duration: '~2y',
     pitch:
@@ -189,6 +201,8 @@ export const experiences: Experience[] = [
     category: 'professional',
     role: 'Research Assistant',
     organization: 'University of Missouri',
+    company: 'University of Missouri',
+    summary: 'Contributed to a research preprint on bioRxiv.',
     dateRange: 'May 2024 – Aug 2024',
     duration: '3 mo',
     pitch: 'Undergraduate research contributor — published on bioRxiv.',

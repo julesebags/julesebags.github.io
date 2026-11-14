@@ -134,6 +134,17 @@ select {
   font-family: inherit;
 }
 
+/* Visually hidden but read by screen readers (section headings with
+ * no visible title). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 ::selection {
   background: var(--accent);
   color: #1c1c1c;
