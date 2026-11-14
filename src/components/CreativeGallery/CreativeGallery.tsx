@@ -65,17 +65,8 @@ export function CreativeGallery() {
 
   return (
     <section id="gallery" className={styles.section}>
-      <header className={styles.header}>
-        <p className={styles.eyebrow}>Beyond the code</p>
-        <h2 className={styles.title}>
-          What I make <span className={styles.titleAccent}>off-screen.</span>
-        </h2>
-        <p className={styles.lede}>
-          Performances, choreography, community work, and a small jewelry
-          business I’ve run since 2020. The other half of how I learn to
-          build things.
-        </p>
-      </header>
+      {/* No visible heading; this names the section for screen readers. */}
+      <h2 className={styles.srOnly}>Beyond</h2>
 
       <div className={styles.filters} role="tablist" aria-label="Gallery filter">
         {FILTERS.map((f) => (

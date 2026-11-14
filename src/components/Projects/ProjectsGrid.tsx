@@ -20,11 +20,10 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
   return (
     <>
       <div className={styles.grid}>
-        {projects.map((project, i) => (
+        {projects.map((project) => (
           <ProjectCard
             key={project.name}
             project={project}
-            index={i}
             onOpen={setSelected}
           />
         ))}
