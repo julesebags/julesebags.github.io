@@ -76,6 +76,16 @@ export function isVideoSrc(src: string): boolean {
   return /\.(mp4|webm)(\?.*)?$/i.test(src)
 }
 
+/** True for a real image URL (vs. a CSS-gradient placeholder string). */
+export function isImagePath(s: string): boolean {
+  return (
+    s.startsWith('/') ||
+    s.startsWith('.') ||
+    s.startsWith('http') ||
+    s.startsWith('data:')
+  )
+}
+
 /** True for the CSS-gradient placeholders used when a folder is empty. */
 export function isGradient(src: string): boolean {
   return /^(linear|radial|conic)-gradient\(/.test(src.trim())

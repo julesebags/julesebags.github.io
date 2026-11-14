@@ -54,36 +54,46 @@
   margin: 8px 0 0;
 }
 
-/* Filter row: Pinterest-style chips ------------------------------- */
+/* Filter row: underlined text tabs ------------------------------- */
 
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px 28px;
   margin-bottom: 28px;
 }
 
 .filter {
-  font: inherit;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 9px 16px;
-  border-radius: 999px;
+  position: relative;
+  padding: 6px 0 10px;
   border: none;
-  background: color-mix(in oklab, var(--text), transparent 93%);
-  color: var(--text-h);
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: color-mix(in oklab, var(--text), transparent 35%);
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .filter:hover {
-  background: color-mix(in oklab, var(--text), transparent 86%);
+  color: var(--text-h);
 }
 
-.filterActive,
-.filterActive:hover {
+.filterActive {
+  color: var(--text-h);
+}
+
+/* Short underline under the active tab. */
+.filterActive::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
   background: var(--text-h);
-  color: var(--bg);
 }
 
 /* Masonry — true Pinterest-style column flow ------------------------
@@ -113,7 +123,14 @@
 
 .pin {
   display: block;
+  width: 100%;
   margin: 0 0 20px;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
   outline: none;
   cursor: pointer;
   /* Keep each pin in one column (no awkward mid-pin splits). */
@@ -193,10 +210,12 @@
 }
 
 .pinCaption {
+  display: block;
   padding: 8px 4px 0;
 }
 
 .pinTitle {
+  display: block;
   margin: 0;
   font-family: var(--sans);
   font-size: 14px;
@@ -206,9 +225,147 @@
 }
 
 .pinMeta {
+  display: block;
   margin: 2px 0 0;
   font-size: 12px;
   color: color-mix(in oklab, var(--text), transparent 40%);
+}
+
+/* ---- Pin close-up (full-screen) ---------------------------------- */
+
+.closeupPage {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg);
+  padding: clamp(16px, 3vw, 32px) clamp(16px, 4vw, 48px) 64px;
+}
+
+.closeup {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  max-width: 1080px;
+  margin: 0 auto;
+  border-radius: 32px;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--bg), white 70%);
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.08);
+}
+
+.closeupBack {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1d2223;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+}
+
+.closeupBack:hover {
+  background: #ffffff;
+}
+
+.closeupMedia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.closeupImage {
+  display: block;
+  width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  border-radius: 20px;
+}
+
+.closeupPlaceholder {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 20px;
+}
+
+.closeupDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(24px, 4vw, 44px) clamp(24px, 3vw, 36px);
+}
+
+.closeupCategory {
+  align-self: flex-start;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--text), transparent 92%);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.closeupTitle {
+  margin: 6px 0 0;
+  font-family: var(--sans);
+  font-size: clamp(26px, 2.6vw, 34px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--text-h);
+}
+
+.closeupMeta {
+  margin: 0;
+  font-size: 15px;
+  color: color-mix(in oklab, var(--text), transparent 35%);
+}
+
+.closeupHeading {
+  margin: 18px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.closeupDescription {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: color-mix(in oklab, var(--text), transparent 20%);
+}
+
+.moreLikeThis {
+  max-width: 1400px;
+  margin: 48px auto 0;
+}
+
+.moreLikeThisTitle {
+  margin: 0 0 20px;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+@media (max-width: 760px) {
+  .closeup {
+    grid-template-columns: 1fr;
+    border-radius: 24px;
+  }
+  .closeupImage {
+    max-height: 60vh;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

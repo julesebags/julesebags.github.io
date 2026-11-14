@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   galleryItems,
   type GalleryCategory,
   type GalleryItem,
 } from '../../data/gallery'
+import { PinCloseup } from './PinCloseup'
+import { PinGrid } from './PinGrid'
 import styles from './CreativeGallery.module.css'
 
 const FILTERS: Array<{ id: GalleryCategory | 'All'; label: string }> = [
@@ -14,101 +16,52 @@ const FILTERS: Array<{ id: GalleryCategory | 'All'; label: string }> = [
   { id: 'Jewelry', label: 'Juliery Box' },
 ]
 
-function isImagePath(s: string): boolean {
-  return (
-    s.startsWith('/') ||
-    s.startsWith('.') ||
-    s.startsWith('http') ||
-    s.startsWith('data:')
-  )
-}
-
-function tileBackground(image: string): string {
-  return isImagePath(image) ? `url(${image})` : image
-}
-
-interface PinProps {
-  item: GalleryItem
-  index: number
-}
-
-const aspectClass: Record<NonNullable<GalleryItem['aspect']>, string> = {
-  portrait: styles.aspectPortrait,
-  tall: styles.aspectTall,
-  extraTall: styles.aspectExtraTall,
-  square: styles.aspectSquare,
-  landscape: styles.aspectLandscape,
-}
-
-/*
- * Most photos are landscape, which makes the wall look like a uniform
- * grid. Items without their own `aspect` cycle through this mix so the
- * columns get Pinterest's uneven, staggered heights; photos are cropped
- * to fit (object-fit: cover).
- */
-const ASPECT_CYCLE: NonNullable<GalleryItem['aspect']>[] = [
-  'tall',
-  'square',
-  'extraTall',
-  'portrait',
-  'landscape',
-]
-
 /**
- * One "pin": a rounded photo with the title and meta underneath, like
- * a Pinterest card. Hovering darkens the photo and reveals the
- * one-sentence description on top of it.
- */
-function Pin({ item, index }: PinProps) {
-  const hasImage = isImagePath(item.image)
-  const aspect = aspectClass[item.aspect ?? ASPECT_CYCLE[index % ASPECT_CYCLE.length]]
-
-  return (
-    <article
-      className={styles.pin}
-      tabIndex={0}
-      aria-label={`${item.title} — ${item.meta}`}
-    >
-      <div
-        className={`${styles.pinMedia} ${aspect}`}
-        style={
-          hasImage
-            ? undefined
-            : { ['--tile-image' as string]: tileBackground(item.image) }
-        }
-      >
-        {hasImage && (
-          <img
-            className={styles.pinImage}
-            src={item.image}
-            alt=""
-            loading="lazy"
-          />
-        )}
-        <div className={styles.pinOverlay}>
-          <span className={styles.pinCategory}>{item.category}</span>
-          <p className={styles.pinDescription}>{item.description}</p>
-        </div>
-      </div>
-      <div className={styles.pinCaption}>
-        <h3 className={styles.pinTitle}>{item.title}</h3>
-        <p className={styles.pinMeta}>{item.meta}</p>
-      </div>
-    </article>
-  )
-}
-
-/**
- * Creative / Community Gallery — a Pinterest-style masonry wall of
- * pins (rounded photo + caption underneath) at the bottom of the site.
+ * "Beyond" — a pin-board of performances, choreography, community work
+ * and jewelry: underlined text tabs over a masonry wall. Clicking a pin
+ * opens its close-up (big photo, details, "More like this").
+ *
+ * Opening a pin adds a browser-history entry, so the browser's Back
+ * button closes it like leaving a page; switching to a related pin
+ * replaces that entry instead of stacking more.
  */
 export function CreativeGallery() {
   const [filter, setFilter] = useState<GalleryCategory | 'All'>('All')
+  const [openPin, setOpenPin] = useState<GalleryItem | null>(null)
 
-  const visible = useMemo(() => {
-    if (filter === 'All') return galleryItems
-    return galleryItems.filter((item) => item.category === filter)
-  }, [filter])
+  const visible = useMemo(
+    () =>
+      filter === 'All'
+        ? galleryItems
+        : galleryItems.filter((item) => item.category === filter),
+    [filter],
+  )
+
+  const open = useCallback(
+    (item: GalleryItem) => {
+      const state = { pin: item.id }
+      if (openPin) window.history.replaceState(state, '')
+      else window.history.pushState(state, '')
+      setOpenPin(item)
+    },
+    [openPin],
+  )
+
+  // Go back through history so the entry added on open is removed; the
+  // popstate listener below then clears the close-up.
+  const close = useCallback(() => {
+    if (window.history.state?.pin) window.history.back()
+    else setOpenPin(null)
+  }, [])
+
+  useEffect(() => {
+    const onPop = (e: PopStateEvent) => {
+      const id = (e.state as { pin?: string } | null)?.pin
+      setOpenPin(galleryItems.find((item) => item.id === id) ?? null)
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
 
   return (
     <section id="gallery" className={styles.section}>
@@ -139,11 +92,8 @@ export function CreativeGallery() {
         ))}
       </div>
 
-      <div className={styles.grid}>
-        {visible.map((item, i) => (
-          <Pin key={item.id} item={item} index={i} />
-        ))}
-      </div>
+      <PinGrid items={visible} onOpen={open} />
+      <PinCloseup item={openPin} onOpen={open} onClose={close} />
     </section>
   )
 }
