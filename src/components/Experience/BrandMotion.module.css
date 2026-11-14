@@ -5,32 +5,3 @@
   height: 100%;
   object-fit: contain;
 }
-
-.svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.wordmark {
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  fill: #ffffff;
-}
-
-.caption {
-  font-family: var(--sans);
-  font-size: 3.4px;
-  font-weight: 600;
-  letter-spacing: 0.25em;
-  fill: rgba(255, 255, 255, 0.7);
-}
-
-.code {
-  font-family: var(--mono);
-  font-size: 4.6px;
-  fill: #ffffff;
-  white-space: pre;
-}
