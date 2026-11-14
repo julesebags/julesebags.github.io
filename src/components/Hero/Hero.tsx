@@ -83,8 +83,8 @@ const CURRENT: Role[] = [
     org: 'The Hong Kong University of Science and Technology',
   },
   {
-    verb: 'CS + Math Student',
-    org: 'WashU (May 2027)',
+    verb: 'CS/Math Student',
+    org: 'Washington University in St. Louis',
   },
 ]
 const PREVIOUS: Role[] = [
