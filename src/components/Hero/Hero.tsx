@@ -147,7 +147,7 @@ export function Hero(_props: HeroProps) {
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1.3 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
         >
           {TAGLINE[0]}
           <br />
@@ -159,7 +159,7 @@ export function Hero(_props: HeroProps) {
         className={styles.roleList}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 1.6 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
       >
         <RoleGroup label="Current" roles={CURRENT} />
         <RoleGroup label="Previous" roles={PREVIOUS} />

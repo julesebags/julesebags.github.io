@@ -1,5 +1,5 @@
 import type { Project } from '../../data/projects'
-import { isGradient } from '../../lib/assetLoader'
+import { getImageSize, isGradient } from '../../lib/assetLoader'
 import styles from './Projects.module.css'
 
 interface ProjectCardProps {
@@ -27,7 +27,14 @@ export function ProjectCard({ project, onOpen }: ProjectCardProps) {
         {isGradient(hero) ? (
           <div className={styles.placeholder} style={{ background: hero }} />
         ) : (
-          <img className={styles.shot} src={hero} alt="" loading="lazy" />
+          <img
+            className={styles.shot}
+            src={hero}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            {...getImageSize(hero)}
+          />
         )}
       </div>
 

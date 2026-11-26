@@ -1,5 +1,5 @@
 import { type Experience } from '../../data/experience'
-import { isGradient, isVideoSrc } from '../../lib/assetLoader'
+import { getImageSize, isGradient, isVideoSrc } from '../../lib/assetLoader'
 import { BrandMotion } from './BrandMotion'
 import styles from './Experience.module.css'
 
@@ -39,7 +39,15 @@ export function ExperienceCard({ experience, onOpen }: ExperienceCardProps) {
         ) : isGradient(hero) ? (
           <div className={styles.tilePlaceholder} style={{ background: hero }} />
         ) : (
-          <img className={styles.tileImage} src={hero} alt="" />
+          /* width/height reserve the picture's space before it loads,
+           * so the tiles below don't jump when it arrives. */
+          <img
+            className={styles.tileImage}
+            src={hero}
+            alt=""
+            decoding="async"
+            {...getImageSize(hero)}
+          />
         )}
       </div>
 

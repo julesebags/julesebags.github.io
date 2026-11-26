@@ -8,8 +8,6 @@ nothing else to do.**
 
 ```
 src/assets/
-├── about/             ← drop your headshot here (one image)
-│
 ├── projects/
 │   ├── tailor/        ← Tailor screenshots
 │   ├── grubu/         ← GrubU screenshots
@@ -49,14 +47,15 @@ src/assets/
    Example: `01_hero.jpg`, `02_team.jpg`, `03_demo.png`.
 2. **Supported formats:** `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`,
    `.avif`. JPEG is best for photos; PNG for screenshots / diagrams.
-3. **Keep files under ~500KB.** Resize anything 2000px-wide or larger
-   down to 1440px. On macOS:
-   ```bash
-   sips -Z 1440 path/to/image.png --out path/to/image.png
-   ```
+3. **No need to shrink photos yourself.** The build resizes every
+   photo to at most 1600px wide and converts it to WebP, so a 4 MB
+   original ships as a few hundred KB. Originals are left untouched.
+   GIFs are passed through as-is (converting would drop the animation).
+   Videos (`.mp4` / `.webm`) are not processed: keep them short and
+   ~1280px wide.
 4. **Gallery folders only show the first image.** Drop one hero image
-   per gallery item. Extras in the same folder are ignored. Same goes
-   for `about/` — only the first image is used as the headshot.
+   per gallery item. Extras in the same folder are ignored.
+
 5. **Empty folders are safe.** If a folder has no images, the site
    falls back to the existing gradient placeholder. The site never
    breaks because of missing photos.
@@ -77,5 +76,7 @@ If you want to add a *new* entry that doesn't exist yet:
 folders at build time. The `getProjectImages(id, fallback)`,
 `getExperienceImages(id, fallback)`, and `getGalleryImage(id, fallback)`
 helpers do the lookup and return either the real images or the gradient
-fallback. The data files call those helpers — no manual `import`
+fallback. `getImageSize(src)` returns a processed image's width and
+height, which the components put on the `<img>` so the page doesn't
+jump when it loads. The data files call those helpers — no manual `import`
 statements needed per asset.

@@ -1,4 +1,29 @@
 /*
+ * Stand-ins shown for the split second before the web fonts load,
+ * scaled to take up the same width as the real fonts (measured with
+ * canvas measureText). Without them the hero tagline wraps onto three
+ * lines in Georgia, then snaps to two when Playfair arrives, shoving
+ * everything below it up the page.
+ */
+@font-face {
+  font-family: 'Playfair Fallback';
+  src: local('Georgia');
+  size-adjust: 91.5%;
+  ascent-override: 99%;
+  descent-override: 27.3%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Jakarta Fallback';
+  src: local('Arial');
+  size-adjust: 90.5%;
+  ascent-override: 96.7%;
+  descent-override: 27.6%;
+  line-gap-override: 0%;
+}
+
+/*
  * Design tokens. The visual identity:
  *   - dark teal-green background (warm-undertone neutral)
  *   - cream-off-white text and pure-white headings
@@ -24,11 +49,11 @@
    * much space so no page content ever sits underneath it. */
   --nav-width: clamp(180px, 15vw, 240px);
 
-  --sans: 'Plus Jakarta Sans Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: 'Plus Jakarta Sans Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Plus Jakarta Sans Variable', 'Jakarta Fallback', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Plus Jakarta Sans Variable', 'Jakarta Fallback', system-ui, 'Segoe UI', Roboto, sans-serif;
   /* Only for the hero tagline. Optical-size build, so large text gets
    * Playfair's high-contrast display cut. */
-  --serif: 'Playfair Variable', Georgia, 'Times New Roman', serif;
+  --serif: 'Playfair Variable', 'Playfair Fallback', Georgia, 'Times New Roman', serif;
   /* Only for the hero ASCII-art name, which needs fixed-width glyphs. */
   --mono: ui-monospace, Consolas, monospace;
 

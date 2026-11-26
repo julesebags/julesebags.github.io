@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import { galleryItems, type GalleryItem } from '../../data/gallery'
-import { isImagePath } from '../../lib/assetLoader'
+import { getImageSize, isImagePath } from '../../lib/assetLoader'
 import { PinGrid } from './PinGrid'
 import styles from './CreativeGallery.module.css'
 
@@ -98,6 +98,7 @@ export function PinCloseup({ item, onOpen, onClose }: PinCloseupProps) {
                   className={styles.closeupImage}
                   src={item.image}
                   alt={item.title}
+                  {...getImageSize(item.image)}
                 />
               ) : (
                 <div
